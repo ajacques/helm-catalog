@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memcached
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcached
+      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+  template:
+    metadata:
+      annotations:
+        net.technowizardry.upgrade/version-match: '{version}-alpine'
+      labels:
+        app: memcached
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    spec:
+      containers:
+      - args:
+        - memcached
+        - -m
+        - "128"
+        image: memcached:1.5.12-alpine
+        imagePullPolicy: Always
+        name: memcached
+        resources:
+          limits:
+            memory: 200Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false

@@ -1,0 +1,62 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: worker
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+  template:
+    metadata:
+      labels:
+        app: worker
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    spec:
+      affinity: {}
+      containers:
+      - args:
+        - run
+        - worker
+        - -c
+        - "2"
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        image: sentry:9.0.0
+        imagePullPolicy: Always
+        name: worker
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}

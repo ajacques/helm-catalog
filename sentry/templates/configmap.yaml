@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  {{- if .Values.email.host }}
+  SENTRY_EMAIL_HOST: {{ .Values.email.host }}
+  SENTRY_EMAIL_PORT: "587"
+  SENTRY_EMAIL_USE_TLS: "true"
+  {{- end }}
+  SENTRY_MEMCACHED_HOST: memcached.{{ .Release.Namespace }}.svc.cluster.local
+  SENTRY_POSTGRES_HOST: {{ .Values.db.host }}
+  SENTRY_REDIS_HOST: redis.{{ .Release.Namespace }}.svc.cluster.local
+  SENTRY_DB_NAME: sentry
+kind: ConfigMap
+metadata:
+  name: sentry

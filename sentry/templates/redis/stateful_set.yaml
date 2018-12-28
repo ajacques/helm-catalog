@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+  template:
+    metadata:
+      labels:
+        app: redis
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    spec:
+      containers:
+      - image: redis:5.0.3
+        imagePullPolicy: Always
+        name: redis
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        volumeMounts:
+        - mountPath: /data
+          name: datavol
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: datavol
+        {{- if eq .Values.persistence.type "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/redis
+          type: ""
+        {{- end }}

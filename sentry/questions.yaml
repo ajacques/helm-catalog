@@ -1,0 +1,75 @@
+questions:
+
+- variable: persistence.type
+  default: BindMount
+  type: enum
+  options:
+  - BindMount
+  group: persistence
+  required: true
+- variable: persistence.bind_mount.base_dir
+  type: string
+  label: Base directory
+  group: persistence
+  description: Specifies a directory on the host to mount all persistent folders.
+  show_if: 'persistence.type=BindMount'
+
+- variable: postgres.enabled
+  default: true
+  description: Enable integrated Postgres database
+  type: boolean
+  label: Database
+  group: Storage
+  required: true
+- variable: db.host
+  type: string
+  group: Storage
+  label: Postgres hostname
+  show_if: 'postgres.enabled=false'
+
+- variable: db.username
+  type: string
+  label: DB Username
+  group: Storage
+  required: true
+- variable: db.password
+  type: string
+  label: DB Password
+  group: Storage
+  required: true
+
+- variable: email.host
+  default: 172.17.0.1
+  description: SMTP server
+  type: string
+
+- variable: github.enabled
+  default: false
+  type: boolean
+  label: GitHub
+  group: integrations
+  show_subquestion_if: true
+  subquestions:
+  - variable: github.api.id
+    description: API Application ID
+    type: string
+    required: true
+    label: App Id
+  - variable: github.api.secret
+    description: API Secret
+    type: string
+    required: true
+    label: API Secret
+
+- variable: sentry.secret_key
+  type: string
+  required: true
+  label: Secret Key
+  min_length: 32
+
+- variable: ingress.hostname
+  type: hostname
+  label: UI Hostname
+- variable: ingress.tls_secret_name
+  type: string
+  label: TLS Certificate Name
