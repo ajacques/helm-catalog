@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: certmanager
+  labels:
+    app: {{ template "certmanager.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.hostname }}
+    http:
+      paths:
+      - backend:
+          serviceName: web
+          servicePort: 8080
+      - backend:
+          serviceName: assets
+          servicePort: 80
+        path: /assets
+      - backend:
+          serviceName: assets
+          servicePort: 80
+        path: /favicon.ico
+      - backend:
+          serviceName: assets
+          servicePort: 80
+        path: /packs
+  {{- if .Values.ingress.tls_secret_name }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.hostname }}
+    secretName: {{ .Values.ingress.tls_secret_name }}
+  {{- end }}

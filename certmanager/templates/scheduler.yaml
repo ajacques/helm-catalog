@@ -1,0 +1,51 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scheduler
+      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: scheduler
+        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    spec:
+      containers:
+      - args:
+        - rake
+        - resque:scheduler
+        env:
+        - name: SECRET_KEY_BASE
+          value: unused
+        envFrom:
+        - secretRef:
+            name: sqlaccount
+            optional: false
+        - configMapRef:
+            name: config
+            optional: false
+        image: ajacques/certmanager:latest
+        imagePullPolicy: Always
+        name: scheduler
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      securityContext: {}

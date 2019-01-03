@@ -1,0 +1,76 @@
+questions:
+
+- variable: persistence.type
+  default: BindMount
+  type: enum
+  options:
+  - BindMount
+  group: persistence
+  required: true
+- variable: persistence.bind_mount.base_dir
+  type: string
+  label: Base directory
+  group: persistence
+  description: Specifies a directory on the host to mount all persistent folders.
+  show_if: 'persistence.type=BindMount'
+
+- variable: postgres.enabled
+  default: true
+  description: Enable integrated Postgres database
+  type: boolean
+  label: Database
+  group: Storage
+  required: true
+- variable: db.host
+  type: string
+  group: Storage
+  label: Postgres hostname
+  show_if: 'postgres.enabled=false'
+
+- variable: db.username
+  type: string
+  label: DB Username
+  group: Storage
+  required: true
+- variable: db.database
+  type: string
+  label: Database Name
+  group: Storage
+  required: true
+- variable: db.password
+  type: string
+  label: DB Password
+  group: Storage
+  required: true
+
+- variable: ingress.hostname
+  type: hostname
+  label: UI Hostname
+  group: HTTP
+- variable: ingress.tls_secret_name
+  type: string
+  label: TLS Certificate Name
+  group: HTTP
+
+- variable: security.csp.report_uri
+  type: string
+  label: CSP Report URI
+  group: HTTP
+- variable: security.secret_key
+  type: string
+  required: true
+
+- variable: sentry.dsn
+  type: string
+  label: Sentry DSN
+
+- variable: zipkin.host
+  type: string
+  label: Zipkin Host
+  group: Zipkin
+- variable: zipkin.sample_rate
+  type: int
+  min: 0
+  max: 100
+  label: Sample %
+  group: Zipkin
