@@ -1,0 +1,11 @@
+questions:
+
+- variable: elasticsearch.host
+  default: http://elasticsearch:9200
+  type: string
+  required: true
+
+- variable: elasticsearch.index
+  default: postfix-%{+YYYY}
+  type: string
+  required: true

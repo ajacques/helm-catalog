@@ -1,0 +1,61 @@
+apiVersion: apps/v1beta2
+kind: DaemonSet
+metadata:
+  name: postfixlogstash
+spec:
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: daemonset-{{ .Release.Namespace }}-postfix-postfixlogstash
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: daemonset-{{ .Release.Namespace }}-postfix-postfixlogstash
+    spec:
+      containers:
+      - image: docker.elastic.co/logstash/logstash:6.5.4
+        imagePullPolicy: Always
+        name: logstash
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: {}
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        volumeMounts:
+        - mountPath: /host/var/log
+          name: hostlogs
+          readOnly: true
+        - mountPath: /usr/share/logstash/postfix/
+          name: config
+          readOnly: true
+        - mountPath: /etc/logstash/patterns.d/
+          name: grok
+          readOnly: true
+        - mountPath: /usr/share/logstash/data/
+          name: state
+        - mountPath: /etc/hostname
+          name: hostname
+          readOnly: true
+      volumes:
+      - hostPath:
+          path: /var/log
+          type: ""
+        name: hostlogs
+      - configMap:
+          defaultMode: 292
+          name: logstashconfig
+          optional: false
+        name: config
+      - configMap:
+          defaultMode: 292
+          name: postfixgrok
+          optional: false
+        name: grok
+      - name: state
+        emptyDir:
+          sizeLimit: 64Mi
+      - hostPath:
+          path: /etc/hostname
+          type: File
+        name: hostname
