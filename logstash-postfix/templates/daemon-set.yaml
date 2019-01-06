@@ -29,6 +29,10 @@ spec:
         - mountPath: /usr/share/logstash/postfix/
           name: config
           readOnly: true
+        - mountPath: /usr/share/logstash/config/logstash.yml
+          name: rootconfig
+          readOnly: true
+          subPath: logstash.yml
         - mountPath: /etc/logstash/patterns.d/
           name: grok
           readOnly: true
@@ -45,11 +49,21 @@ spec:
       - configMap:
           defaultMode: 292
           name: logstashconfig
+          items:
+          {{- range $path, $bytes := .Files.Glob "config/config/*.conf" }}
+          - key: {{ base $path }}
+            path: {{ base $path }}
+          {{- end }}
           optional: false
         name: config
       - configMap:
           defaultMode: 292
           name: postfixgrok
+          items:
+          {{- range $path, $bytes := .Files.Glob "config/grok/*.grok" }}
+          - key: {{ base $path }}
+            path: {{ base $path }}
+          {{- end }}
           optional: false
         name: grok
       - name: state
@@ -59,3 +73,8 @@ spec:
           path: /etc/hostname
           type: File
         name: hostname
+      - configMap:
+          defaultMode: 292
+          name: logstashconfig
+          optional: false
+        name: rootconfig

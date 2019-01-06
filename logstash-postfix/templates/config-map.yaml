@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  {{- $root := . -}}
+  {{- range $path, $bytes := .Files.Glob "config/config/*.conf" }}
+  {{ base $path }}: {{ $root.Files.Get $path | quote }}
+  {{- end }}
+  {{- range $path, $bytes := .Files.Glob "config/grok/*.grok" }}
+  {{ base $path }}: {{ $root.Files.Get $path | quote }}
+  {{- end }}
+  80-output.conf: 'output { elasticsearch { hosts => ["{{ .Values.elasticsearch.host }}"] index => "{{ .Values.elasticsearch.index }}" } }'
+
+  # config/logstash.yml
+  logstash.yml: "http.host: \"0.0.0.0\"\r\nxpack.monitoring.elasticsearch.url: \"{{ .Values.elasticsearch.host }}\""
+kind: ConfigMap
+metadata:
+  name: logstashconfig
