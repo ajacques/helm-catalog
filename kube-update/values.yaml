@@ -1,0 +1,10 @@
+# Take a conservative approach with exposed variables.
+# If users need more, then allow them to cut a PR/issue
+schedule: 5 0 * * 0 # Every sunday at 00:05 (Offset to avoid any thundering herd at midnight)
+image:
+  tag: latest
+  pullPolicy: Always
+resources: {}
+
+email:
+  enabled: false

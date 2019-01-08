@@ -1,0 +1,44 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "kube-update.name" . }}
+  labels:
+    app: {{ template "kube-update.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule:  {{ .Values.schedule }}
+  concurrencyPolicy: Replace
+  jobTemplate:
+    metadata:
+      labels:
+        app: {{ template "kube-update.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      template:
+        spec:
+          containers:
+            - name: kube-update
+              image: "ajacques/kube-update:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              env:
+                {{- if .Values.email.enabled }}
+              - name: APP_EMAIL_HOST
+                value: {{ .Values.email.relay.host }}
+              - name: APP_EMAIL_PORT
+                value: "{{ .Values.email.relay.port }}"
+              - name: APP_EMAIL_TO
+                value: {{ .Values.email.recipient.address }}
+                {{- end }}
+              securityContext:
+                capabilities:
+                  drop:
+                  - ALL
+          serviceAccountName: kube-update-service-account
+          restartPolicy: Never
+          schedulerName: default-scheduler
+          {{- if .Values.nodeSelector }}
+            nodeSelector:
+          {{ toYaml .Values.nodeSelector | indent 8 }}
+          {{- end }}

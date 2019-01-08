@@ -1,0 +1,34 @@
+questions:
+- variable: schedule
+  default: 5 0 * * 0
+  description: Cron job specification
+  label: Cron Job Schedule
+  type: string
+  group: Scheduling
+
+- variable: email.enabled
+  default: true
+  description: Send email notifications after update
+  type: boolean
+  label: Email  notifications
+  show_subquestion_if: true
+  group: Notifications
+  required: true
+  subquestions:
+  - variable: email.relay.host
+    description: Email relay host
+    type: string
+    required: true
+    label: Hostname
+  - variable: email.relay.port
+    description: Email relay port
+    default: "587"
+    valid_chars: ^[0-9]{1,5}$
+    type: string
+    required: true
+    label: Port
+  - variable: email.recipient.address
+    description: Recipient email address
+    type: string
+    required: true
+    label: Recipient email address
