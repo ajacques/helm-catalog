@@ -1,0 +1,42 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cleanup
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: 5 0 * * *
+  concurrencyPolicy: Replace
+  jobTemplate:
+    metadata:
+      labels:
+        app: {{ template "sentry.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      template:
+        spec:
+          containers:
+            - name: cleanup
+              image: sentry:9.0.0
+              args:
+              - cleanup
+              - --days
+              - '365'
+              envFrom:
+              - secretRef:
+                  name: sentry
+                  optional: false
+              - configMapRef:
+                  name: sentry
+                  optional: false
+              name: sentry
+              optional: false
+              imagePullPolicy: Always
+              securityContext:
+                capabilities:
+                  drop:
+                  - ALL
+          restartPolicy: Never
