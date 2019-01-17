@@ -15,8 +15,7 @@ spec:
     metadata:
       labels:
         component: cleanup
-        app: {{ template "sentry.name" . }}
-        release: {{ .Release.Name }}
+        release: {{ template "sentry.fullname" . }}
     spec:
       template:
         spec:

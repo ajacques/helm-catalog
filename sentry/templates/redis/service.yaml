@@ -10,7 +10,7 @@ metadata:
 spec:
   clusterIP: None
   selector:
-    app: redis
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    component: redis
+    release: {{ template "sentry.fullname" . }}
   sessionAffinity: None
   type: ClusterIP

@@ -15,7 +15,7 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: web
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    component: web
+    release: {{ template "sentry.fullname" . }}
   sessionAffinity: None
   type: ClusterIP

@@ -10,7 +10,7 @@ metadata:
 spec:
   clusterIP: None
   selector:
-    app: memcached
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    component: memcached
+    release: {{ template "sentry.fullname" . }}
   sessionAffinity: None
   type: ClusterIP

@@ -11,13 +11,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
-      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      component: redis
+      release: {{ template "sentry.fullname" . }}
   template:
     metadata:
       labels:
-        app: redis
-        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        component: redis
+        release: {{ template "sentry.fullname" . }}
     spec:
       containers:
       - image: redis:5.0.3

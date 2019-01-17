@@ -12,13 +12,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web
-      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      component: web
+      release: {{ template "sentry.fullname" . }}
   template:
     metadata:
       labels:
-        app: web
-        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        component: web
+        release: {{ template "sentry.fullname" . }}
     spec:
       affinity: {}
       containers:

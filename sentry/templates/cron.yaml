@@ -12,13 +12,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cron
-      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      component: cron
+      release: {{ template "sentry.fullname" . }}
   template:
     metadata:
       labels:
-        app: cron
-        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        component: cron
+        release: {{ template "sentry.fullname" . }}
     spec:
       affinity: {}
       containers:

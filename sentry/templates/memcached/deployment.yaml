@@ -12,15 +12,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: memcached
-      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      component: memcached
+      release: {{ template "sentry.fullname" . }}
   template:
     metadata:
       annotations:
         net.technowizardry.upgrade/version-match: '{version}-alpine'
       labels:
-        app: memcached
-        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        component: memcached
+        release: {{ template "sentry.fullname" . }}
     spec:
       containers:
       - args:
