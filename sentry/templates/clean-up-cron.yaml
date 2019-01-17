@@ -35,8 +35,18 @@ spec:
               name: sentry
               optional: false
               imagePullPolicy: Always
+              volumeMounts:
+              - mountPath: /var/lib/sentry/files
+                name: files
               securityContext:
                 capabilities:
                   drop:
                   - ALL
           restartPolicy: Never
+          volumes:
+          - name: files
+            {{- if eq .Values.persistence.type "BindMount" }}
+            hostPath:
+              path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+              type: ""
+            {{- end }}
