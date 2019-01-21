@@ -25,9 +25,11 @@ spec:
       - args:
         - run
         - web
+        {{- if .Values.ingress.tls_secret_name }}
         env:
         - name: SENTRY_USE_SSL
           value: "true"
+        {{- endif }}
         envFrom:
         - secretRef:
             name: sentry
