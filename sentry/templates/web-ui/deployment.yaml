@@ -29,7 +29,7 @@ spec:
         env:
         - name: SENTRY_USE_SSL
           value: "true"
-        {{- endif }}
+        {{- end }}
         envFrom:
         - secretRef:
             name: sentry
