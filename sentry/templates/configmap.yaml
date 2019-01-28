@@ -9,6 +9,7 @@ data:
   SENTRY_POSTGRES_HOST: {{ .Values.db.host }}
   SENTRY_REDIS_HOST: redis.{{ .Release.Namespace }}.svc.cluster.local
   SENTRY_DB_NAME: sentry
+  SENTRY_SERVER_EMAIL: {{ .Values.email.from }}
 kind: ConfigMap
 metadata:
   name: sentry

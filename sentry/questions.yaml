@@ -42,6 +42,13 @@ questions:
   default: 172.17.0.1
   description: SMTP server
   type: string
+  group: Mail
+- variable: email.from
+  type: string
+  label: From Address
+  default: Sentry.io <root@localhost>
+  group: Mail
+  description: Specifies the from address for email notifications
 
 - variable: github.enabled
   default: false
