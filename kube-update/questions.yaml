@@ -10,7 +10,7 @@ questions:
   default: true
   description: Send email notifications after update
   type: boolean
-  label: Email  notifications
+  label: Email notifications
   show_subquestion_if: true
   group: Notifications
   required: true

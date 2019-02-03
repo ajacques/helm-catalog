@@ -28,7 +28,7 @@ spec:
         {{- if .Values.ingress.tls_secret_name }}
         env:
         - name: SENTRY_USE_SSL
-          value: "true"
+          value: "1"
         {{- end }}
         envFrom:
         - secretRef:
