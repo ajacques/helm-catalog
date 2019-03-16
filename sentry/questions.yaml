@@ -26,7 +26,11 @@ questions:
   group: Storage
   label: Postgres hostname
   show_if: 'postgres.enabled=false'
-
+- variable: db.database
+  type: string
+  group: Storage
+  label: Database Name
+  show_if: 'postgres.enabled=false'
 - variable: db.username
   type: string
   label: DB Username
