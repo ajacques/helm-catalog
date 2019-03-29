@@ -31,6 +31,10 @@ spec:
               - name: APP_EMAIL_TO
                 value: {{ .Values.email.recipient.address }}
                 {{- end }}
+                {{- if .Values.sentry.dsn }}
+              - name: SENTRY_DSN
+                value: {{ .Values.sentry.dsn }}
+                {{- end }}
               securityContext:
                 capabilities:
                   drop:
