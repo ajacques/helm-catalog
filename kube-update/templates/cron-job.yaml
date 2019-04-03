@@ -39,6 +39,7 @@ spec:
                 capabilities:
                   drop:
                   - ALL
+              terminationMessagePolicy: FallbackToLogsOnError
           serviceAccountName: kube-update-service-account
           restartPolicy: Never
           schedulerName: default-scheduler
