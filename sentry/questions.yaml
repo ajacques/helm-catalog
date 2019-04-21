@@ -61,16 +61,26 @@ questions:
   group: integrations
   show_subquestion_if: true
   subquestions:
-  - variable: github.api.id
-    description: API Application ID
+  - variable: github.app.id
+    description: GitHub App ID
     type: string
     required: true
-    label: App Id
-  - variable: github.api.secret
-    description: API Secret
+    label: App ID
+  - variable: github.app.private_key
+    description: Private KEY in PEM format
     type: string
     required: true
-    label: API Secret
+    label: Private Key
+  - variable: github.app.client_id
+    description: GitHub Client ID
+    type: string
+    required: true
+    label: Client ID
+  - variable: github.app.client_secret
+    description: Client secret
+    type: string
+    required: true
+    label: Client secret
 
 - variable: sentry.secret_key
   type: string
