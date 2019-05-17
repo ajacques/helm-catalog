@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  # /etc/sentry/config.yml
+  config.yml: "github-app.id: {{ .Values.github.app.id }}\ngithub-app.private-key: '{{ .Values.github.app.private_key }}'\ngithub-app.client-id: '{{ .Values.github.app.client_id }}'\ngithub-app.client-secret: '{{ .Values.github.app.client_secret }}'"
+kind: ConfigMap
+metadata:
+  name: sentryconfig

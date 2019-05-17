@@ -21,7 +21,7 @@ spec:
         spec:
           containers:
             - name: cleanup
-              image: sentry:9.0.0
+              image: sentry:{{ .Values.sentry.version }}
               args:
               - cleanup
               - --days

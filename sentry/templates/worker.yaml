@@ -34,7 +34,7 @@ spec:
         - configMapRef:
             name: sentry
             optional: false
-        image: sentry:9.0.0
+        image: sentry:{{ .Values.sentry.version }}
         imagePullPolicy: Always
         name: worker
         volumeMounts:
