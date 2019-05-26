@@ -8,3 +8,6 @@ resources: {}
 
 email:
   enabled: false
+
+sentryio:
+  dsn: ''

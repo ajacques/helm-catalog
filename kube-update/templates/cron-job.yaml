@@ -10,6 +10,7 @@ metadata:
 spec:
   schedule:  {{ .Values.schedule }}
   concurrencyPolicy: Replace
+  failedJobsHistoryLimit: 1
   jobTemplate:
     metadata:
       labels:
