@@ -20,30 +20,30 @@ spec:
       template:
         spec:
           containers:
-            - name: cleanup
-              image: sentry:{{ .Values.sentry.version }}
-              args:
-              - cleanup
-              - --days
-              - '365'
-              envFrom:
-              - secretRef:
-                  name: sentry
-                  optional: false
-              - configMapRef:
-                  name: sentry
-                  optional: false
-              name: sentry
-              optional: false
-              imagePullPolicy: Always
-              volumeMounts:
-              - mountPath: /var/lib/sentry/files
-                name: files
-              securityContext:
-                capabilities:
-                  drop:
-                  - ALL
-                runAsUser: 999
+          - name: cleanup
+            image: sentry:{{ .Values.sentry.version }}
+            args:
+            - cleanup
+            - --days
+            - '365'
+            envFrom:
+            - secretRef:
+                name: sentry
+                optional: false
+            - configMapRef:
+                name: sentry
+                optional: false
+            name: sentry
+            optional: false
+            imagePullPolicy: Always
+            volumeMounts:
+            - mountPath: /var/lib/sentry/files
+              name: files
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+              runAsUser: 999
           restartPolicy: Never
           volumes:
           - name: files

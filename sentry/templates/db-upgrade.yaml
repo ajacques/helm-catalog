@@ -38,11 +38,11 @@ spec:
         volumeMounts:
           - mountPath: /var/lib/sentry/files
             name: files
-          securityContext:
-            capabilities:
-              drop:
-              - ALL
-            runAsUser: 999
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          runAsUser: 999
         restartPolicy: Never
           volumes:
           - name: files
