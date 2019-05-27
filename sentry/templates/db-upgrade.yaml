@@ -25,7 +25,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: post-install-job
-        image: sentry:{{ .Values.sentry.version }}
+        image: {{ printf "sentry:%s" .Values.sentry.version }}
         command:
         - migrate
         envFrom:
