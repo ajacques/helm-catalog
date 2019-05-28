@@ -8,7 +8,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  schedule:  {{ .Values.schedule }}
+  schedule: {{ .Values.schedule }}
   concurrencyPolicy: Replace
   failedJobsHistoryLimit: 1
   jobTemplate:
@@ -45,6 +45,6 @@ spec:
           restartPolicy: Never
           schedulerName: default-scheduler
           {{- if .Values.nodeSelector }}
-            nodeSelector:
+          nodeSelector:
           {{ toYaml .Values.nodeSelector | indent 8 }}
           {{- end }}

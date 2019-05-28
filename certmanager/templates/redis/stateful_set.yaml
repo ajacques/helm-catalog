@@ -20,7 +20,7 @@ spec:
         chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     spec:
       containers:
-      - image: redis:4.0.11
+      - image: redis:5.0.5
         imagePullPolicy: Always
         name: redis
         securityContext:
