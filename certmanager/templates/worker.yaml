@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: worker
-      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      chart: {{ .Chart.Name }}
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -17,7 +17,7 @@ spec:
     metadata:
       labels:
         app: worker
-        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        chart: {{ .Chart.Name }}
     spec:
       affinity: {}
       containers:

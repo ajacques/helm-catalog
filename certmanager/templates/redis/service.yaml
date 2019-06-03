@@ -11,6 +11,6 @@ spec:
   clusterIP: None
   selector:
     app: redis
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    chart: {{ .Chart.Name }}
   sessionAffinity: None
   type: ClusterIP
