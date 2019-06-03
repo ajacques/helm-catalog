@@ -12,12 +12,12 @@ spec:
   selector:
     matchLabels:
       app: redis
-      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       labels:
         app: redis
-        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - image: redis:5.0.5

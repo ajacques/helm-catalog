@@ -13,12 +13,12 @@ spec:
   selector:
     matchLabels:
       component: web
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       labels:
         component: web
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       affinity: {}
       containers:

@@ -12,15 +12,15 @@ spec:
   selector:
     matchLabels:
       component: redis
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       labels:
         component: redis
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
-      - image: redis:5.0.3
+      - image: redis:5.0.5
         imagePullPolicy: Always
         name: redis
         securityContext:

@@ -16,6 +16,6 @@ spec:
     name: http
   selector:
     app: webui
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    chart: {{ .Chart.Name }}
   sessionAffinity: None
   type: ClusterIP

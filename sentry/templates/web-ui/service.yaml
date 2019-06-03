@@ -16,6 +16,6 @@ spec:
     name: http
   selector:
     component: web
-    release: {{ template "sentry.fullname" . }}
+    chart: {{ .Chart.Name }}
   sessionAffinity: None
   type: ClusterIP

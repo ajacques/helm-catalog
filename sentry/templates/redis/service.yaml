@@ -11,6 +11,6 @@ spec:
   clusterIP: None
   selector:
     component: redis
-    release: {{ template "sentry.fullname" . }}
+    chart: {{ .Chart.Name }}
   sessionAffinity: None
   type: ClusterIP

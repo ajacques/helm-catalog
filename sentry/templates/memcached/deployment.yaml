@@ -13,14 +13,14 @@ spec:
   selector:
     matchLabels:
       component: memcached
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
         net.technowizardry.upgrade/version-match: '{version}-alpine'
       labels:
         component: memcached
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args:
