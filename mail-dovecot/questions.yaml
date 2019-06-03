@@ -1,0 +1,19 @@
+questions:
+- variable: db.host
+  type: string
+  group: Storage
+  label: Postgres hostname
+- variable: db.database
+  type: string
+  group: Storage
+  label: Database Name
+- variable: db.username
+  type: string
+  label: DB Username
+  group: Storage
+  required: true
+- variable: db.password
+  type: string
+  label: DB Password
+  group: Storage
+  required: true

@@ -1,0 +1,121 @@
+apiVersion: v1
+data:
+  10.conf: |-
+    auth_mechanisms = plain login
+
+    passdb {
+      driver = sql
+      args = /etc/dovecot/conf.d/dovecot-sql.conf.ext
+    }
+
+    userdb {
+      driver = sql
+      args = /etc/dovecot/conf.d/dovecot-sql.conf.ext
+    }
+    log_path = /dev/stdout
+    service imap-login {
+      inet_listener imap {}
+      inet_listener imaps {}
+    }
+
+    service pop3-login {
+      inet_listener pop3 {}
+      inet_listener pop3s {}
+    }
+
+    service lmtp {
+      unix_listener /var/spool/postfix/private/dovecot-lmtp {
+        mode = 0666
+        user = postfix
+        group = postfix
+      }
+      inet_listener lmtp {}
+    }
+
+    service imap {}
+    service pop3 {}
+
+    service auth {
+      unix_listener auth-userdb {
+      }
+      unix_listener /var/spool/postfix/private/auth {
+        mode = 0666
+      }
+    }
+
+    service auth-worker {}
+
+    service dict {
+      unix_listener dict {}
+    }
+    ssl = yes
+    ssl_cert = </etc/dovecot/ssl/tls.crt
+    ssl_key = </etc/dovecot/ssl/tls.key
+  15-mailboxes.conf: |-
+    namespace inbox {
+      separator = /
+      inbox = yes
+      mailbox Drafts {
+        special_use = \Drafts
+      }
+      mailbox Junk {
+        special_use = \Junk
+      }
+      mailbox "Junk mail" {
+        special_use = \Junk
+      }
+      mailbox Trash {
+        special_use = \Trash
+      }
+
+      mailbox Sent {
+        special_use = \Sent
+      }
+      mailbox "Sent Messages" {
+        special_use = \Sent
+      }
+    }
+  20-protocols.conf: |-
+    protocol imap {
+      mail_max_userip_connections = 20
+    }
+    protocol pop3 {
+    }
+  90-sieve.conf: |-
+    plugin {
+      sieve = file:~/sieve;active=~/.dovecot.sieve
+    }
+  dovecot-sql.conf.ext: |-
+    driver = mysql
+    connect = host={{ .Values.db.host }} dbname={{ .Values.db.database }} user={{ .Values.db.username }} password={{ .Values.db.password }}
+    default_pass_scheme = PLAIN
+
+    password_query = \
+       SELECT username AS user, password \
+       FROM user_accounts \
+       WHERE username IN ('%u', '%n')
+
+    user_query = \
+      SELECT uid, gid, home, mail \
+       FROM user_accounts \
+       WHERE username IN ('%u', '%n') \
+       UNION \
+       SELECT T.* \
+       FROM ( \
+        SELECT uid, gid, home, mail \
+         FROM email_aliases AS alias \
+         INNER JOIN user_accounts AS user ON alias.target_uid = user.id \
+         WHERE alias.email_address = '%u' \
+        UNION \
+        SELECT uid, gid, home, mail \
+         FROM email_aliases AS alias \
+         INNER JOIN user_accounts AS user ON alias.target_uid = user.id \
+         WHERE alias.email_address = '@%d') AS T \
+       LIMIT 0,1
+
+    iterate_query = \
+      SELECT username AS user \
+      FROM user_accounts
+kind: ConfigMap
+metadata:
+  name: dovecot
