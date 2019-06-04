@@ -9,16 +9,12 @@ spec:
   selector:
     matchLabels:
       app: dovecot
-      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-      release: {{ .Release.Name }}
-      heritage: {{ .Release.Service }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       labels:
         app: dovecot
-        chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-        release: {{ .Release.Name }}
-        heritage: {{ .Release.Service }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args:
@@ -39,7 +35,7 @@ spec:
           readOnly: true
         - mountPath: /var/spool/postfix/private/
           name: postfix
-        - mountPath: /etc/dovecot/ssl/
+        - mountPath: /etc/dovecot/ssl
           name: mailcert
           readOnly: true
       volumes:

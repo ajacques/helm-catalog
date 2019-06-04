@@ -33,8 +33,6 @@ spec:
             - configMapRef:
                 name: sentry
                 optional: false
-            name: sentry
-            optional: false
             imagePullPolicy: Always
             volumeMounts:
             - mountPath: /var/lib/sentry/files
