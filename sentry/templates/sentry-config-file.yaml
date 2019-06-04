@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  # /etc/sentry/config.yml
-  config.yml: "github-app.id: {{ .Values.github.app.id }}"
-kind: ConfigMap
-metadata:
-  name: sentryconfig
