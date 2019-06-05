@@ -10,6 +10,12 @@ data:
   SENTRY_REDIS_HOST: redis.{{ .Release.Namespace }}.svc.cluster.local
   SENTRY_DB_NAME: {{ .Values.db.database }}
   SENTRY_SERVER_EMAIL: {{ .Values.email.from }}
+  # Snuba stuff
+  SENTRY_EVENTSTREAM: sentry.eventstream.snuba.SnubaEventStream
+  SENTRY_SEARCH: sentry.search.snuba.SnubaSearchBackend
+  SENTRY_TAGSTORE: sentry.tagstore.snuba.SnubaCompatibilityTagStorage
+  SENTRY_TSDB: sentry.tsdb.redissnuba.RedisSnubaTSDB
+  SNUBA: http://snuba.{{ .Release.Namespace }}.svc.cluster.local:1218
 kind: ConfigMap
 metadata:
   name: sentry
