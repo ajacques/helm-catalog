@@ -1,0 +1,52 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cleanup
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: 5 0 * * *
+  concurrencyPolicy: Replace
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      labels:
+        component: cleanup
+        release: {{ template "sentry.fullname" . }}
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cleanup
+            image: {{ printf "sentry:%s" .Values.sentry.version }}
+            args:
+            - cleanup
+            - --days
+            - '365'
+            envFrom:
+            - secretRef:
+                name: sentry
+                optional: false
+            - configMapRef:
+                name: sentry
+                optional: false
+            imagePullPolicy: Always
+            volumeMounts:
+            - mountPath: /var/lib/sentry/files
+              name: files
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+              runAsUser: 999
+          restartPolicy: Never
+          volumes:
+          - name: files
+            {{- if eq .Values.persistence.type "BindMount" }}
+            hostPath:
+              path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+              type: ""
+            {{- end }}
