@@ -29,6 +29,13 @@ spec:
           value: localhost:9000
         - name: REDIS_HOST
           value: redis.{{ .Release.Namespace }}.svc.cluster.local
+        securityContext:
+          capabilities:
+            add:
+            - SETUID
+            - SETGID
+            drop:
+            - ALL
       - image: yandex/clickhouse-server:19.7.3.9
         imagePullPolicy: Always
         name: clickhouse
