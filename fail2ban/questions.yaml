@@ -1,0 +1,7 @@
+questions:
+
+- variable: jailsd.ssh
+  default: false
+  type: boolean
+  label: SSHd
+  group: Integrations

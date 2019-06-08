@@ -1,0 +1,43 @@
+apiVersion: apps/v1beta2
+kind: DaemonSet
+metadata:
+  name: fail2ban
+spec:
+  selector:
+    matchLabels:
+      app: fail2ban
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: fail2ban
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - env:
+        - name: F2B_IPTABLES_CHAIN
+          value: INPUT
+        image: crazymax/fail2ban:latest
+        imagePullPolicy: Always
+        name: fail2ban
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+        volumeMounts:
+        - mountPath: /data/jail.d
+          name: jailsd
+        - mountPath: /host/var/log
+          name: hostlogs
+          readOnly: true
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: jails
+          optional: false
+        name: jailsd
+      - hostPath:
+          path: /var/log
+          type: ""
+        name: hostlogs
