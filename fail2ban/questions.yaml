@@ -5,3 +5,8 @@ questions:
   type: boolean
   label: SSHd
   group: Integrations
+- variable: jailsd.dovecot
+  default: false
+  type: boolean
+  label: Dovecot
+  group: Integrations

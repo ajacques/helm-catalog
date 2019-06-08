@@ -28,16 +28,31 @@ spec:
         volumeMounts:
         - mountPath: /data/jail.d
           name: jailsd
+          readOnly: true
+        - mountPath: /data/filter.d
+          name: filterd
+          readOnly: true
         - mountPath: /host/var/log
           name: hostlogs
           readOnly: true
+        - mountPath: /data/db
+          name: statedb
       volumes:
       - configMap:
           defaultMode: 292
           name: jails
           optional: false
         name: jailsd
+      - configMap:
+          defaultMode: 292
+          name: filters
+          optional: false
+        name: filterd
       - hostPath:
           path: /var/log
           type: ""
         name: hostlogs
+      - hostPath:
+          path: /tmp/kube-fail2ban/db
+          type: ""
+        name: statedb

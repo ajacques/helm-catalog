@@ -1,0 +1,3 @@
+jailsd:
+  ssh: false
+  dovecot: false
