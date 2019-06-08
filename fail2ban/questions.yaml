@@ -1,11 +1,11 @@
 questions:
 
-- variable: jailsd.ssh
+- variable: jails.ssh
   default: false
   type: boolean
   label: SSHd
   group: Integrations
-- variable: jailsd.dovecot
+- variable: jails.dovecot
   default: false
   type: boolean
   label: Dovecot

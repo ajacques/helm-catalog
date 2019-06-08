@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  {{- if .Values.jailsd.ssh }}
+  {{- if .Values.jails.ssh }}
   sshd.conf: |-
     [sshd]
     enabled = true
@@ -9,16 +9,13 @@ data:
     logpath = /host/var/log/auth.log
     maxretry = 5
   {{- end }}
-  {{- if .Values.jailsd.dovecot }}
+  {{- if .Values.jails.dovecot }}
   dovecot.conf: |-
-    [dovecot-pop3imap]
+    [dovecot]
     enabled = true
-    filter = dovecot-pop3imap
+    filter = dovecot
     action = iptables-multiport[name=dovecot-pop3imap, port="pop3,imap", protocol=tcp]
-    logpath = /var/log/maillog
-    maxretry = 20
-    findtime = 1200
-    bantime = 1200
+    logpath = /host/var/log/mail.log
   {{- end }}
 kind: ConfigMap
 metadata:

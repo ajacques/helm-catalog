@@ -1,4 +1,4 @@
 apiVersion: v1
 description: Fail2ban
 name: fail2ban
-version: 0.0.3
+version: 0.0.4
