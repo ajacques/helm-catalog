@@ -17,6 +17,13 @@ data:
     action = iptables-multiport[name=dovecot-pop3imap, port="pop3,imap", protocol=tcp]
     logpath = /host/var/log/mail.log
   {{- end }}
+  {{- if .Values.jails.postfix }}
+  postfix.conf: |-
+    [postfix]
+    enabled = true
+    mode = aggressive
+    logpath = /host/var/log/mail.log
+  {{- end }}
 kind: ConfigMap
 metadata:
   name: jails

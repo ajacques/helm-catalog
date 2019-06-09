@@ -9,6 +9,8 @@ spec:
       chart: {{ .Chart.Name }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/jails.yaml") . | sha256sum }}
       labels:
         app: fail2ban
         chart: {{ .Chart.Name }}
