@@ -16,6 +16,7 @@ data:
     filter = dovecot
     action = iptables-multiport[name=dovecot-pop3imap, port="pop3,imap", protocol=tcp]
     logpath = /host/var/log/mail.log
+    maxretry = 5
   {{- end }}
   {{- if .Values.jails.postfix }}
   postfix.conf: |-
@@ -23,6 +24,7 @@ data:
     enabled = true
     mode = aggressive
     logpath = /host/var/log/mail.log
+    maxretry = 5
   {{- end }}
 kind: ConfigMap
 metadata:

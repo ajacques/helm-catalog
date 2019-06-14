@@ -27,6 +27,8 @@ spec:
             add:
             - NET_ADMIN
             - NET_RAW
+            drop:
+            - ALL
         volumeMounts:
         - mountPath: /data/jail.d
           name: jailsd
@@ -36,6 +38,7 @@ spec:
           readOnly: true
         - mountPath: /data/db
           name: statedb
+      hostNetwork: true
       volumes:
       - configMap:
           defaultMode: 292
