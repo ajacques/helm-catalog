@@ -17,6 +17,7 @@ spec:
         app: {{ template "kube-update.name" . }}
         release: {{ .Release.Name }}
     spec:
+      backoffLimit: 1
       template:
         spec:
           containers:
