@@ -17,6 +17,7 @@ spec:
         component: cleanup
         release: {{ template "sentry.fullname" . }}
     spec:
+      backoffLimit: 1
       template:
         spec:
           containers:
