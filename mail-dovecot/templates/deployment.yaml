@@ -26,6 +26,23 @@ spec:
         image: ajacques/kube-mail:latest
         imagePullPolicy: Always
         name: dovecot
+        ports:
+        - containerPort: 143
+          hostPort: 143
+          name: 8143tcp1430
+          protocol: TCP
+        - containerPort: 110
+          hostPort: 110
+          name: 110tcp1100
+          protocol: TCP
+        - containerPort: 993
+          hostPort: 993
+          name: 993tcp9930
+          protocol: TCP
+        - containerPort: 995
+          hostPort: 995
+          name: 995tcp9950
+          protocol: TCP
         terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /var/dovecot
