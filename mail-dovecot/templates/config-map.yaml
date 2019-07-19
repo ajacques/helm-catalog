@@ -14,13 +14,17 @@ data:
     }
     log_path = /dev/stdout
     service imap-login {
-      inet_listener imap {}
-      inet_listener imaps {}
+      inet_listener imap {
+      }
+      inet_listener imaps {
+      }
     }
 
     service pop3-login {
-      inet_listener pop3 {}
-      inet_listener pop3s {}
+      inet_listener pop3 {
+      }
+      inet_listener pop3s {
+      }
     }
 
     service lmtp {
@@ -29,11 +33,14 @@ data:
         user = postfix
         group = postfix
       }
-      inet_listener lmtp {}
+      inet_listener lmtp {
+      }
     }
 
-    service imap {}
-    service pop3 {}
+    service imap {
+    }
+    service pop3 {
+    }
 
     service auth {
       unix_listener auth-userdb {
@@ -43,10 +50,12 @@ data:
       }
     }
 
-    service auth-worker {}
+    service auth-worker {
+    }
 
     service dict {
-      unix_listener dict {}
+      unix_listener dict {
+      }
     }
     ssl = yes
     ssl_cert = </etc/dovecot/ssl/tls.crt
