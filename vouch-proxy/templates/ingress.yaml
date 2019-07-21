@@ -11,7 +11,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: vouchservice
+          serviceName: vouchproxy
           servicePort: 9090
   {{- if .Values.ingress.tls_secret_name }}
   tls:

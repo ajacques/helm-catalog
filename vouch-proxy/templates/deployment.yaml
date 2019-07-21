@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: vouchservice
+  name: vouchproxy
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -25,10 +25,17 @@ spec:
         - mountPath: /config/
           name: config
           readOnly: true
+        - mountPath: /data
+          name: data
       volumes:
-      - configMap:
+      - name: config
+        configMap:
           defaultMode: 292
           name: vouchconfig
           optional: false
-        name: config
-
+      - name: data
+        {{- if eq .Values.persistence.type "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.data_dir }}
+          type: ""
+        {{- end }}

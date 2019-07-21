@@ -1,5 +1,19 @@
 questions:
 
+- variable: persistence.type
+  default: BindMount
+  type: enum
+  options:
+  - BindMount
+  group: persistence
+  required: true
+- variable: persistence.bind_mount.data_dir
+  type: string
+  label: Data directory
+  group: persistence
+  description: Specifies a directory on the host to mount the data directory
+  show_if: 'persistence.type=BindMount'
+
 - variable: config.vouch.domains
   type: string
   label: Hostname
