@@ -12,6 +12,8 @@ spec:
       chart: {{ .Chart.Name }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config-map.yaml") . | sha256sum }}
       labels:
         app: vouchproxy
         chart: {{ .Chart.Name }}
