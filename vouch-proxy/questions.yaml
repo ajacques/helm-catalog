@@ -41,6 +41,10 @@ questions:
   group: OAuth
   label: Client Secret
 
+- variable: ingress.hostname
+  type: hostname
+  label: Hostname
+  group: Ingress
 - variable: ingress.tls_secret_name
   type: string
   group: Ingress
