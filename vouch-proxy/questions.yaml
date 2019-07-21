@@ -1,0 +1,33 @@
+questions:
+
+- variable: config.vouch.domains
+  type: string
+  label: Hostname
+  group: Ingress
+  required: true
+
+- variable: config.oauth.provider
+  type: string
+  options:
+  - github
+  default: github
+  description: Sets the OAuth provider
+  label: Provider
+  group: OAuth
+  required: true
+
+- variable: config.oauth.client_id
+  type: string
+  group: OAuth
+  required: true
+  label: Client Id
+
+- variable: config.oauth.client_secret
+  type: string
+  group: OAuth
+  label: Client Secret
+
+- variable: ingress.tls_secret_name
+  type: string
+  group: Ingress
+  label: TLS Certificate Name
