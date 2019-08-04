@@ -88,9 +88,17 @@ questions:
   label: Secret Key
   min_length: 32
 
+- variable: sentry.version
+  type: string
+  required: true
+  label: Sentry Version
+  default: '9.1.1'
+
 - variable: ingress.hostname
   type: hostname
+  group: HTTP
   label: UI Hostname
 - variable: ingress.tls_secret_name
   type: string
+  group: HTTP
   label: TLS Certificate Name
