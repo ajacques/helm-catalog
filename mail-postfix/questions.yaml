@@ -2,7 +2,7 @@ questions:
 - variable: db.host
   type: string
   group: Storage
-  label: Postgres hostname
+  label: DB hostname
 
 # OpenDKIM
 - variable: opendkim.db.database

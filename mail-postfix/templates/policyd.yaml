@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: policyd
+spec:
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: deployment-mail-policyd
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: deployment-mail-policyd
+    spec:
+      containers:
+      - name: policydweight
+        args:
+        - /usr/sbin/policyd-weight
+        - -D
+        image: ajacques/kube-mail:latest
+        imagePullPolicy: Always
+      hostname: mail
+      hostNetwork: true

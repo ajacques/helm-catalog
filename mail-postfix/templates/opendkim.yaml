@@ -1,12 +1,33 @@
-apiVersion: v1
-data:
-  opendkim.conf: |-
-    AutoRestart False
-    Background True
-    Socket inet:9999@127.0.0.1
-    SignatureTTL 86400
-    SigningTable dsn:mysql://{{ .Values.opendkim.db.username }}:{{ .Values.opendkim.db.password }}@{{ .Values.opendkim.db.hostname }}/{{ .Values.opendkim.db.database }}/table=ActiveSigningKeys?keycol=domain_name?datacol=id
-    KeyTable dsn:mysql://{{ .Values.opendkim.db.username }}:{{ .Values.opendkim.db.password }}@{{ .Values.opendkim.db.hostname }}/{{ .Values.opendkim.db.database }}/table=ActiveSigningKeys?keycol=id?datacol=domain_name,selector,private_key
-kind: ConfigMap
+apiVersion: apps/v1beta2
+kind: Deployment
 metadata:
-  name: opendkimconf
+  name: opendkim
+spec:
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: deployment-mail-opendkim
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: deployment-mail-opendkim
+    spec:
+      containers:
+      - name: opendkim
+        args:
+        - /usr/sbin/opendkim
+        - -f
+        image: ajacques/kube-mail:latest
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /etc/opendkim.conf
+          name: dkimconfig
+          readOnly: true
+          subPath: opendkim.conf
+      hostname: mail
+      hostNetwork: true
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: opendkimconf
+          optional: false
+        name: dkimconfig
