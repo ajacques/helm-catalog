@@ -1,0 +1,22 @@
+questions:
+- variable: db.host
+  type: string
+  group: Storage
+  label: Postgres hostname
+
+# OpenDKIM
+- variable: opendkim.db.database
+  type: string
+  group: OpenDKIM
+  required: true
+  label: Database Name
+- variable: opendkim.db.username
+  type: string
+  label: DB Username
+  group: OpenDKIM
+  required: true
+- variable: opendkim.db.password
+  type: string
+  label: DB Password
+  group: OpenDKIM
+  required: true
