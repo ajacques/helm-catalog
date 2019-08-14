@@ -5,14 +5,26 @@ questions:
   type: enum
   options:
   - BindMount
-  group: persistence
+  - PersistentVolumeClaim
+  group: Persistence
   required: true
-- variable: persistence.bind_mount.data_dir
+- variable: persistence.hostPath.path
   type: string
   label: Data directory
-  group: persistence
+  group: Persistence
   description: Specifies a directory on the host to mount the data directory
   show_if: 'persistence.type=BindMount'
+- variable: persistence.storageClass
+  type: storageclass
+  group: Persistence
+  show_if: 'persistence.type=PersistentVolumeClaim'
+  label: Volume Claim Name
+- variable: persistence.size
+  type: string
+  default: 512Mi
+  group: Persistence
+  show_if: 'persistence.type=PersistentVolumeClaim'
+  label: Volume Size
 
 - variable: config.vouch.domains
   type: string
