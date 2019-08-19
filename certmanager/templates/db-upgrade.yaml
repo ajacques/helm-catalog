@@ -27,6 +27,16 @@ spec:
       containers:
       - name: post-install-job
         image: ajacques/certmanager:latest
+        env:
+        - name: SECRET_KEY_BASE
+          value: unused
+        envFrom:
+        - secretRef:
+            name: sqlaccount
+            optional: false
+        - configMapRef:
+            name: config
+            optional: false
         args:
         - rake
         - db:migrate
