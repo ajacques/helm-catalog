@@ -11,7 +11,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: opencensus
+          serviceName: censuscollector
           servicePort: 55678
         path: /trace-collector
   {{- if .Values.ingress.tls_secret_name }}
