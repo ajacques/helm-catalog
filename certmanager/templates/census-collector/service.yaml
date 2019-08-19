@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: opencensus
+  labels:
+    app: {{ template "certmanager.name" . }}
+    chart: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  clusterIP: None
+  ports:
+  - port: 55678
+    targetPort: 55678
+    protocol: TCP
+    name: http
+  selector:
+    app: opencensus
+    chart: {{ .Chart.Name }}
+  sessionAffinity: None
+  type: ClusterIP

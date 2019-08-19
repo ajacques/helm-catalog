@@ -64,13 +64,13 @@ questions:
   type: string
   label: Sentry DSN
 
-- variable: zipkin.host
+- variable: tracing.zipkin_host
   type: string
   label: Zipkin Host
-  group: Zipkin
-- variable: zipkin.sample_rate
+  group: Tracing
+- variable: tracing.sample_rate
   type: int
   min: 0
   max: 100
   label: Sample %
-  group: Zipkin
+  group: Tracing

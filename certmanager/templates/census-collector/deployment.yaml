@@ -1,0 +1,33 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: opencensusagent
+spec:
+  selector:
+    matchLabels:
+      app: censuscollector
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: censuscollector
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args:
+        - --config=/conf/oc-agent-config.yaml
+        image: omnition/opencensus-agent:1.0.15
+        imagePullPolicy: IfNotPresent
+        name: oc-agent-container
+        volumeMounts:
+        - mountPath: /conf
+          name: oc-agent-config-vol
+          readOnly: true
+      volumes:
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: oc-agent-config
+            path: oc-agent-config.yaml
+          name: oc-agent-conf
+        name: oc-agent-config-vol

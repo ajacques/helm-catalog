@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: {{ template "certmanager.hostname" . }}/auth_check
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: censuscollector
+spec:
+  rules:
+  - host: {{ .Values.ingress.hostname }}
+    http:
+      paths:
+      - backend:
+          serviceName: opencensus
+          servicePort: 55678
+        path: /trace-collector
+  {{- if .Values.ingress.tls_secret_name }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.hostname }}
+    secretName: {{ .Values.ingress.tls_secret_name }}
+  {{- end }}
