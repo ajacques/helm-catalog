@@ -6,8 +6,8 @@ data:
   {{- if .Values.sentry.dsn }}
   SENTRY_DSN: {{ .Values.sentry.dsn }}
   {{- end }}
-  {{- if .Values.zipkin.host }}
-  ZIPKIN_REPORT_HOST: {{ .Values.zipkin.host }}
+  {{- if .Values.tracing.zipkin_host }}
+  ZIPKIN_REPORT_HOST: {{ .Values.tracing.zipkin_host }}
   {{- end }}
 kind: ConfigMap
 metadata:

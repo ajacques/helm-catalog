@@ -30,7 +30,7 @@ spec:
           value: {{ .Values.security.csp.report_uri }}
         {{- end }}
         - name: ZIPKIN_SAMPLE_RATE
-          value: "{{ .Values.zipkin.sample_rate }}"
+          value: "{{ .Values.tracing.sample_rate }}"
         envFrom:
         - secretRef:
             name: sqlaccount
