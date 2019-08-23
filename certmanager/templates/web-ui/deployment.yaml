@@ -29,7 +29,7 @@ spec:
         - name: CSP_REPORT_URI
           value: {{ .Values.security.csp.report_uri }}
         {{- end }}
-        - name: ZIPKIN_SAMPLE_RATE
+        - name: OPENCENSUS_SAMPLE_RATE
           value: "{{ .Values.tracing.sample_rate }}"
         envFrom:
         - secretRef:
