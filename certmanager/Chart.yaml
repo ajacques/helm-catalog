@@ -1,4 +1,4 @@
 apiVersion: v1
 description: CertManager is a X.509 certificate manager
 name: certmanager
-version: 0.2.3
+version: 0.2.4

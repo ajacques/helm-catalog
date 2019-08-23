@@ -19,6 +19,14 @@ spec:
         image: omnition/opencensus-agent:1.0.15
         imagePullPolicy: IfNotPresent
         name: oc-agent-container
+        resources:
+          limits:
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /conf
           name: oc-agent-config-vol
