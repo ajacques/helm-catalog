@@ -9,6 +9,8 @@ spec:
       chart: {{ .Chart.Name }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/census-collector/config-map.yaml") . | sha256sum }}
       labels:
         app: censuscollector
         chart: {{ .Chart.Name }}
