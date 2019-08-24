@@ -58,7 +58,7 @@ spec:
         name: config
       - configMap:
           defaultMode: 292
-          name: postfixgrok
+          name: logstashconfig
           items:
           {{- range $path, $bytes := .Files.Glob "config/grok/*.grok" }}
           - key: {{ base $path }}
