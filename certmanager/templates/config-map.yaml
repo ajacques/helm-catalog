@@ -7,7 +7,7 @@ data:
   SENTRY_DSN: {{ .Values.sentry.dsn }}
   {{- end }}
   {{- if .Values.tracing.zipkin_host }}
-  OPENCENSUS_REPORT_URL: {{ template "certmanager.hostname" . }}/trace-collector/v1/trace
+  OPENCENSUS_REPORT_URL: {{ template "certmanager.hostname" . }}/trace-collector
   OPENCENSUS_INTERNAL_REPORT_URL: http://censuscollector.{{ .Release.Namespace }}:55678/v1/trace
   {{- end }}
 kind: ConfigMap
