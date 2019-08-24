@@ -2,7 +2,6 @@ apiVersion: v1
 data:
   opendkim.conf: |-
     AutoRestart False
-    Background True
     Socket inet:9999@127.0.0.1
     SignatureTTL 86400
     SigningTable dsn:mysql://{{ .Values.opendkim.db.username }}:{{ .Values.opendkim.db.password }}@{{ .Values.db.host }}/{{ .Values.opendkim.db.database }}/table=ActiveSigningKeys?keycol=domain_name?datacol=id
