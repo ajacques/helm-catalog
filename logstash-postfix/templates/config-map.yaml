@@ -10,7 +10,7 @@ data:
   80-output.conf: 'output { elasticsearch { hosts => ["{{ .Values.elasticsearch.host }}"] index => "{{ .Values.elasticsearch.index }}" } }'
 
   # config/logstash.yml
-  logstash.yml: "http.host: \"0.0.0.0\"\r\nxpack.monitoring.elasticsearch.url: \"{{ .Values.elasticsearch.host }}\""
+  logstash.yml: "http.host: \"0.0.0.0\"\r\nxpack.monitoring.elasticsearch.hosts:\r\n- \"{{ .Values.elasticsearch.host }}\""
 kind: ConfigMap
 metadata:
   name: logstashconfig

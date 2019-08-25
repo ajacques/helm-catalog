@@ -12,7 +12,7 @@ spec:
         workload.user.cattle.io/workloadselector: daemonset-{{ .Release.Namespace }}-postfix-postfixlogstash
     spec:
       containers:
-      - image: docker.elastic.co/logstash/logstash:6.5.4
+      - image: docker.elastic.co/logstash/logstash:7.3.1
         imagePullPolicy: Always
         name: logstash
         securityContext:
