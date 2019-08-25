@@ -1,4 +1,4 @@
 apiVersion: v1
 description: Configures a logbeat instance to ingest and process Postfix logs
 name: logstash-postfix
-version: 0.1.2
+version: 0.1.3

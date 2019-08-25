@@ -26,7 +26,7 @@ spec:
         - mountPath: /host/var/log
           name: hostlogs
           readOnly: true
-        - mountPath: /usr/share/logstash/postfix/
+        - mountPath: /usr/share/logstash/pipeline/
           name: config
           readOnly: true
         - mountPath: /usr/share/logstash/config/logstash.yml
