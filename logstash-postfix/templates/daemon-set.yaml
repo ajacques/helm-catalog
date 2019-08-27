@@ -33,6 +33,10 @@ spec:
           name: rootconfig
           readOnly: true
           subPath: logstash.yml
+        - mountPath: /usr/share/logstash/config/pipelines.yml
+          name: rootconfig
+          readOnly: true
+          subPath: pipelines.yml
         - mountPath: /etc/logstash/patterns.d/
           name: grok
           readOnly: true
