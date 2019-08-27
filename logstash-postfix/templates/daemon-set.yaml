@@ -54,6 +54,8 @@ spec:
           - key: {{ base $path }}
             path: {{ base $path }}
           {{- end }}
+          - key: 80-output.conf
+            path: 80-output.conf
           optional: false
         name: config
       - configMap:
