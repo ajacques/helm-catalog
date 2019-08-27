@@ -10,7 +10,7 @@ data:
   80-output.conf: 'output { elasticsearch { hosts => ["{{ .Values.elasticsearch.host }}"] index => "{{ .Values.elasticsearch.index }}" } }'
 
   # config/pipelines.yml
-  pipelines.yml: '- pipeline.id: main\r\npath.config: "/usr/share/logstash/pipeline"'
+  pipelines.yml: "- pipeline.id: main\r\n  path.config: \"/usr/share/logstash/pipeline\""
   # config/logstash.yml
   logstash.yml: "http.host: \"0.0.0.0\"\r\nxpack.monitoring.elasticsearch.hosts:\r\n- \"{{ .Values.elasticsearch.host }}\""
 kind: ConfigMap
