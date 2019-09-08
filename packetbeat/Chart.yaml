@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Configures a Packetbeat instance to log network traffic to Elasticsearch
+name: packetbeat
+version: 0.0.1

@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: packetbeat
+spec:
+  selector:
+    matchLabels:
+      app: packetbeat
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: packetbeat
+        chart: {{ .Chart.Name }}
+    spec:
+      serviceAccountName: packetbeat-dynamic
+      terminationGracePeriodSeconds: 30
+      hostNetwork: true
+      containers:
+      - name: packetbeat-dynamic
+        image: docker.elastic.co/beats/packetbeat:7.3.1
+        imagePullPolicy: Always
+        args:
+        - -c
+        - etc/packetbeat.yml
+        - -e
+        securityContext:
+          runAsUser: 0
+          capabilities:
+            add:
+            - NET_ADMIN
+        volumeMounts:
+        - name: config
+          mountPath: /etc/packetbeat.yml
+          readOnly: true
+          subPath: packetbeat.yml
+        - name: data
+          mountPath: /usr/share/packetbeat/data
+      volumes:
+      - name: config
+        configMap:
+          defaultMode: 0600
+          name: packetbeat-dynamic-config
+      - name: data
+        emptyDir: {}

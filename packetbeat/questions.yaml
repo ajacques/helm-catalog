@@ -1,0 +1,11 @@
+questions:
+
+- variable: config.output.elasticsearch.host
+  default: http://elasticsearch:9200
+  type: string
+  required: true
+
+- variable: config.output.elasticsearch.index
+  default: packetbeat-%{+YYYY.MM}
+  type: string
+  required: true
