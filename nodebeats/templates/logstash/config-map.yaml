@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  config.conf: |-
+    input { beats { port => 5044 } }
+    filter {
+      geoip {
+        source => "source.ip"
+        fields => ["location"]
+        target => "source.ip_geoup"
+      }
+    }
+    output { elasticsearch { hosts => ["{{ .Values.elasticsearch.host }}"] index => "{{ .Values.elasticsearch.index }}" } }'
+
+  # config/pipelines.yml
+  pipelines.yml: "- pipeline.id: beats\r\n  path.config: \"/usr/share/logstash/pipeline\""
+  # config/logstash.yml
+  logstash.yml: "http.host: \"0.0.0.0\"\r\nxpack.monitoring.elasticsearch.hosts:\r\n- \"{{ .Values.elasticsearch.host }}\""
+kind: ConfigMap
+metadata:
+  name: logstashconfig

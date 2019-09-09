@@ -13,22 +13,25 @@ spec:
         app: packetbeat
         chart: {{ .Chart.Name }}
     spec:
-      serviceAccountName: packetbeat-dynamic
+      serviceAccountName: beat-service-account
       terminationGracePeriodSeconds: 30
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - name: packetbeat-dynamic
+      - name: packetbeat
         image: docker.elastic.co/beats/packetbeat:7.3.1
         imagePullPolicy: Always
         args:
         - -c
-        - etc/packetbeat.yml
+        - /etc/packetbeat.yml
         - -e
         securityContext:
           runAsUser: 0
           capabilities:
             add:
             - NET_ADMIN
+            - NET_RAW
+          privileged: true
         volumeMounts:
         - name: config
           mountPath: /etc/packetbeat.yml
@@ -36,10 +39,16 @@ spec:
           subPath: packetbeat.yml
         - name: data
           mountPath: /usr/share/packetbeat/data
+        - mountPath: /var/run/docker.sock
+          name: dockersock
       volumes:
       - name: config
         configMap:
           defaultMode: 0600
-          name: packetbeat-dynamic-config
+          name: packetbeat-config
       - name: data
         emptyDir: {}
+      - hostPath:
+          path: /var/run/docker.sock
+          type: Socket
+        name: dockersock

@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: packetbeat-config
+data:
+  packetbeat.yml: |-
+    setup:
+      kibana.host: kibana-kibana.elasticsearch.svc.cluster.local
+      dashboards.enabled: true
+      template:
+        name: packetbeat
+        pattern: packetbeat-*
+        enabled: true
+    packetbeat.interfaces.device: any
+    packetbeat.protocols:
+    - type: dns
+      ports:
+      - 53
+      include_authorities: true
+      include_additionals: true
+    packetbeat.flows:
+      timeout: 30s
+      period: 10s
+    processors:
+      - add_docker_metadata:
+          host: "unix:///var/run/docker.sock"
+          match_fields: ["system.process.cgroup.id"]
+          match_pids: ["process.pid", "process.ppid"]
+          match_source: true
+          match_source_index: 4
+          match_short_id: false
+          cleanup_timeout: 60
+          labels.dedot: false
+      - add_process_metadata:
+          match_pids: ["system.process.ppid"]
+          target: system.process.parent
+      - add_kubernetes_metadata:
+          host: ${HOSTNAME}
+          indexers:
+          - ip_port:
+          matchers:
+          - field_format:
+              format: '%{[ip]}:%{[port]}'
+{{ toYaml .Values.config | indent 4 }}
