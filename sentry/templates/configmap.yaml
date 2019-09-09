@@ -5,9 +5,9 @@ data:
   SENTRY_EMAIL_PORT: "587"
   SENTRY_EMAIL_USE_TLS: "true"
   {{- end }}
-  SENTRY_MEMCACHED_HOST: memcached.{{ .Release.Namespace }}.svc.cluster.local
+  SENTRY_MEMCACHED_HOST: memcached.{{ .Release.Namespace }}.svc.cluster.local.
   SENTRY_POSTGRES_HOST: {{ .Values.db.host }}
-  SENTRY_REDIS_HOST: redis.{{ .Release.Namespace }}.svc.cluster.local
+  SENTRY_REDIS_HOST: redis.{{ .Release.Namespace }}.svc.cluster.local.
   SENTRY_DB_NAME: {{ .Values.db.database }}
   SENTRY_SERVER_EMAIL: {{ .Values.email.from }}
   # Snuba stuff
@@ -15,7 +15,7 @@ data:
   SENTRY_SEARCH: sentry.search.snuba.SnubaSearchBackend
   SENTRY_TAGSTORE: sentry.tagstore.snuba.SnubaCompatibilityTagStorage
   SENTRY_TSDB: sentry.tsdb.redissnuba.RedisSnubaTSDB
-  SNUBA: http://snuba.{{ .Release.Namespace }}.svc.cluster.local:1218
+  SNUBA: http://snuba.{{ .Release.Namespace }}.svc.cluster.local.:1218
 kind: ConfigMap
 metadata:
   name: sentry
