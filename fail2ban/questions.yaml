@@ -10,3 +10,8 @@ questions:
   type: boolean
   label: Dovecot
   group: Integrations
+- variable: jails.postfix
+  default: false
+  type: boolean
+  label: Postfix
+  group: Integrations
