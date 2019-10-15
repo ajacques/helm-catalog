@@ -25,6 +25,13 @@ data:
     mode = aggressive
     logpath = /host/var/log/mail.log
     maxretry = 5
+
+    [postfix-sasl]
+    enabled = true
+    action = iptables-multiport[name=postfix-sasl, port="smtp,submission", protocol=tcp]
+    filter = postfix-sasl
+    logpath = /host/var/log/mail.log
+    maxretry = 5
   {{- end }}
 kind: ConfigMap
 metadata:
