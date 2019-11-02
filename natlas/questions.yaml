@@ -1,0 +1,28 @@
+questions:
+- variable: image.tag
+  type: string
+  default: 0.6.7
+
+# Web UI
+- variable: server.enabled
+  type: boolean
+  label: Server Enabled
+  group: Server
+  default: true
+- variable: server.secret_key
+  type: string
+  label: Secret Key
+  group: Server
+  show_if: 'server.enabled==true'
+
+- variable: elasticsearch.url
+  type: string
+  label: Elasticsearch Server
+  group: Elasticsearch
+
+
+- variable: ingress.hostname
+  type: hostname
+  group: HTTP
+  label: UI Hostname
+  show_if: 'server.enabled==true'

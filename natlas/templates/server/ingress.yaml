@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: server
+  labels:
+    app: {{ template "natlas.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.hostname }}
+    http:
+      paths:
+      - backend:
+          serviceName: server
+          servicePort: 5000
