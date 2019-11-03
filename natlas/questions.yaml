@@ -1,7 +1,7 @@
 questions:
 - variable: image.tag
   type: string
-  default: 0.6.7
+  default: '0.6.7'
 
 # Web UI
 - variable: server.enabled
@@ -14,7 +14,6 @@ questions:
   required: true
   label: Secret Key
   group: Server
-  show_if: 'server.enabled'
 
 - variable: elasticsearch.url
   type: string
@@ -27,7 +26,6 @@ questions:
   type: hostname
   group: HTTP
   label: UI Hostname
-  show_if: 'server.enabled'
 
 - variable: sentry.dsn
   description: [Optional] A Sentry.io DSN (https://key@example.com/id) where all exceptions should be reported
