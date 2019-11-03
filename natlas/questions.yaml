@@ -11,12 +11,14 @@ questions:
   default: true
 - variable: server.secret_key
   type: string
+  required: true
   label: Secret Key
   group: Server
-  show_if: 'server.enabled==true'
+  show_if: 'server.enabled'
 
 - variable: elasticsearch.url
   type: string
+  required: true
   label: Elasticsearch Server
   group: Elasticsearch
 
@@ -25,4 +27,10 @@ questions:
   type: hostname
   group: HTTP
   label: UI Hostname
-  show_if: 'server.enabled==true'
+  show_if: 'server.enabled'
+
+- variable: sentry.dsn
+  description: [Optional] A Sentry.io DSN (https://key@example.com/id) where all exceptions should be reported
+  type: string
+  group: Monitoring
+  label: Sentry.io DSN

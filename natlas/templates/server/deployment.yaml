@@ -25,7 +25,11 @@ spec:
         env:
         - name: ELASTICSEARCH_URL
           value: {{ .Values.elasticsearch.url }}
-        image: natlas/agent:latest
+        {{- if .Values.sentry.dsn }}
+          name: SENTRY_DSN
+          value: {{ .Values.sentry.dsn }}
+        {{- end }}
+        image: natlas/server:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
         securityContext:
           allowPrivilegeEscalation: false
