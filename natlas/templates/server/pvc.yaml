@@ -5,8 +5,6 @@ metadata:
   name: serverdatapvc
 spec:
   accessModes:
-  - ReadWriteOnce
-  - ReadOnlyMany
   - ReadWriteMany
   annotations:
   {{- if .Values.persistence.pvc.storageClass }}
