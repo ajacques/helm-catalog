@@ -66,6 +66,11 @@ questions:
     type: string
     required: true
     label: App ID
+  - variable: github.app.name
+    description: GitHub App Name
+    type: string
+    require: true
+    label: GitHub App Name
   - variable: github.app.private_key
     description: Private KEY in PEM format
     type: string
@@ -76,6 +81,10 @@ questions:
     type: string
     required: true
     label: Client ID
+  - variable: github.webhook_secret
+    type: string
+    require: true
+    label: Webhook Secret
   - variable: github.app.client_secret
     description: Client secret
     type: string

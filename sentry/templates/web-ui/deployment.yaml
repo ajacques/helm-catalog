@@ -37,6 +37,9 @@ spec:
         - configMapRef:
             name: sentry
             optional: false
+        - configMapRef:
+            name: sentryconfig
+            optional: false
         image: sentry:{{ .Values.sentry.version }}
         imagePullPolicy: Always
         name: web
