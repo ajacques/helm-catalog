@@ -25,7 +25,7 @@ questions:
   group: Persistence
   description: Specifies the storage class
   show_if: 'persistence.type=PersistentVolumeClaim'
-- variable: persistent.pvc.size
+- variable: persistence.pvc.size
   type: string
   label: PVC Storage Size
   group: Persistence
