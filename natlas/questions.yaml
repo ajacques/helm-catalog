@@ -4,9 +4,10 @@ questions:
   default: '0.6.7'
 
 - variable: persistence.type
-  default: BindMount
+  default: Ephemeral
   type: enum
   options:
+  - Ephemeral
   - BindMount
   - PersistentVolumeClaim
   group: Persistence
