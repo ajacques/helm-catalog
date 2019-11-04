@@ -16,5 +16,5 @@ spec:
   {{- end }}
   resources:
     requests:
-      storage: {{ .Values.persistence.pvcsize | quote }}
+      storage: {{ .Values.persistence.pvc.size | quote }}
 {{- end }}
