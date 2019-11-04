@@ -7,7 +7,8 @@ data:
     github-app.webhook-secret: '{{ .Values.github.webhook_secret }}'
     github-app.client-id: '{{ .Values.github.app.client_id }}'
     github-app.client-secret: '{{ .Values.github.app.client_secret }}'
-    github-app.private-key: '{{ .Values.github.app.private_key }}'
+    github-app.private-key:
+      {{ .Values.github.app.private_key | indent 6 }}
 kind: ConfigMap
 metadata:
   name: sentryconfig
