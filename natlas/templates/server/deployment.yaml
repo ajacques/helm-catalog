@@ -26,18 +26,32 @@ spec:
         - name: ELASTICSEARCH_URL
           value: {{ .Values.elasticsearch.url }}
         {{- if .Values.sentry.dsn }}
-          name: SENTRY_DSN
+        - name: SENTRY_DSN
           value: {{ .Values.sentry.dsn }}
         {{- end }}
         image: natlas/server:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /data
+          name: datavol
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             add:
             - CHOWN
-            - CHGRP
             - SETUID
             - SETGID
             drop:
             - ALL
+      volumes:
+      - name: datavol
+        {{- if eq .Values.persistence.type "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/server
+          type: ""
+        {{- else if eq .Values.persistence.type "PersistentVolumeClaim" }}
+        persistentVolumeClaim:
+          claimName: serverdatapvc
+        {{- else }}
+
+        {{- end }}
