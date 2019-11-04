@@ -34,5 +34,10 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
+            add:
+            - CHOWN
+            - CHGRP
+            - SETUID
+            - SETGID
             drop:
             - ALL

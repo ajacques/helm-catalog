@@ -3,6 +3,34 @@ questions:
   type: string
   default: '0.6.7'
 
+- variable: persistence.type
+  default: BindMount
+  type: enum
+  options:
+  - BindMount
+  - PersistentVolumeClaim
+  group: Persistence
+  required: true
+- variable: persistence.bind_mount.base_dir
+  type: string
+  label: Base directory
+  group: Persistence
+  description: Specifies a directory on the host to mount all persistent folders.
+  show_if: 'persistence.type=BindMount'
+# PersistentVolumeClaim
+- variable: persistence.pvc.storageClass
+  type: storageclass
+  label: PVC Storage Class
+  group: Persistence
+  description: Specifies the storage class
+  show_if: 'persistence.type=PersistentVolumeClaim'
+- variable: persistent.pvc.size
+  type: string
+  label: PVC Storage Size
+  group: Persistence
+  description: 'Example: 1Gi, 1Mi'
+  show_if: 'persistence.type=PersistentVolumeClaim'
+
 # Web UI
 - variable: server.enabled
   type: boolean
@@ -27,8 +55,8 @@ questions:
   group: HTTP
   label: UI Hostname
 
-- variable: sentry.dsn
-  description: '[Optional] A Sentry.io DSN (https://key@example.com/id) where all exceptions should be reported'
+- variable: sentry.dsn.server
+  description: 'A Sentry.io DSN (https://key@example.com/id) for exceptions on on the Natlas server.'
   type: string
   group: Monitoring
-  label: Sentry.io DSN
+  label: Sentry.io Server DSN
