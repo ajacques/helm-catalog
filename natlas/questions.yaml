@@ -28,7 +28,7 @@ questions:
   label: UI Hostname
 
 - variable: sentry.dsn
-  description: [Optional] A Sentry.io DSN (https://key@example.com/id) where all exceptions should be reported
+  description: '[Optional] A Sentry.io DSN (https://key@example.com/id) where all exceptions should be reported'
   type: string
   group: Monitoring
   label: Sentry.io DSN
