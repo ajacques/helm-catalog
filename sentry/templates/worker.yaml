@@ -34,15 +34,16 @@ spec:
         - configMapRef:
             name: sentry
             optional: false
-        - configMapRef:
-            name: sentryconfig
-            optional: false
         image: sentry:{{ .Values.sentry.version }}
         imagePullPolicy: Always
         name: worker
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -63,3 +64,8 @@ spec:
           path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
           type: ""
         {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
