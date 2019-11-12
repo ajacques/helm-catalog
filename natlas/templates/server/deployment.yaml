@@ -41,7 +41,7 @@ spec:
         - name: OPENCENSUS_ENABLE
           value: 'true'
         - name: OPENCENSUS_SAMPLE_RATE
-          value: {{ div .Values.tracing.sample_rate 100.0 }}
+          value: {{ div .Values.tracing.sample_rate 100.0 | quote }}
         {{- end }}
         image: natlas/server:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
