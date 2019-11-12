@@ -21,7 +21,7 @@ spec:
     spec:
       initContainers:
       - args:
-        - /bin/false
+        - /bin/true
         image: natlas/server:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
         name: chmod
@@ -30,6 +30,12 @@ spec:
           name: datavol
       containers:
       - name: appserver
+        args:
+        - -b
+        - 0.0.0.0:5000
+        - natlas-server:app
+        command:
+        - /usr/local/bin/gunicorn
         env:
         - name: ELASTICSEARCH_URL
           value: {{ .Values.elasticsearch.url }}
