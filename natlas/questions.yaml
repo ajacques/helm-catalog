@@ -80,6 +80,7 @@ questions:
   show_if: 'tracing.type!=None'
 - variable: tracing.opencensus_collector
   type: string
+  group: Tracing
   label: OpenCensus Collector Address
   description: An IP address:port pair that the agent will forward traffic to.
   show_if: 'tracing.type=OpenCensus'

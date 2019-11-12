@@ -9,7 +9,7 @@ data:
       opencensus:
         endpoint: {{ .Values.tracing.opencensus_collector | quote }}
         upload_period: 10s
-      {{- endif }}
+      {{- end }}
 kind: ConfigMap
 metadata:
   name: oc-agent-conf
