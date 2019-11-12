@@ -19,7 +19,15 @@ spec:
         app: server
         chart: {{ .Chart.Name }}
     spec:
-      affinity: {}
+      initContainers:
+      - args:
+        - /bin/false
+        image: natlas/server:{{ .Values.image.tag }}
+        imagePullPolicy: IfNotPresent
+        name: chmod
+        volumeMounts:
+        - mountPath: /data
+          name: datavol
       containers:
       - name: appserver
         env:
@@ -31,6 +39,12 @@ spec:
         {{- end }}
         image: natlas/server:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsUser: 33 # www-data
         volumeMounts:
         - mountPath: /data
           name: datavol
@@ -44,5 +58,5 @@ spec:
         persistentVolumeClaim:
           claimName: serverdatapvc
         {{- else }}
-
+        # Probably should do something here
         {{- end }}
