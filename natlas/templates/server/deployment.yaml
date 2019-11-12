@@ -37,7 +37,7 @@ spec:
         - name: SENTRY_DSN
           value: {{ .Values.sentry.dsn.server }}
         {{- end }}
-        {{- if not eq .Values.tracing.type "None" }}
+        {{- if not (eq .Values.tracing.type "None") }}
         - name: OPENCENSUS_ENABLE
           value: 'true'
         - name: OPENCENSUS_SAMPLE_RATE
@@ -54,6 +54,7 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: datavol
+      {{- if not (eq .Values.tracing.type "None") }}
       - args:
         - --config=/conf/oc-agent-config.yaml
         image: omnition/opencensus-agent:1.0.15
@@ -71,6 +72,7 @@ spec:
         - mountPath: /conf
           name: oc-agent-config-vol
           readOnly: true
+      {{- end }}
       volumes:
       - name: datavol
         {{- if eq .Values.persistence.type "BindMount" }}
