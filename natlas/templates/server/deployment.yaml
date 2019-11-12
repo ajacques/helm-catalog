@@ -37,6 +37,12 @@ spec:
         - name: SENTRY_DSN
           value: {{ .Values.sentry.dsn.server }}
         {{- end }}
+        {{- if not eq .Values.tracing.type "None" }}
+        - name: OPENCENSUS_ENABLE
+          value: 'true'
+        - name: OPENCENSUS_SAMPLE_RATE
+          value: {{ .Values.tracing.sample_rate }}
+        {{- end }}
         image: natlas/server:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
         securityContext:
@@ -48,6 +54,23 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: datavol
+      - args:
+        - --config=/conf/oc-agent-config.yaml
+        image: omnition/opencensus-agent:1.0.15
+        imagePullPolicy: IfNotPresent
+        name: oc-agent-container
+        resources:
+          limits:
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - mountPath: /conf
+          name: oc-agent-config-vol
+          readOnly: true
       volumes:
       - name: datavol
         {{- if eq .Values.persistence.type "BindMount" }}
@@ -60,3 +83,10 @@ spec:
         {{- else }}
         # Probably should do something here
         {{- end }}
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: oc-agent-config
+            path: oc-agent-config.yaml
+          name: oc-agent-conf
+        name: oc-agent-config-vol

@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  oc-agent-config: |-
+    receivers:
+      opencensus:
+        address: '127.0.0.1:55678'
+    exporters:
+      {{- if eq .Values.tracing.type "OpenCensus" }}
+      opencensus:
+        endpoint: {{ .Values.tracing.opencensus_collector | quote }}
+        upload_period: 10s
+      {{- endif }}
+kind: ConfigMap
+metadata:
+  name: oc-agent-conf

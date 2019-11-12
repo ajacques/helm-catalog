@@ -61,3 +61,25 @@ questions:
   type: string
   group: Monitoring
   label: Sentry.io Server DSN
+
+# Tracing
+- variable: tracing.type
+  default: None
+  type: enum
+  options:
+  - None
+  - OpenCensus
+  label: Tracing Next Hop Type
+  group: Tracing
+- variable: tracing.sample_rate
+  type: int
+  min: 0
+  max: 100
+  label: Sample %
+  group: Tracing
+  show_if: 'tracing.type!=None'
+- variable: tracing.opencensus_collector
+  type: string
+  label: OpenCensus Collector Address
+  description: An IP address:port pair that the agent will forward traffic to.
+  show_if: 'tracing.type=OpenCensus'
