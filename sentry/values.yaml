@@ -1,1 +1,2 @@
 sentry.version: 9.1.1
+ingress.cache.enabled: false

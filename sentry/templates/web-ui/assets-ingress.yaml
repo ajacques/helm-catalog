@@ -1,0 +1,35 @@
+{{- if .Values.ingress.cache.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |-
+      proxy_cache {{ .Values.ingress.cache.nginx_cache_zone }};
+      expires max;
+      add_header X-Cache-Status $upstream_cache_status;
+      proxy_cache_key $host$request_method$request_uri;
+      proxy_cache_valid 200 7d;
+      proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  name: sentry-assets
+spec:
+  rules:
+  - host: {{ .Values.ingress.hostname }}
+    http:
+      paths:
+      - backend:
+          serviceName: web
+          servicePort: 9000
+        path: /_static
+  {{- if .Values.ingress.tls_secret_name }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.hostname }}
+    secretName: {{ .Values.ingress.tls_secret_name }}
+  {{- end }}
+{{- end }}
