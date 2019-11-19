@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openzipkin
+spec:
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: deployment-technowizardry-openzipkin
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: deployment-technowizardry-openzipkin
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_HOST
+          value: {{ .Values.db.host }}
+        - name: STORAGE_TYPE
+          value: mysql
+        envFrom:
+        - secretRef:
+            name: credentials
+            optional: false
+        image: openzipkin/zipkin:2.18.3
+        imagePullPolicy: Always
+        name: openzipkin

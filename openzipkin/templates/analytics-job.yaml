@@ -1,0 +1,25 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: openzipkin-dependencies
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - env:
+            - name: MYSQL_HOST
+              value: {{ .Values.db.host }}
+            - name: STORAGE_TYPE
+              value: mysql
+            envFrom:
+            - secretRef:
+                name: credentials
+                optional: false
+            image: openzipkin/zipkin-dependencies:2.3.2
+            name: dependencies
+  schedule: 0 * * * *
