@@ -5,12 +5,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      workload.user.cattle.io/workloadselector: deployment-technowizardry-openzipkin
+      app: backend
+      chart: {{ .Chart.Name }}
     type: RollingUpdate
   template:
     metadata:
       labels:
-        workload.user.cattle.io/workloadselector: deployment-technowizardry-openzipkin
+        app: backend
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - env:
