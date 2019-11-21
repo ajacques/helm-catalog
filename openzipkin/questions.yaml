@@ -1,24 +1,54 @@
 questions:
 - variable: db.type
   type: enum
-  values:
+  group: storage
+  required: true
+  options:
   - MySQL
-  label:
+  label: Database Type
+
 - variable: db.host
   type: string
   group: Storage
   label: Hostname
+  required: true
+  show_if: 'db.type=MySQL'
 - variable: db.database
   type: string
   group: Storage
+  required: true
+  show_if: 'db.type=MySQL'
   label: Database Name
 - variable: db.username
   type: string
   label: DB Username
   group: Storage
+  show_if: 'db.type=MySQL'
   required: true
 - variable: db.password
   type: string
   label: DB Password
   group: Storage
   required: true
+  show_if: 'db.type=MySQL'
+
+- variable: ingress.hostname
+  type: hostname
+  group: HTTP
+  label: UI Hostname
+- variable: ingress.tls_secret_name
+  type: string
+  group: HTTP
+  label: TLS Certificate Name
+
+- variable: ingress.cache.enabled
+  type: boolean
+  group: HTTP
+  label: Enable Proxy Caching
+  description: If enabled, certain assets will be cached on the front-end proxy for improved performance.
+
+- variable: ingress.cache.nginx_cache_zone
+  type: string
+  required: false
+  label: NGINX Cache Zone
+  description: 'Specifies the NGINX cache zone. NOTE: A zone must be configured in the nginx-ingress ConfigMap. See: [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache)'
