@@ -50,5 +50,6 @@ questions:
 - variable: ingress.cache.nginx_cache_zone
   type: string
   required: false
+  group: HTTP
   label: NGINX Cache Zone
   description: 'Specifies the NGINX cache zone. NOTE: A zone must be configured in the nginx-ingress ConfigMap. See: [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache)'
