@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      component: redis
+      chart: {{ .Chart.Name }}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector: {}
+    ports:
+    - protocol: TCP
+      port: 6379
+{{- if .Values.prometheus.enabled }}
+  - from:
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 9121
+{{- end }}
+  # Our Redis container should not connect to anything else
+  egress: []
