@@ -28,12 +28,6 @@ spec:
       - image: redis:5.0.5
         imagePullPolicy: Always
         name: redis
-        securityContext:
-          allowPrivilegeEscalation: false
-          privileged: false
-          procMount: Default
-          readOnlyRootFilesystem: false
-          runAsNonRoot: false
         volumeMounts:
         - mountPath: /data
           name: datavol
@@ -41,7 +35,7 @@ spec:
       - name: prometheus-exporter
         env:
         - name: REDIS_ADDR
-          value: localhost
+          value: '127.0.0.1'
         image: oliver006/redis_exporter:v1.0.4
         imagePullPolicy: IfNotPresent
         ports:
@@ -57,10 +51,6 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
-        ports:
-        - containerPort: 9121
-          name: exporter-port
-          protocol: TCP
 {{- end }}
       volumes:
       - name: datavol
