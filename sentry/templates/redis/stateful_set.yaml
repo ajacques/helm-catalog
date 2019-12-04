@@ -18,6 +18,11 @@ spec:
       labels:
         component: redis
         chart: {{ .Chart.Name }}
+{{- if .Values.prometheus.enabled }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9121"
+{{- end }}
     spec:
       containers:
       - image: redis:5.0.5
@@ -32,8 +37,31 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: datavol
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
+{{- if .Values.prometheus.enabled }}
+      - name: prometheus-exporter
+        env:
+        - name: REDIS_ADDR
+          value: localhost
+        image: oliver006/redis_exporter:v1.0.4
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9121
+          name: exporter-port
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: exporter-port
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        ports:
+        - containerPort: 9121
+          name: exporter-port
+          protocol: TCP
+{{- end }}
       volumes:
       - name: datavol
         {{- if eq .Values.persistence.type "BindMount" }}
