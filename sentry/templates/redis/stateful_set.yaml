@@ -36,6 +36,8 @@ spec:
         env:
         - name: REDIS_ADDR
           value: '127.0.0.1'
+        - name: REDIS_EXPORTER_REDIS_ONLY_METRICS
+          value: 'true'
         image: oliver006/redis_exporter:v1.0.4
         imagePullPolicy: IfNotPresent
         ports:
