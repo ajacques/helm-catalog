@@ -8,7 +8,7 @@ metadata:
       expires max;
       add_header X-Cache-Status $upstream_cache_status;
       proxy_cache_key $request_method$request_uri;
-      proxy_cache_valid 200 1d;
+      proxy_cache_valid 200 7d;
       proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
     nginx.ingress.kubernetes.io/proxy-buffering: "on"
     nginx.ingress.kubernetes.io/use-regex: "true"
