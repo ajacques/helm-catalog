@@ -61,3 +61,12 @@ questions:
   type: string
   group: Ingress
   label: TLS Certificate Name
+- variable: ingress.tls_replicate
+  type: boolean
+  label: Replicate Secret
+  description: Replicate K8s secret from another namespace
+- variable: ingress.tls_replicate_from
+  type: string
+  label: Replication Source
+  show_if: 'ingress.tls_replicate=true'
+  placeholder: namespace/secret

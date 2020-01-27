@@ -1,1 +1,4 @@
 config:
+
+ingress:
+  tls_replicate: false
