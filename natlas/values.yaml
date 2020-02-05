@@ -1,2 +1,5 @@
 sentry.dsn: ''
 image.tag: latest
+
+ingress:
+  annotations:

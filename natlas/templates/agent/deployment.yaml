@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: agent
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - name: agent
+        env:
+        - name: NATLAS_SERVER_ADDRESS
+          value: {{ .Values.ingress.hostname }}
+        {{- if .Values.sentry.dsn.agent }}
+        - name: SENTRY_DSN
+          value: {{ .Values.sentry.dsn.agent }}
+        {{- end }}
+        image: natlas/agent:{{ .Values.image.tag }}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - NET_ADMIN
+            drop:
+            - ALL
