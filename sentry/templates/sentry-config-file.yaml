@@ -10,7 +10,7 @@ data:
     github-app.private-key: |
 {{ .Values.github.app.private_key | indent 6 }}
 
-    sentry.conf.py: |-
+  sentry.conf.py: |-
     # This file is just Python, with a touch of Django which means
     # you can inherit and tweak settings to your hearts content.
 
