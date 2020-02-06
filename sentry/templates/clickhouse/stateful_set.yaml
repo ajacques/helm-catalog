@@ -20,7 +20,8 @@ spec:
         chart: {{ .Chart.Name }}
     spec:
       containers:
-      - image: getsentry/snuba:latest
+        # Snuba doesn't tag versions meaningfully, so we freeze ourselves
+      - image: getsentry/snuba@sha256:84d32ac861d20e0d28b5cc5aec4025f60c66f3bc213c1007db82bc89f7b67de0
         imagePullPolicy: Always
         name: snuba
         terminationMessagePolicy: FallbackToLogsOnError
@@ -29,6 +30,26 @@ spec:
           value: localhost:9000
         - name: REDIS_HOST
           value: redis.{{ .Release.Namespace }}.svc.cluster.local
+        - name: UWSGI_MAX_REQUESTS
+          value: '10000'
+        - name: UWSGI_DISABLE_LOGGING
+          value: 'true'
+        - name: UWSGI_ENABLE_THREADS
+          value: 'true'
+        - name: UWSGI_DIE_ON_TERM
+          value: 'true'
+        - name: UWSGI_NEED_APP
+          value: 'true'
+        - name: UWSGI_IGNORE_SIGPIPE
+          value: 'true'
+        - name: UWSGI_IGNORE_WRITE_ERRORS
+          value: 'true'
+        - name: UWSGI_DISABLE_WRITE_EXCEPTION
+          value: 'true'
+        - name: DEFAULT_BROKERS
+          value: kafka.kafka.svc.cluster.local:9092
+        - name: SNUBA_SETTINGS
+          value: settings_docker
         securityContext:
           capabilities:
             add:

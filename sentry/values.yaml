@@ -1,2 +1,2 @@
-sentry.version: 9.1.1
+sentry.version: 0e2bc0421090e4bbcbd0a5e3047eabfcc77bda15
 ingress.cache.enabled: false
