@@ -22,7 +22,7 @@ spec:
         spec:
           containers:
           - name: cleanup
-            image: {{ printf "sentry:%s" .Values.sentry.version }}
+            image: {{ printf "getsentry/sentry:%s" .Values.sentry.version }}
             args:
             - cleanup
             - --days

@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-replacer
+spec:
+  selector:
+    matchLabels:
+      component: snuba-replacer
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-replacer
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args:
+        - replacer
+        - --auto-offset-reset=latest
+        - --max-batch-size
+        - "3"
+        env:
+        - name: CLICKHOUSE_SERVER
+          value: snuba.{{ .Release.Namespace }}.svc.cluster.local.:9000
+        - name: REDIS_HOST
+          value: redis.{{ .Release.Namespace }}.svc.cluster.local.
+        - name: DEFAULT_BROKERS
+          value: kafka.kafka.svc.cluster.local.:9092
+        - name: SNUBA_SETTINGS
+          value: docker
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        image: getsentry/snuba@sha256:84d32ac861d20e0d28b5cc5aec4025f60c66f3bc213c1007db82bc89f7b67de0
+        imagePullPolicy: IfNotPresent
+        name: snuba-replacer
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
