@@ -74,3 +74,8 @@ questions:
   max: 100
   label: Sample %
   group: Tracing
+
+- variable: prometheus.enabled
+  type: boolean
+  default: false
+  label: Enable Prometheus Scraping
