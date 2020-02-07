@@ -1,0 +1,37 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: snuba-cleanup
+spec:
+  concurrencyPolicy: Replace
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      labels:
+        component: cleanup
+        release: sentry-sentry
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          containers:
+          - args:
+            - cleanup
+            - --dry-run
+            - "False"
+            envFrom:
+            - secretRef:
+                name: sentry
+                optional: false
+            - configMapRef:
+                name: sentry
+                optional: false
+            image: getsentry/snuba@sha256:84d32ac861d20e0d28b5cc5aec4025f60c66f3bc213c1007db82bc89f7b67de0
+            imagePullPolicy: Always
+            name: cleanup
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+              runAsUser: 999
+  schedule: 5 0 * * *
