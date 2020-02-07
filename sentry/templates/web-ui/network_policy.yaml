@@ -11,6 +11,9 @@ spec:
   - Ingress
   ingress:
   - from:
+    # Granted because NGINX runs on the hostNetwork
+    - ipBlock:
+        cidr: 0.0.0.0/0
     - namespaceSelector: {}
     ports:
     - port: 9000
