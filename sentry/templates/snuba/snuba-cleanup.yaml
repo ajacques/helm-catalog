@@ -33,6 +33,5 @@ spec:
               capabilities:
                 drop:
                 - ALL
-              runAsUser: 999
           restartPolicy: Never
   schedule: 5 0 * * *
