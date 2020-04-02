@@ -1,9 +1,6 @@
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  annotations:
-    deprecated.daemonset.template.generation: "12"
-  creationTimestamp: "2019-08-27T03:46:11Z"
   generation: 12
   labels:
     app: auditbeat
@@ -12,10 +9,6 @@ metadata:
     io.cattle.field/appId: auditbeat
     release: auditbeat
   name: auditbeat
-  namespace: security
-  resourceVersion: "5827808"
-  selfLink: /apis/apps/v1beta2/namespaces/security/daemonsets/auditbeat
-  uid: 36427188-c87d-11e9-9842-0025907b44b8
 spec:
   minReadySeconds: 10
   revisionHistoryLimit: 10
