@@ -69,7 +69,7 @@ questions:
   options:
   - None
   - OpenCensus
-  - Zipkin
+  - OpenZipkin
   label: Tracing Next Hop Type
   group: Tracing
 - variable: tracing.sample_rate
@@ -85,9 +85,10 @@ questions:
   label: OpenCensus Collector Address
   description: An IP address:port pair that the agent will forward traffic to.
   show_if: 'tracing.type=OpenCensus'
-- variable: tracing.zipkin_endpoint
+- variable: tracing.openzipkin_endpoint
   type: string
   group: Tracing
-  label: Zipkin Endpoint
+  label: OpenZipkin Endpoint
+  placeholder: 'http://hostname:port'
   description: An hostname and optional port.
-  show_if: 'tracing.type=Zipkin'
+  show_if: 'tracing.type=OpenZipkin'

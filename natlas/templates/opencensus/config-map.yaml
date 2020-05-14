@@ -9,9 +9,9 @@ data:
       opencensus:
         endpoint: {{ .Values.tracing.opencensus_collector | quote }}
         upload_period: 10s
-      {{- else if eq .Values.tracing.type "Zipkin" }}
+      {{- else if eq .Values.tracing.type "OpenZipkin" }}
       zipkin:
-        endpoint:  {{ .Values.tracing.zipkin_endpoint | quote }}
+        endpoint: {{ printf "%s/api/v2/spans" .Values.tracing.openzipkin_endpoint | quote }}
         upload_period: 10s
       {{- end }}
 kind: ConfigMap
