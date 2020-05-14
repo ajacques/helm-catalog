@@ -57,6 +57,7 @@ spec:
             drop:
             - ALL
           runAsUser: 33 # www-data
+        tty: true
         volumeMounts:
         - mountPath: /data
           name: datavol
