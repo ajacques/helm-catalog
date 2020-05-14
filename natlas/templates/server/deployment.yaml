@@ -31,12 +31,15 @@ spec:
       containers:
       - name: appserver
         args:
+        - -R
         - -b
         - 0.0.0.0:5000
         - natlas-server:app
         command:
         - /usr/local/bin/gunicorn
         env:
+        - name: PYTHONUNBUFFERED
+          value: 'true'
         - name: ELASTICSEARCH_URL
           value: {{ .Values.elasticsearch.url }}
         {{- if .Values.sentry.dsn.server }}
@@ -57,7 +60,6 @@ spec:
             drop:
             - ALL
           runAsUser: 33 # www-data
-        tty: true
         volumeMounts:
         - mountPath: /data
           name: datavol
