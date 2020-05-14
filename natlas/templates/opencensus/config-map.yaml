@@ -9,6 +9,10 @@ data:
       opencensus:
         endpoint: {{ .Values.tracing.opencensus_collector | quote }}
         upload_period: 10s
+      {{- else if eq .Values.tracing.type "Zipkin" }}
+      zipkin:
+        endpoint:  {{ .Values.tracing.zipkin_endpoint | quote }}
+        upload_period: 10s
       {{- end }}
 kind: ConfigMap
 metadata:

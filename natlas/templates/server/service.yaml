@@ -15,7 +15,7 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: webui
+    app: server
     chart: {{ .Chart.Name }}
   sessionAffinity: None
   type: ClusterIP
