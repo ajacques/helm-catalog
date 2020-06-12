@@ -26,7 +26,7 @@ spec:
             - configMapRef:
                 name: sentry
                 optional: false
-            image: getsentry/snuba@sha256:84d32ac861d20e0d28b5cc5aec4025f60c66f3bc213c1007db82bc89f7b67de0
+            image: getsentry/snuba:{{ .Values.snuba.version }}
             imagePullPolicy: Always
             name: cleanup
             securityContext:

@@ -1,2 +1,3 @@
 sentry.version: 0e2bc0421090e4bbcbd0a5e3047eabfcc77bda15
 ingress.cache.enabled: false
+snuba.version: 2ca54d8aa51e5b0cf396989271b79b72fb89dd8a

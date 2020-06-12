@@ -29,7 +29,7 @@ spec:
         - name: REDIS_HOST
           value: redis.{{ .Release.Namespace }}.svc.cluster.local.
         - name: DEFAULT_BROKERS
-          value: kafka.kafka.svc.cluster.local.:9092
+          value: {{ .Values.kafka.hostname }}
         - name: SNUBA_SETTINGS
           value: docker
         envFrom:
@@ -39,7 +39,7 @@ spec:
         - configMapRef:
             name: sentry
             optional: false
-        image: getsentry/snuba@sha256:84d32ac861d20e0d28b5cc5aec4025f60c66f3bc213c1007db82bc89f7b67de0
+        image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-consumer
         securityContext:

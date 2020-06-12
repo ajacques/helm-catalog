@@ -129,3 +129,9 @@ questions:
   default: false
   group: Observability
   label: Enable Prometheus Scraping
+
+- variable: kafka.hostname
+  type: hostname
+  group: kafka
+  label: Kafka Hostname
+  description: 'Specify the Kafka hostname + port (hostname.:9092).'
