@@ -58,7 +58,7 @@ spec:
           path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
           type: ""
         {{- end }}
-        - configMap:
+      - configMap:
           defaultMode: 292
           name: sentryconfig
           optional: false
