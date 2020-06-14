@@ -47,6 +47,10 @@ spec:
           subPath: config.yml
         securityContext:
           capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
             drop:
             - ALL
         terminationMessagePolicy: FallbackToLogsOnError
