@@ -62,6 +62,12 @@ questions:
   group: Monitoring
   label: Sentry.io Server DSN
 
+- variable: sentry.dsn.agent
+  description: 'A Sentry.io DSN (https://key@example.com/id) for exceptions on on the Natlas agent.'
+  type: string
+  group: Monitoring
+  label: Sentry.io Agent DSN
+
 # Tracing
 - variable: tracing.type
   default: None
@@ -92,3 +98,9 @@ questions:
   placeholder: 'http://hostname:port'
   description: An hostname and optional port.
   show_if: 'tracing.type=OpenZipkin'
+
+# Swagger
+- variable: swagger.enabled
+  type: boolean
+  default: false
+  label: Enable Swagger UI
