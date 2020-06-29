@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  CLICKHOUSE_HOST: snuba.{{ .Release.Namespace }}.svc.cluster.local.
+  REDIS_HOST: redis.{{ .Release.Namespace }}.svc.cluster.local.
+  DEFAULT_BROKERS: {{ .Values.kafka.hostname }}
+  SNUBA_SETTINGS: docker
+kind: ConfigMap
+metadata:
+  name: snuba-config

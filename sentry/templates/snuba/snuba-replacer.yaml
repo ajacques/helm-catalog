@@ -23,15 +23,6 @@ spec:
         - --auto-offset-reset=latest
         - --max-batch-size
         - "3"
-        env:
-        - name: CLICKHOUSE_SERVER
-          value: snuba.{{ .Release.Namespace }}.svc.cluster.local.:9000
-        - name: REDIS_HOST
-          value: redis.{{ .Release.Namespace }}.svc.cluster.local.
-        - name: DEFAULT_BROKERS
-          value: {{ .Values.kafka.hostname }}
-        - name: SNUBA_SETTINGS
-          value: docker
         envFrom:
         - secretRef:
             name: sentry
@@ -39,6 +30,9 @@ spec:
         - configMapRef:
             name: sentry
             optional: false
+        - configMapRef:
+          name: snuba-config
+          optional: false
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-replacer

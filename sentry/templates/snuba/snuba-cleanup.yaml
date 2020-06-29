@@ -26,6 +26,9 @@ spec:
             - configMapRef:
                 name: sentry
                 optional: false
+            - configMapRef:
+              name: snuba-config
+              optional: false
             image: getsentry/snuba:{{ .Values.snuba.version }}
             imagePullPolicy: Always
             name: cleanup
