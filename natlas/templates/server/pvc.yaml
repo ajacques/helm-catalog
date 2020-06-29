@@ -5,7 +5,7 @@ metadata:
   name: serverdatapvc
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   annotations:
   {{- if .Values.persistence.pvc.storageClass }}
     volume.beta.kubernetes.io/storage-class: {{ .Values.persistence.pvc.storageClass | quote }}
