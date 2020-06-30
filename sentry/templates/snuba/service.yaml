@@ -10,7 +10,7 @@ metadata:
 spec:
   clusterIP: None
   selector:
-    component: clickhouse
+    component: snuba-api
     chart: {{ .Chart.Name }}
   sessionAffinity: None
   type: ClusterIP

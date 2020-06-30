@@ -2,8 +2,8 @@ apiVersion: v1
 data:
   {{- if .Values.email.host }}
   SENTRY_EMAIL_HOST: {{ .Values.email.host }}
-  SENTRY_EMAIL_PORT: "{{ .Values.email.port }}"
-  SENTRY_EMAIL_USE_TLS: "true"
+  SENTRY_EMAIL_PORT: {{ .Values.email.port | quote }}
+  SENTRY_EMAIL_USE_TLS: {{ .Values.email.use_starttls | quote }}
   {{- end }}
   SENTRY_MEMCACHED_HOST: memcached.{{ .Release.Namespace }}.svc.cluster.local.
   SENTRY_POSTGRES_HOST: {{ .Values.db.host }}

@@ -53,6 +53,10 @@ questions:
   default: Sentry.io <root@localhost>
   group: Mail
   description: Specifies the from address for email notifications
+- variable: email.use_starttls
+  type: boolean
+  label: Enable TLS
+  description: Should Sentry.io use STARTTLS?
 
 - variable: github.enabled
   default: false
