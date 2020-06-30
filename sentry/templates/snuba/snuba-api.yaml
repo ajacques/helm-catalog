@@ -24,7 +24,7 @@ spec:
         name: snuba
         terminationMessagePolicy: FallbackToLogsOnError
         env:
-        - name: CLICKHOUSE_SERVER
+        - name: CLICKHOUSE_HOST
           value: clickhouse
         - name: REDIS_HOST
           value: redis.{{ .Release.Namespace }}.svc.cluster.local.
