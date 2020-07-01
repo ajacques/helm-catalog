@@ -57,13 +57,19 @@ questions:
   label: UI Hostname
 
 - variable: sentry.dsn.server
-  description: 'A Sentry.io DSN (https://key@example.com/id) for exceptions on on the Natlas server.'
+  description: 'A Sentry.io DSN (https://key@example.com/id) for exceptions on the Natlas server.'
   type: string
   group: Monitoring
   label: Sentry.io Server DSN
 
+- variable: sentry.dsn.webapp
+  description: 'A Sentry.io DSN (https://key@example.com/id) for exceptions on the Natlas JavaScript.'
+  type: string
+  group: Monitoring
+  label: Sentry.io JavaScript DSN
+
 - variable: sentry.dsn.agent
-  description: 'A Sentry.io DSN (https://key@example.com/id) for exceptions on on the Natlas agent.'
+  description: 'A Sentry.io DSN (https://key@example.com/id) for exceptions on the Natlas agent.'
   type: string
   group: Monitoring
   label: Sentry.io Agent DSN

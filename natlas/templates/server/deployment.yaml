@@ -46,6 +46,10 @@ spec:
         - name: SENTRY_DSN
           value: {{ .Values.sentry.dsn.server }}
         {{- end }}
+        {{- if .Values.sentry.dsn.webapp }}
+        - name: SENTRY_JS_DSN
+          value: {{ .Values.sentry.dsn.webapp }}
+        {{- end }}
         {{- if not (eq .Values.tracing.type "None") }}
         - name: OPENCENSUS_ENABLE
           value: 'true'
