@@ -12,6 +12,7 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: snuba-api
@@ -24,8 +25,6 @@ spec:
         name: snuba
         terminationMessagePolicy: FallbackToLogsOnError
         env:
-        - name: REDIS_HOST
-          value: redis.{{ .Release.Namespace }}.svc.cluster.local.
         - name: UWSGI_MAX_REQUESTS
           value: '10000'
         - name: UWSGI_DISABLE_LOGGING
@@ -42,8 +41,10 @@ spec:
           value: 'true'
         - name: UWSGI_DISABLE_WRITE_EXCEPTION
           value: 'true'
-        - name: DEFAULT_BROKERS
-          value: kafka.kafka.svc.cluster.local.:9092
+        envFrom:
+          - configMapRef:
+              name: snuba-config
+              optional: false
         securityContext:
           capabilities:
             add:
