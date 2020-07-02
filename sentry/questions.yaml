@@ -139,3 +139,11 @@ questions:
   group: kafka
   label: Kafka Hostname
   description: 'Specify the Kafka hostname + port (hostname.:9092).'
+
+- variable: sentry.ui.workers
+  type: int
+  label: Number of UI Workers
+  min: 1
+  default: 4
+  max: 128
+  descrption: 'Number of workers per replica to run.'

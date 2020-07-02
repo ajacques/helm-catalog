@@ -167,7 +167,7 @@ data:
         "http-keepalive": True,
         "http-chunked-input": True,
         # the number of web workers
-        'workers': 2,
+        'workers': {{ .Values.sentry.ui.workers }},
         # Turn off memory reporting
         "memory-report": False,
         # Some stuff so uwsgi will cycle workers sensibly

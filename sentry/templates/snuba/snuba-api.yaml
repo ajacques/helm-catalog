@@ -24,8 +24,6 @@ spec:
         name: snuba
         terminationMessagePolicy: FallbackToLogsOnError
         env:
-        - name: CLICKHOUSE_HOST
-          value: clickhouse
         - name: REDIS_HOST
           value: redis.{{ .Release.Namespace }}.svc.cluster.local.
         - name: UWSGI_MAX_REQUESTS
