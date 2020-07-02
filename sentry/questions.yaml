@@ -160,8 +160,17 @@ questions:
 - variable: sentry.ui.workers
   type: int
   label: Number of UI Workers
-  group: HTTP
+  group: Scaling
   min: 1
   default: 4
   max: 128
   descrption: 'Number of workers per replica to run.'
+
+- variable: sentry.snuba.workers
+  type: int
+  label: Number of Snuba Workers
+  group: Scaling
+  min: 1
+  default: 4
+  max: 128
+  descrption: 'Number of workers per replica to run for the snuba API.'

@@ -26,7 +26,7 @@ spec:
         terminationMessagePolicy: FallbackToLogsOnError
         env:
         - name: UWSGI_MAX_REQUESTS
-          value: '10000'
+          value: '5000'
         - name: UWSGI_DISABLE_LOGGING
           value: 'true'
         - name: UWSGI_ENABLE_THREADS
@@ -41,6 +41,8 @@ spec:
           value: 'true'
         - name: UWSGI_DISABLE_WRITE_EXCEPTION
           value: 'true'
+        - name: UWSGI_WORKERS
+          value: {{ .Values.sentry.snuba.workers | quote }}
         envFrom:
           - configMapRef:
               name: snuba-config
