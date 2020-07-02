@@ -56,7 +56,15 @@ questions:
 - variable: email.use_starttls
   type: boolean
   label: Enable TLS
+  group: Mail
   description: Should Sentry.io use STARTTLS?
+- variable: email.port
+  type: int
+  label: Port
+  group: Mail
+  min: 0
+  default: 587
+  max: 65535
 
 - variable: github.enabled
   default: false
@@ -77,7 +85,7 @@ questions:
     label: GitHub App Name
   - variable: github.app.private_key
     description: Private KEY in PEM format
-    type: string
+    type: multiline
     required: true
     label: Private Key
   - variable: github.app.client_id
@@ -104,8 +112,16 @@ questions:
 - variable: sentry.version
   type: string
   required: true
+  group: Versions
   label: Sentry Version
-  default: '9.1.1'
+  default: '97706b5443557e07368b5b71dbeafbeef5d20c09'
+
+- variable: snuba.version
+  type: string
+  required: true
+  group: Versions
+  label: Snuba Version
+  default: 'be8965e6576bca9346f388a499f760bc9bd2f5ff'
 
 - variable: ingress.hostname
   type: hostname
@@ -124,6 +140,7 @@ questions:
 
 - variable: ingress.cache.nginx_cache_zone
   type: string
+  group: HTTP
   required: false
   label: NGINX Cache Zone
   description: 'Specifies the NGINX cache zone. NOTE: A zone must be configured in the nginx-ingress ConfigMap. See: [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache)'
@@ -143,6 +160,7 @@ questions:
 - variable: sentry.ui.workers
   type: int
   label: Number of UI Workers
+  group: HTTP
   min: 1
   default: 4
   max: 128
