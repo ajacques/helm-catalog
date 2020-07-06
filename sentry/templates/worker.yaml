@@ -38,6 +38,9 @@ spec:
         - configMapRef:
             name: sentry
             optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
         image: getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: Always
         name: worker
