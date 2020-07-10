@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay
+spec:
+  selector:
+    matchLabels:
+      component: relay
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/relay/config-map.yaml") . | sha256sum }}
+      labels:
+        component: relay
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - image: getsentry/relay:{{ .Values.snuba.version }}
+        imagePullPolicy: Always
+        name: relay
+        terminationMessagePolicy: FallbackToLogsOnError
+        securityContext:
+          capabilities:
+            add:
+            - SETUID
+            - SETGID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /work/.relay/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: relay-config
+          optional: false
+        name: configyml
