@@ -21,6 +21,7 @@ spec:
       containers:
       - args:
         - consumer
+        - --storage=events
         - --auto-offset-reset=latest
         - --max-batch-time-ms
         - "750"
