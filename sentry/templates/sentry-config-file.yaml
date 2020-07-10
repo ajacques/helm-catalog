@@ -198,7 +198,7 @@ data:
     SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
     # End of SSL/TLS settings
-    {{- endif }}
+    {{- end }}
 
     ############
     # Features #
