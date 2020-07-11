@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: vouch
+  labels:
+    app: vouchproxy
+    chart: {{ .Chart.Name }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.hostname }}
+    http:
+      paths:
+      - backend:
+          serviceName: vouchproxy
+          servicePort: 9090
+  {{- if .Values.ingress.tls_secret_name }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.hostname }}
+    secretName: {{ .Values.ingress.tls_secret_name }}
+  {{- end }}

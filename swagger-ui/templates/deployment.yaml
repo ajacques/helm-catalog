@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vouchproxy
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: vouchproxy
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config-map.yaml") . | sha256sum }}
+      labels:
+        app: vouchproxy
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - image: voucher/vouch-proxy:0.6.4
+        imagePullPolicy: Always
+        name: vouchproxy
+        terminationMessagePolicy: FallbackToLogsOnError
+        volumeMounts:
+        - mountPath: /config/
+          name: config
+          readOnly: true
+        - mountPath: /data
+          name: data
+      volumes:
+      - name: config
+        configMap:
+          defaultMode: 292
+          name: vouchconfig
+          optional: false
+{{- if eq .Values.persistence.type "BindMount" }}
+      - name: data
+        hostPath:
+          path: {{ .Values.persistence.hostPath.path }}
+          type: ""
+{{- else if eq .Values.persistence.type "PersistentVolumeClaim" }}
+      - name: data
+        persistentVolumeClaim:
+          claimName: data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app: vouchproxy
+          chart: {{ .Chart.Name }}
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size | quote }}
+        storageClassName: {{ .Values.persistence.storageClass | quote }}
+{{- end }}

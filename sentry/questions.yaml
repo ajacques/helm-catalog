@@ -114,14 +114,19 @@ questions:
   required: true
   group: Versions
   label: Sentry Version
-  default: '97706b5443557e07368b5b71dbeafbeef5d20c09'
+  default: ef2ec40
 
 - variable: snuba.version
   type: string
   required: true
   group: Versions
   label: Snuba Version
-  default: 'be8965e6576bca9346f388a499f760bc9bd2f5ff'
+  default: a28759d709cd97ff7ff5c3cdf8b1706486e85c74
+
+- variable: relay.version
+  type: string
+  group: Versions
+  default: 85a9ccfa06b68ef8ef01d51a23eea26cb9a8f08a
 
 - variable: ingress.hostname
   type: hostname

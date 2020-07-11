@@ -16,7 +16,7 @@ spec:
         chart: {{ .Chart.Name }}
     spec:
       containers:
-      - image: getsentry/relay:{{ .Values.snuba.version }}
+      - image: getsentry/relay:{{ .Values.relay.version }}
         imagePullPolicy: Always
         name: relay
         terminationMessagePolicy: FallbackToLogsOnError
@@ -44,6 +44,6 @@ spec:
         name: configyml
       - name: credentials
         secret:
-          defaultMode: 256
+          defaultMode: 292
           optional: false
           secretName: relay-secret
