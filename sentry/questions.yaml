@@ -164,7 +164,7 @@ questions:
   min: 1
   default: 4
   max: 128
-  descrption: 'Number of workers per replica to run.'
+  description: 'Number of workers per replica to run.'
 
 - variable: sentry.snuba.workers
   type: int
@@ -173,4 +173,14 @@ questions:
   min: 1
   default: 4
   max: 128
-  descrption: 'Number of workers per replica to run for the snuba API.'
+  description: 'Number of workers per replica to run for the snuba API.'
+
+- variable: relay.public_key
+  type: string
+  group: Relay
+  description: Specifices the public key from 'relay credentials generate --stdout'
+
+- variable: relay.private_key
+  type: string
+  group: Relay
+  description: Specifices the private key from 'relay credentials generate --stdout'

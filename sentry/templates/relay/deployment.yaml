@@ -32,9 +32,18 @@ spec:
           name: configyml
           readOnly: true
           subPath: config.yml
+        - mountPath: /work/.relay/credentials.json
+          name: credentials
+          readOnly: true
+          subPath: credentials.json
       volumes:
       - configMap:
           defaultMode: 292
           name: relay-config
           optional: false
         name: configyml
+      - name: credentials
+        secret:
+          defaultMode: 256
+          optional: false
+          secretName: relay-secret

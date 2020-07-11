@@ -21,7 +21,7 @@ spec:
       - backend:
           serviceName: relay
           servicePort: 3000
-        path: ^/api/[1-9]\d*/
+        path: /api/[1-9]+/.*$
   {{- if .Values.ingress.tls_secret_name }}
   tls:
   - hosts:
