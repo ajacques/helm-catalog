@@ -18,6 +18,10 @@ spec:
     metadata:
       annotations:
         net.technowizardry.upgrade/version-match: '{version}-alpine'
+{{- if .Values.prometheus.enabled }}
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: 9150
+{{- end }}
       labels:
         component: memcached
         chart: {{ .Chart.Name }}
@@ -41,3 +45,12 @@ spec:
           privileged: false
           readOnlyRootFilesystem: false
           runAsNonRoot: false
+{{- if .Values.prometheus.enabled }}
+      - image: quay.io/prometheus/memcached-exporter:v0.5.0
+        imagePullPolicy: IfNotPresent
+        name: metrics
+        ports:
+        - containerPort: 9150
+          name: metrics
+          protocol: TCP
+{{- end }}
