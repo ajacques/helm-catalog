@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: relay-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      component: relay
+      chart: {{ .Chart.Name }}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    # Granted because NGINX runs on the hostNetwork
+    - ipBlock:
+        cidr: 0.0.0.0/0
+    - namespaceSelector: {}
+    ports:
+    - port: 3000

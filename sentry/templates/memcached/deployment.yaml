@@ -20,7 +20,7 @@ spec:
         net.technowizardry.upgrade/version-match: '{version}-alpine'
 {{- if .Values.prometheus.enabled }}
         prometheus.io/scrape: 'true'
-        prometheus.io/port: 9150
+        prometheus.io/port: '9150'
 {{- end }}
       labels:
         component: memcached
