@@ -15,6 +15,7 @@ data:
     # you can inherit and tweak settings to your hearts content.
 
     from sentry.conf.server import *  # NOQA
+    from sentry.utils.types import Bool
 
     DATABASES = {
         "default": {
