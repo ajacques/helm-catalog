@@ -1,10 +1,47 @@
 questions:
 - variable: image.tag
   type: string
-  default: '0.6.7'
+  default: '0.6.10'
+
+- variable: db.type
+  type: enum
+  label: Database Type
+  options:
+  - SQLite
+  - MySQL
+  group: Database
+  required: true
+
+- variable: db.hostname
+  type: string
+  label: Hostname
+  group: Database
+  required: true
+  show_if: 'db.type!=SQLite'
+- variable: db.username
+  type: string
+  label: Username
+  group: Database
+  required: true
+  show_if: 'db.type!=SQLite'
+- variable: db.password
+  type: password
+  label: Password
+  group: Database
+  required: true
+  show_if: 'db.type!=SQLite'
+- variable: db.database
+  type: string
+  label: Database Name
+  group: Database
+  required: true
+  show_if: 'db.type!=SQLite'
+
 
 - variable: persistence.type
   default: Ephemeral
+  label: Persistence Type
+  description: Controls where the DATA_DIR is stored. This includes the SQLite DB (if enabled) and screenshots.
   type: enum
   options:
   - Ephemeral

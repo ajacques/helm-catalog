@@ -14,6 +14,8 @@ spec:
       maxUnavailable: 0
     type: RollingUpdate
   template:
+    annotations:
+      checksum/secret: {{ include (print $.Template.BasePath "/server/secret.yaml") . | sha256sum }}
     metadata:
       labels:
         app: server
@@ -58,6 +60,10 @@ spec:
         {{- end }}
         - name: SERVER_NAME
           value: {{ .Values.ingress.hostname }}
+        envFrom:
+          - secretRef:
+              name: credentials
+              optional: false
         image: natlas/server:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
         securityContext:
