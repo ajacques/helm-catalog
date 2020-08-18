@@ -21,8 +21,7 @@ spec:
       containers:
       - args:
         - replacer
-        - --storage
-        - events
+        - --storage=events
         - --auto-offset-reset=latest
         - --max-batch-size
         - "3"

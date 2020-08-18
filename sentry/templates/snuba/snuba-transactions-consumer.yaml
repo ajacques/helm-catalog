@@ -21,10 +21,8 @@ spec:
       containers:
       - args:
         - consumer
-        - --storage
-        - transactions
-        - --consumer-group
-        - transactions_group
+        - --storage=transactions
+        - --consumer-group=transactions_group
         - --auto-offset-reset=earliest
         - --max-batch-time-ms=750
         envFrom:
