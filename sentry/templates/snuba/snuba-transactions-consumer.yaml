@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: snuba-replacer
+  name: snuba-transactions-consumer
 spec:
   selector:
     matchLabels:
-      component: snuba-replacer
+      component: snuba-transactions-consumer
       chart: {{ .Chart.Name }}
   template:
     metadata:
@@ -15,17 +15,18 @@ spec:
         checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: snuba-replacer
+        component: snuba-transactions-consumer
         chart: {{ .Chart.Name }}
     spec:
       containers:
       - args:
-        - replacer
+        - consumer
         - --storage
-        - events
-        - --auto-offset-reset=latest
-        - --max-batch-size
-        - "3"
+        - transactions
+        - --consumer-group
+        - transactions_group
+        - --auto-offset-reset=earliest
+        - --max-batch-time-ms=750
         envFrom:
         - secretRef:
             name: sentry
@@ -38,7 +39,7 @@ spec:
             optional: false
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
-        name: snuba-replacer
+        name: snuba-outcomes-consumer
         securityContext:
           capabilities:
             add:
