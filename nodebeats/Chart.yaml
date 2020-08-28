@@ -1,4 +1,4 @@
 apiVersion: v1
 description: Configures a bunch of beats instances to log info to Elasticsearch
 name: nodebeats
-version: 0.0.3
+version: 0.0.4
