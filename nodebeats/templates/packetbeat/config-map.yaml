@@ -5,7 +5,7 @@ metadata:
 data:
   packetbeat.yml: |-
     setup:
-      kibana.host: kibana-kibana.elasticsearch.svc.cluster.local
+      kibana.host: {{ .Values.kibana.hostname }}
       dashboards.enabled: true
       template:
         name: packetbeat

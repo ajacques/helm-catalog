@@ -9,3 +9,8 @@ questions:
   default: packetbeat-%{+YYYY.MM}
   type: string
   required: true
+
+- variable: kibana.hostname
+  type: string
+  required: true
+  label: Kibana Hostname
