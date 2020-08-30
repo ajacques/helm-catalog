@@ -37,7 +37,7 @@ spec:
             optional: false
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
-        name: snuba-outcomes-consumer
+        name: snuba-transactions-consumer
         securityContext:
           capabilities:
             add:

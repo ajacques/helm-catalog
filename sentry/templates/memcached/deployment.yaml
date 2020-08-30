@@ -31,7 +31,7 @@ spec:
         - memcached
         - -m
         - "128"
-        image: memcached:1.5-alpine
+        image: memcached:1.6.6-alpine
         imagePullPolicy: Always
         name: memcached
         resources:
@@ -46,7 +46,7 @@ spec:
           readOnlyRootFilesystem: false
           runAsNonRoot: false
 {{- if .Values.prometheus.enabled }}
-      - image: quay.io/prometheus/memcached-exporter:v0.5.0
+      - image: quay.io/prometheus/memcached-exporter:v0.7.0
         imagePullPolicy: IfNotPresent
         name: metrics
         ports:
