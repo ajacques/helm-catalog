@@ -13,7 +13,8 @@ questions:
   group: Storage
   label: Hostname
   required: true
-  show_if: 'db.type=MySQL'
+
+
 - variable: db.database
   type: string
   group: Storage
@@ -32,14 +33,6 @@ questions:
   group: Storage
   required: true
   show_if: 'db.type=MySQL'
-
-- variable: elasticsearch.hosts
-  type: string
-  label: Elasticsearch hosts
-  group: Storage
-  description: 'scheme://hostname:port'
-  required: true
-  show_if: 'db.type=Elasticsearch'
 
 - variable: ingress.hostname
   type: hostname

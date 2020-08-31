@@ -28,7 +28,7 @@ spec:
         {{- else if eq .Values.db.type "Elasticsearch" }}
           value: elasticsearch
         - name: ES_HOSTS
-          value: {{ .Values.elasticsearch.hosts }}
+          value: {{ .Values.db.host }}
         {{- end }}
         image: openzipkin/zipkin:2.21.6
         imagePullPolicy: Always
