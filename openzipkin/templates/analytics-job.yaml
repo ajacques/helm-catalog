@@ -13,14 +13,20 @@ spec:
           restartPolicy: OnFailure
           containers:
           - env:
+            - name: STORAGE_TYPE
+            {{- if eq .Values.db.type "MySQL" }}
+              value: mysql
             - name: MYSQL_HOST
               value: {{ .Values.db.host }}
-            - name: STORAGE_TYPE
-              value: mysql
             envFrom:
-            - secretRef:
-                name: credentials
-                optional: false
-            image: openzipkin/zipkin-dependencies:2.3.2
+              - secretRef:
+                  name: credentials
+                  optional: false
+            {{- else if eq .Values.db.type "Elasticsearch" }}
+              value: elasticsearch
+            - name: ES_HOSTS
+              value: {{ .Values.elasticsearch.hosts }}
+            {{- end }}
+            image: openzipkin/zipkin-dependencies:2.4.1
             name: dependencies
   schedule: 0 * * * *

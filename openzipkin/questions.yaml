@@ -5,6 +5,7 @@ questions:
   required: true
   options:
   - MySQL
+  - Elasticsearch
   label: Database Type
 
 - variable: db.host
@@ -31,6 +32,14 @@ questions:
   group: Storage
   required: true
   show_if: 'db.type=MySQL'
+
+- variable: elasticsearch.hosts
+  type: string
+  label: Elasticsearch hosts
+  group: Storage
+  description: 'scheme://hostname:port'
+  required: true
+  show_if: 'db.type=Elasticsearch'
 
 - variable: ingress.hostname
   type: hostname
