@@ -172,7 +172,6 @@ questions:
     group: HTTP
     required: false
     label: NGINX Cache Zone
-    show_if: 'ingress.cache.enabled'
     description: 'Specifies the NGINX cache zone. NOTE: A zone must be configured in the nginx-ingress ConfigMap. See: [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache)'
 
 - variable: prometheus.enabled
