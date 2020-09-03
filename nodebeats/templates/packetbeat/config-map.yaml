@@ -18,9 +18,6 @@ data:
       - 53
       include_authorities: true
       include_additionals: true
-    packetbeat.flows:
-      timeout: 30s
-      period: 10s
     processors:
       - add_docker_metadata:
           host: "unix:///var/run/docker.sock"

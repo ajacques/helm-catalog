@@ -1,6 +1,6 @@
 questions:
 
-- variable: config.output.elasticsearch.host
+- variable: config.output.elasticsearch.hosts
   default: http://elasticsearch:9200
   type: string
   required: true

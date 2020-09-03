@@ -16,6 +16,7 @@ spec:
       serviceAccountName: beat-service-account
       terminationGracePeriodSeconds: 30
       hostNetwork: true
+      hostPID: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: packetbeat
@@ -26,12 +27,12 @@ spec:
         - /etc/packetbeat.yml
         - -e
         securityContext:
-          runAsUser: 0
           capabilities:
             add:
             - NET_ADMIN
             - NET_RAW
           privileged: true
+          runAsUser: 0
         volumeMounts:
         - name: config
           mountPath: /etc/packetbeat.yml
