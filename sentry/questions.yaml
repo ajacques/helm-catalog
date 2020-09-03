@@ -125,6 +125,7 @@ questions:
 
 - variable: relay.version
   type: string
+  required:
   group: Versions
   default: 20.8.0
 
@@ -132,10 +133,32 @@ questions:
   type: hostname
   group: HTTP
   label: UI Hostname
+
+- variable: ingress.tls_secret_source
+  type: enum
+  label: TLS Secret Source
+  group: HTTP
+  description: If TLS is enabled, where should we find the TLS certificate?
+  default: NoTLS
+  options:
+    - NoTLS
+    - ExistingSecret
+    - Replicated
+
 - variable: ingress.tls_secret_name
   type: string
   group: HTTP
+  required: true
+  show_if: 'ingress.tls_secret_source=ExistingSecret'
   label: TLS Certificate Name
+
+- variable: ingress.tls_replicate_from
+  type: string
+  group: HTTP
+  required: true
+  show_if: 'ingress.tls_secret_source=Replicated'
+  label: TLS Secret To Replicate
+  description: 'namespace/secret-name'
 
 - variable: ingress.cache.enabled
   type: boolean
@@ -148,6 +171,7 @@ questions:
   group: HTTP
   required: false
   label: NGINX Cache Zone
+  show_if: 'ingress.cache.enabled'
   description: 'Specifies the NGINX cache zone. NOTE: A zone must be configured in the nginx-ingress ConfigMap. See: [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache)'
 
 - variable: prometheus.enabled
@@ -157,7 +181,7 @@ questions:
   label: Enable Prometheus Scraping
 
 - variable: kafka.hostname
-  type: hostname
+  type: string
   group: kafka
   label: Kafka Hostname
   description: 'Specify the Kafka hostname + port (hostname.:9092).'

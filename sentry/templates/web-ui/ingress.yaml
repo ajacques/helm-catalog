@@ -15,13 +15,13 @@ spec:
       - backend:
           serviceName: web
           servicePort: 9000
-  {{- if ne .Values.ingress.tls_secret_source 'NoTLS' }}
+  {{- if ne .Values.ingress.tls_secret_source "NoTLS" }}
   tls:
   - hosts:
     - {{ .Values.ingress.hostname }}
-    {{- if eq .Values.ingress.tls_secret_source 'ExistingSecret' }}
+    {{- if eq .Values.ingress.tls_secret_source "ExistingSecret" }}
     secretName: {{ .Values.ingress.tls_secret_name }}
-    {{- else if eq .Values.ingress.tls_secret_source 'Replicated' }}
+    {{- else if eq .Values.ingress.tls_secret_source "Replicated" }}
     secretName: sentry-cert
     {{- end }}
   {{- end }}
