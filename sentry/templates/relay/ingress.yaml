@@ -18,10 +18,12 @@ spec:
           serviceName: relay
           servicePort: 3000
         path: /api/store
+        pathType: Exact
       - backend:
           serviceName: relay
           servicePort: 3000
         path: /api/[1-9]+/.*$
+        pathType: ImplementationSpecific
   {{- if .Values.ingress.tls_secret_name }}
   tls:
   - hosts:

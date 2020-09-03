@@ -26,6 +26,7 @@ spec:
           serviceName: web
           servicePort: 9000
         path: /_static
+        pathType: Prefix
   {{- if .Values.ingress.tls_secret_name }}
   tls:
   - hosts:
