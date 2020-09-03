@@ -8,6 +8,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  serviceName: clickhouse
   replicas: 1
   selector:
     matchLabels:
