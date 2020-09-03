@@ -14,9 +14,9 @@ spec:
       maxUnavailable: 0
     type: RollingUpdate
   template:
-    annotations:
-      checksum/secret: {{ include (print $.Template.BasePath "/server/secret.yaml") . | sha256sum }}
     metadata:
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/server/secret.yaml") . | sha256sum }}
       labels:
         app: server
         chart: {{ .Chart.Name }}
