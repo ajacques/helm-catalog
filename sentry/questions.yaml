@@ -165,14 +165,15 @@ questions:
   group: HTTP
   label: Enable Proxy Caching
   description: If enabled, certain assets will be cached on the front-end proxy for improved performance.
-
-- variable: ingress.cache.nginx_cache_zone
-  type: string
-  group: HTTP
-  required: false
-  label: NGINX Cache Zone
-  show_if: 'ingress.cache.enabled'
-  description: 'Specifies the NGINX cache zone. NOTE: A zone must be configured in the nginx-ingress ConfigMap. See: [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache)'
+  show_subquestion_if: true
+  subquestions:
+  - variable: ingress.cache.nginx_cache_zone
+    type: string
+    group: HTTP
+    required: false
+    label: NGINX Cache Zone
+    show_if: 'ingress.cache.enabled'
+    description: 'Specifies the NGINX cache zone. NOTE: A zone must be configured in the nginx-ingress ConfigMap. See: [proxy_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache)'
 
 - variable: prometheus.enabled
   type: boolean
