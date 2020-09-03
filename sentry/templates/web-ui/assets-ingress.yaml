@@ -37,3 +37,4 @@ spec:
     secretName: sentry-cert
     {{- end }}
   {{- end }}
+{{- end }}
