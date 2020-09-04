@@ -17,3 +17,5 @@ spec:
       - backend:
           serviceName: server
           servicePort: 5000
+        path: /
+        pathType: Prefix

@@ -111,6 +111,12 @@ questions:
   group: Monitoring
   label: Sentry.io Agent DSN
 
+- variable: sentry.environment
+  type: string
+  group: Monitoring
+  label: Sentry Environment Name
+  description: 'Defines what the environment tag will contain on all requests. e.g. production'
+
 # Tracing
 - variable: tracing.type
   default: None

@@ -48,6 +48,10 @@ spec:
         - name: SENTRY_DSN
           value: {{ .Values.sentry.dsn.server }}
         {{- end }}
+        {{- if .Values.sentry.environment }}
+        - name: SENTRY_ENVIRONMENT
+          value: {{ .Values.sentry.environment }}
+        {{- end }}
         {{- if .Values.sentry.dsn.webapp }}
         - name: SENTRY_JS_DSN
           value: {{ .Values.sentry.dsn.webapp }}

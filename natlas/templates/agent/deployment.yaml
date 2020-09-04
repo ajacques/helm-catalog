@@ -23,6 +23,10 @@ spec:
         - name: SENTRY_DSN
           value: {{ .Values.sentry.dsn.agent }}
         {{- end }}
+        {{- if .Values.sentry.environment }}
+        - name: SENTRY_ENVIRONMENT
+          value: {{ .Values.sentry.environment }}
+        {{- end }}
         image: natlas/agent:{{ .Values.image.tag }}
         imagePullPolicy: IfNotPresent
         securityContext:
