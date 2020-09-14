@@ -4,8 +4,17 @@ questions:
   default: BindMount
   type: enum
   options:
+  - BindMount
+  group: persistence
+  required: true
+- variable: persistence.type.filestore
+  default: BindMount
+  label: Specifies how the Sentry filestore should be persisted, if at all.
+  type: enum
+  options:
   - None
   - BindMount
+  - S3
   group: persistence
   required: true
 - variable: persistence.bind_mount.base_dir
@@ -13,7 +22,34 @@ questions:
   label: Base directory
   group: persistence
   description: Specifies a directory on the host to mount all persistent folders.
-  show_if: 'persistence.type=BindMount'
+  show_if: 'persistence.type=BindMount||persistence.type.filestore=BindMount'
+
+# S3/Minio
+- variable: persistence.s3.bucket_name
+  type: string
+  label: S3 Bucket
+  group: persistence
+  required: true
+  description: Specifies the S3 bucket name
+  show_if: 'persistence.type.filestore=S3'
+- variable: persistence.s3.access_key
+  type: string
+  label: S3 IAM Access Key
+  group: persistence
+  description: Specifies the S3 access key
+  show_if: 'persistence.type.filestore=S3'
+- variable: persistence.s3.secret_key
+  type: password
+  label: S3 IAM Secret Key
+  group: persistence
+  description: Specifies the S3 secret key
+  show_if: 'persistence.type.filestore=S3'
+- variable: persistence.s3.endpoint
+  type: password
+  label: S3 Endpoint
+  group: persistence
+  description: Specifies the S3 endpoint
+  show_if: 'persistence.type.filestore=S3'
 
 - variable: postgres.enabled
   default: true

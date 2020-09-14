@@ -10,6 +10,21 @@ data:
     github-app.private-key: |
 {{ .Values.github.app.private_key | indent 6 }}
 
+    {{- if eq .Values.persistence.type.filestore "BindMount" }}
+    filestore.backend: 'filesystem'
+    {{- if eq .Values.persistence.type.filestore "S3" }}
+    filestore.backend: 's3'
+    {{- with .Values.persistence.s3 }}
+    filestore.options:
+      access_key: {{ .access_key }}
+      secret_key: {{ .secret_key }}
+      bucket_name: {{ .bucket_name }}
+      {{- with .endpoint_url }}
+      endpoint_url: {{ .Values.persistence.s3.endpoint_url }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
+
   sentry.conf.py: |-
     # This file is just Python, with a touch of Django which means
     # you can inherit and tweak settings to your hearts content.
