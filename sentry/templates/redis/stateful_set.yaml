@@ -57,7 +57,7 @@ spec:
 {{- end }}
       volumes:
       - name: datavol
-        {{- if eq .Values.persistence.type "BindMount" }}
+        {{- if eq .Values.persistence.type.storage "BindMount" }}
         hostPath:
           path: {{ .Values.persistence.bind_mount.base_dir }}/redis
           type: ""

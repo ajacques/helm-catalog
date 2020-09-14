@@ -12,7 +12,7 @@ data:
 
     {{- if eq .Values.persistence.type.filestore "BindMount" }}
     filestore.backend: 'filesystem'
-    {{- if eq .Values.persistence.type.filestore "S3" }}
+    {{- else if eq .Values.persistence.type.filestore "S3" }}
     filestore.backend: 's3'
     {{- with .Values.persistence.s3 }}
     filestore.options:
@@ -20,7 +20,7 @@ data:
       secret_key: {{ .secret_key }}
       bucket_name: {{ .bucket_name }}
       {{- with .endpoint_url }}
-      endpoint_url: {{ .Values.persistence.s3.endpoint_url }}
+      endpoint_url: {{ . }}
       {{- end }}
     {{- end }}
     {{- end }}

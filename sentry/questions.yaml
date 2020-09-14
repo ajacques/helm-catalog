@@ -1,6 +1,6 @@
 questions:
 
-- variable: persistence.type
+- variable: persistence.type.storage
   default: BindMount
   type: enum
   options:
@@ -22,7 +22,7 @@ questions:
   label: Base directory
   group: persistence
   description: Specifies a directory on the host to mount all persistent folders.
-  show_if: 'persistence.type=BindMount||persistence.type.filestore=BindMount'
+  show_if: 'persistence.type.storage=BindMount||persistence.type.filestore=BindMount'
 
 # S3/Minio
 - variable: persistence.s3.bucket_name
