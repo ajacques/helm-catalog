@@ -21,7 +21,7 @@ spec:
         chart: {{ .Chart.Name }}
     spec:
       containers:
-      - image: yandex/clickhouse-server:20.4
+      - image: yandex/clickhouse-server:20.3.9.70
         imagePullPolicy: Always
         name: clickhouse
         terminationMessagePolicy: FallbackToLogsOnError

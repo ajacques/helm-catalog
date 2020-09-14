@@ -34,6 +34,8 @@ spec:
             name: cleanup
             securityContext:
               capabilities:
+                add:
+                - SETUID
                 drop:
                 - ALL
             volumeMounts:

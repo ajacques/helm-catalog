@@ -4,6 +4,7 @@ questions:
   default: BindMount
   type: enum
   options:
+  - None
   - BindMount
   group: persistence
   required: true
