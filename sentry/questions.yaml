@@ -45,7 +45,7 @@ questions:
   description: Specifies the S3 secret key
   show_if: 'persistence.type.filestore=S3'
 - variable: persistence.s3.endpoint
-  type: password
+  type: string
   label: S3 Endpoint
   group: persistence
   description: Specifies the S3 endpoint
