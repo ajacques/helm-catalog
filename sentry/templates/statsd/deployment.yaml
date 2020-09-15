@@ -1,0 +1,31 @@
+{{- if .Values.prometheus.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: statsd
+spec:
+  selector:
+    matchLabels:
+      component: statsd
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: '9102'
+        prometheus.io/scrape: 'true'
+      labels:
+        component: statsd
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args:
+        - --statsd.listen-udp=:8125
+        - --web.listen-address=:9102
+        image: prom/statsd-exporter:v0.18.0
+        imagePullPolicy: Always
+        name: statsd
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+{{- end }}

@@ -266,6 +266,12 @@ data:
     SENTRY_RELAY_WHITELIST_PK = ['{{ .Values.relay.public_key }}']
     {{- end }}
 
+    {{- if .Values.prometheus.enabled }}
+    SENTRY_METRICS_BACKEND = 'sentry.metrics.statsd.StatsdMetricsBackend'
+    SENTRY_METRICS_OPTIONS = {
+        'host': 'statsd.{{ .Release.Namespace }}.svc.cluster.local.'
+    }
+    {{- end }}
 kind: ConfigMap
 metadata:
   name: sentryconfig
