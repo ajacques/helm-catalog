@@ -70,6 +70,7 @@ questions:
   group: HTTP
   label: Enable Proxy Caching
   description: If enabled, certain assets will be cached on the front-end proxy for improved performance.
+  show_subquestion_if: true
   subquestions:
   - variable: ingress.cache.nginx_cache_zone
     type: string
