@@ -12,6 +12,8 @@ spec:
       - backend:
           serviceName: openzipkin-backend
           servicePort: 9411
+        pathType: Prefix
+        path: '/'
   {{- if .Values.ingress.tls_secret_name }}
   tls:
   - hosts:
