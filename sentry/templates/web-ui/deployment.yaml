@@ -24,7 +24,18 @@ spec:
         component: web
         chart: {{ .Chart.Name }}
     spec:
-      affinity: {}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: component
+                  operator: In
+                  values:
+                  - web
+              topologyKey: kubernetes.io/hostname
+            weight: 100
       containers:
       - args:
         - run

@@ -18,6 +18,31 @@ spec:
         component: snuba-api
         chart: {{ .Chart.Name }}
     spec:
+      affinity:
+        podAffinity:
+          # Affinity to run near the Clickhouse store
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 50
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: component
+                    operator: In
+                    values:
+                    - clickhouse
+                topologyKey: kubernetes.io/hostname
+        # Affinity not to run multiple instances on the same pod
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: component
+                  operator: In
+                  values:
+                  - snuba-api
+              topologyKey: kubernetes.io/hostname
+            weight: 100
       containers:
       # Snuba doesn't tag versions meaningfully, so we freeze ourselves
       - image: getsentry/snuba:{{ .Values.snuba.version }}
