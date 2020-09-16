@@ -22,10 +22,13 @@ spec:
           serviceName: openzipkin-backend
           servicePort: 9411
         path: /zipkin/.*\.(css|js|woff2)$
-  {{- if .Values.ingress.tls_secret_name }}
+  {{- if ne .Values.ingress.tls_secret_source "NoTLS" }}
   tls:
   - hosts:
     - {{ .Values.ingress.hostname }}
+    {{- if eq .Values.ingress.tls_secret_source "ExistingSecret" }}
     secretName: {{ .Values.ingress.tls_secret_name }}
+    {{- else if eq .Values.ingress.tls_secret_source "Replicated" }}
+    secretName: replicated-cert
+    {{- end }}
   {{- end }}
-{{- end }}
