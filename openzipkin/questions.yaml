@@ -1,7 +1,7 @@
 questions:
 - variable: db.type
   type: enum
-  group: storage
+  group: Storage
   required: true
   options:
   - MySQL
