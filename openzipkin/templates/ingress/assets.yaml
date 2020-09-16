@@ -32,3 +32,4 @@ spec:
     secretName: replicated-cert
     {{- end }}
   {{- end }}
+{{- end }}
