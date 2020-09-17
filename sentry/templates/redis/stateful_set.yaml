@@ -39,7 +39,7 @@ spec:
           value: '127.0.0.1'
         - name: REDIS_EXPORTER_REDIS_ONLY_METRICS
           value: 'true'
-        image: oliver006/redis_exporter:v1.0.4
+        image: oliver006/redis_exporter:v1.11.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9121

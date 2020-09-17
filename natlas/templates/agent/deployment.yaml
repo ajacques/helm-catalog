@@ -28,7 +28,9 @@ spec:
           value: {{ .Values.sentry.environment }}
         {{- end }}
         image: natlas/agent:{{ .Values.image.tag }}
-        imagePullPolicy: IfNotPresent
+        {{- if eq .Values.image.tag "latest" }}
+        imagePullPolicy: Always
+        {{- end }}
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

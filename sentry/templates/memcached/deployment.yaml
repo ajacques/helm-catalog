@@ -31,7 +31,7 @@ spec:
         - memcached
         - -m
         - "128"
-        image: memcached:1.6.6-alpine
+        image: memcached:1.6.7-alpine
         imagePullPolicy: Always
         name: memcached
         resources:
