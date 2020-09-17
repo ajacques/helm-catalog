@@ -93,6 +93,32 @@ questions:
   group: HTTP
   label: UI Hostname
 
+- variable: ingress.tls_secret_source
+  type: enum
+  label: TLS Secret Source
+  group: HTTP
+  description: If TLS is enabled, where should we find the TLS certificate?
+  default: NoTLS
+  options:
+    - NoTLS
+    - ExistingSecret
+    - Replicated
+
+- variable: ingress.tls_secret_name
+  type: string
+  group: HTTP
+  required: true
+  show_if: 'ingress.tls_secret_source=ExistingSecret'
+  label: TLS Certificate Name
+
+- variable: ingress.tls_replicate_from
+  type: string
+  group: HTTP
+  required: true
+  show_if: 'ingress.tls_secret_source=Replicated'
+  label: TLS Secret To Replicate
+  description: 'namespace/secret-name'
+
 - variable: sentry.dsn.server
   description: 'A Sentry.io DSN (https://key@example.com/id) for exceptions on the Natlas server.'
   type: string
