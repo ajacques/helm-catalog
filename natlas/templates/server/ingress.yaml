@@ -26,6 +26,6 @@ spec:
     {{- if eq .Values.ingress.tls_secret_source "ExistingSecret" }}
     secretName: {{ .Values.ingress.tls_secret_name }}
     {{- else if eq .Values.ingress.tls_secret_source "Replicated" }}
-    secretName: sentry-cert
+    secretName: cert
     {{- end }}
   {{- end }}
