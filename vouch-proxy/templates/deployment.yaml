@@ -28,6 +28,11 @@ spec:
         imagePullPolicy: Always
         name: vouchproxy
         terminationMessagePolicy: FallbackToLogsOnError
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /config/
           name: config
