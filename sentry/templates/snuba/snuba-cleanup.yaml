@@ -35,6 +35,7 @@ spec:
             securityContext:
               capabilities:
                 add:
+                - SETGID
                 - SETUID
                 drop:
                 - ALL
