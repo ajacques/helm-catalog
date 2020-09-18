@@ -173,9 +173,3 @@ questions:
   placeholder: 'http://hostname:port'
   description: An hostname and optional port.
   show_if: 'tracing.type=OpenZipkin'
-
-# Swagger
-- variable: swagger.enabled
-  type: boolean
-  default: false
-  label: Enable Swagger UI

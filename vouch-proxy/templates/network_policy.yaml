@@ -7,25 +7,25 @@ spec:
     matchLabels:
       chart: {{ .Chart.Name }}
   policyTypes:
-  - Ingress
-  - Egress
+    - Ingress
+    - Egress
   ingress:
-  - from:
-    - namespaceSelector: {}
-    ports:
-    - protocol: TCP
-      port: 9090
-  egress:
-  # Permit DNS
-  - ports:
-    - port: 53
-      protocol: UDP
-    - port: 53
-      protocol: TCP
-  # Permit outbound traffic for OAuth
-  - to:
-    - ipBlock:
-        cidr: 0.0.0.0/0
+    - from:
+      # Granted because NGINX runs on the hostNetwork
+        - ipBlock:
+            cidr: 0.0.0.0/0
+        - namespaceSelector: {}
       ports:
-      - port: 443
+        - protocol: TCP
+          port: 9090
+  egress:
+    # Permit DNS
+    - ports:
+      - port: 53
+        protocol: UDP
+      - port: 53
         protocol: TCP
+    # Permit outbound traffic for OAuth
+    - ports:
+        - port: 443
+          protocol: TCP
