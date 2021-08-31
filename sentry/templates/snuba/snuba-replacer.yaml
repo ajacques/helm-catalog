@@ -21,10 +21,9 @@ spec:
       containers:
       - args:
         - replacer
-        - --storage=events
+        - --storage=errors
         - --auto-offset-reset=latest
-        - --max-batch-size
-        - "3"
+        - --max-batch-size=3
         envFrom:
         - secretRef:
             name: sentry

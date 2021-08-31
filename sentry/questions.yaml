@@ -151,20 +151,20 @@ questions:
   required: true
   group: Versions
   label: Sentry Version
-  default: 20.8.0
+  default: 21.8.0
 
 - variable: snuba.version
   type: string
   required: true
   group: Versions
   label: Snuba Version
-  default: 20.8.0
+  default: 21.8.0
 
 - variable: relay.version
   type: string
   required:
   group: Versions
-  default: 20.8.0
+  default: 21.8.0
 
 - variable: ingress.hostname
   type: hostname
@@ -227,7 +227,7 @@ questions:
   type: int
   label: Number of UI Workers
   group: Scaling
-  min: 1
+  min: 0
   default: 4
   max: 128
   description: 'Number of workers per replica to run.'
@@ -236,7 +236,7 @@ questions:
   type: int
   label: Number of Snuba Workers
   group: Scaling
-  min: 1
+  min: 0
   default: 4
   max: 128
   description: 'Number of workers per replica to run for the snuba API.'

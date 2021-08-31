@@ -1,14 +1,14 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: snuba-cleanup
+  name: snuba-transactions-cleanup
 spec:
   concurrencyPolicy: Replace
   failedJobsHistoryLimit: 1
   jobTemplate:
     metadata:
       labels:
-        component: cleanup
+        component: transactions-cleanup
         release: sentry-sentry
     spec:
       backoffLimit: 1
@@ -18,7 +18,7 @@ spec:
           - args:
             - cleanup
             - --storage
-            - errors
+            - transactions
             - --dry-run
             - "False"
             envFrom:
@@ -33,7 +33,7 @@ spec:
                 optional: false
             image: getsentry/snuba:{{ .Values.snuba.version }}
             imagePullPolicy: Always
-            name: cleanup
+            name: transactions-cleanup
             securityContext:
               capabilities:
                 add:
