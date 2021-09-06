@@ -16,6 +16,11 @@ spec:
       chart: {{ .Chart.Name }}
   template:
     metadata:
+      {{- if .Values.prometheus.enabled }}
+      annotations:
+        prometheus.io/port: '9102'
+        prometheus.io/scrape: 'true'
+      {{- end }}
       labels:
         component: clickhouse
         chart: {{ .Chart.Name }}
@@ -28,6 +33,10 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/clickhouse
           name: datavol
+        - mountPath: /etc/clickhouse-server/config.d/sentry.xml
+          name: config
+          readOnly: true
+          subPath: sentry.xml
       volumes:
       - name: datavol
         {{- if eq .Values.persistence.type.storage "BindMount" }}
@@ -35,3 +44,8 @@ spec:
           path: {{ .Values.persistence.bind_mount.base_dir }}/clickhouse
           type: DirectoryOrCreate
         {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: clickhouse
+          optional: false
+        name: config
