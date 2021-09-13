@@ -21,6 +21,7 @@ spec:
 {{- if .Values.prometheus.enabled }}
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9150'
+        'match-regex.version-checker.io/memcached': '^\d+\.\d+\.\d+-alpine'
 {{- end }}
       labels:
         component: memcached
