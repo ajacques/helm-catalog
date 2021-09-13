@@ -46,6 +46,6 @@ spec:
         {{- end }}
       - configMap:
           defaultMode: 292
-          name: clickhouse
+          name: clickhouse-config
           optional: false
         name: config
