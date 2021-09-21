@@ -1,19 +1,19 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: sentry-upgrade
+  name: snuba-upgrade
   labels:
     chart: {{ .Chart.Name }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "-5"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: hook-succeeded
 spec:
   template:
     metadata:
-      name: sentry-upgrade
+      name: snuba-upgrade
       labels:
-        component: sentry-upgrade
+        component: snuba-upgrade
         release: {{ template "sentry.fullname" . }}
     spec:
       restartPolicy: Never
