@@ -21,6 +21,7 @@ spec:
       - args:
           - migrations
           - migrate
+          - --force
         envFrom:
           - secretRef:
               name: sentry
