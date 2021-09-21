@@ -6,7 +6,7 @@ metadata:
     chart: {{ .Chart.Name }}
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-weight": 5
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
@@ -31,7 +31,7 @@ spec:
               name: snuba-config
               optional: false
         image: getsentry/sentry:{{ .Values.sentry.version }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: sentry-upgrade
         volumeMounts:
           - mountPath: /var/lib/sentry/files

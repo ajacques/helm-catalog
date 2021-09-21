@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-setup
+  labels:
+    chart: {{ .Chart.Name }}
+  annotations:
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: 1
+    helm.sh/hook-delete-policy: hook-succeeded
+spec:
+  template:
+    metadata:
+      name: kafka-setup
+      labels:
+        component: kafka-setup
+        release: {{ template "sentry.fullname" . }}
+    spec:
+      restartPolicy: Never
+      containers:
+      - args:
+          - /bin/sh
+          - /create-kakfa-topics.sh
+        image: confluentinc/cp-kafka:5.5.0
+        imagePullPolicy: IfNotPresent
+        name: kafka-setup
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
+            drop:
+              - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        volumeMounts:
+          - mountPath: /create-kakfa-topics.sh
+            name: installsh
+            readOnly: true
+            subPath: create-kakfa-topics.sh
+      volumes:
+        - configMap:
+            defaultMode: 292
+            name: install-files
+            optional: false
+          name: installsh
