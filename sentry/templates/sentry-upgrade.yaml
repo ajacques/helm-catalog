@@ -19,43 +19,43 @@ spec:
       containers:
       - args:
           - upgrade
-      envFrom:
-        - secretRef:
-            name: sentry
-            optional: false
-        - configMapRef:
-            name: sentry
-            optional: false
-        - configMapRef:
-            name: snuba-config
-            optional: false
-      image: getsentry/sentry:{{ .Values.sentry.version }}
-      imagePullPolicy: Always
-      name: sentry-upgrade
-      volumeMounts:
-        - mountPath: /var/lib/sentry/files
-          name: files
-        - mountPath: /etc/sentry/config.yml
-          name: configyml
-          readOnly: true
-          subPath: config.yml
-        - mountPath: /etc/sentry/sentry.conf.py
-          name: configyml
-          readOnly: true
-          subPath: sentry.conf.py
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          add:
-            - CHOWN
-            - SETGID
-            - SETUID
-          drop:
-            - ALL
-        privileged: false
-        procMount: Default
-        readOnlyRootFilesystem: false
-        runAsNonRoot: false
+        envFrom:
+          - secretRef:
+              name: sentry
+              optional: false
+          - configMapRef:
+              name: sentry
+              optional: false
+          - configMapRef:
+              name: snuba-config
+              optional: false
+        image: getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: Always
+        name: sentry-upgrade
+        volumeMounts:
+          - mountPath: /var/lib/sentry/files
+            name: files
+          - mountPath: /etc/sentry/config.yml
+            name: configyml
+            readOnly: true
+            subPath: config.yml
+          - mountPath: /etc/sentry/sentry.conf.py
+            name: configyml
+            readOnly: true
+            subPath: sentry.conf.py
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
+            drop:
+              - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
       volumes:
         - name: files
           {{- if eq .Values.persistence.type.filestore "BindMount" }}
