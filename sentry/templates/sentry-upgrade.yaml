@@ -58,11 +58,11 @@ spec:
         runAsNonRoot: false
       volumes:
         - name: files
-          { { - if eq .Values.persistence.type.filestore "BindMount" } }
+          {{ - if eq .Values.persistence.type.filestore "BindMount" }}
           hostPath:
-            path: { { .Values.persistence.bind_mount.base_dir } }/filestore
+            path: { { .Values.persistence.bind_mount.base_dir }}/filestore
             type: ""
-          { { - end } }
+          {{ - end }}
         - configMap:
             defaultMode: 292
             name: sentryconfig
