@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sentry-upgrade
+  labels:
+    chart: {{ .Chart.Name }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+spec:
+  template:
+    metadata:
+      name: sentry-upgrade
+      labels:
+        component: sentry-upgrade
+        release: {{ template "sentry.fullname" . }}
+    spec:
+      restartPolicy: Never
+      containers:
+      - args:
+          - migrations
+          - migrate
+          envFrom:
+            - secretRef:
+                name: sentry
+                optional: false
+            - configMapRef:
+                name: sentry
+                optional: false
+            - configMapRef:
+                name: snuba-config
+                optional: false
+          image: getsentry/snuba:{{ .Values.snuba.version }}
+          imagePullPolicy: IfNotPresent
+          name: snuba-upgrade
+          securityContext:
+            capabilities:
+              add:
+                - CHOWN
+                - SETGID
+                - SETUID
+              drop:
+                - ALL
+          volumeMounts:
+            - mountPath: /etc/sentry/config.yml
+              name: configyml
+              readOnly: true
+              subPath: config.yml
+            - mountPath: /etc/sentry/sentry.conf.py
+              name: configyml
+              readOnly: true
+              subPath: sentry.conf.py
+      volumes:
+        - configMap:
+            defaultMode: 292
+            name: sentryconfig
+            optional: false
+          name: configyml

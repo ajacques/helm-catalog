@@ -44,7 +44,6 @@ spec:
               topologyKey: kubernetes.io/hostname
             weight: 100
       containers:
-      # Snuba doesn't tag versions meaningfully, so we freeze ourselves
       - image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: Always
         name: snuba
