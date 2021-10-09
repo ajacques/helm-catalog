@@ -2,6 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: redis-network-policy
+  annotations:
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: '1'
 spec:
   podSelector:
     matchLabels:

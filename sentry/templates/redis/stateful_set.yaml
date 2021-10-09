@@ -2,6 +2,9 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: redis
+  annotations:
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: '1'
   labels:
     app: {{ template "sentry.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
