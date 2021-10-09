@@ -13,9 +13,10 @@ spec:
     http:
       paths:
       - backend:
-          name: web
-          port:
-            number: 9000
+          service:
+            name: web
+            port:
+              number: 9000
         path: /
         pathType: Prefix
   {{- if ne .Values.ingress.tls_secret_source "NoTLS" }}
