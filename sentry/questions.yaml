@@ -250,3 +250,17 @@ questions:
   type: string
   group: Relay
   description: Specifices the private key from 'relay credentials generate --stdout'
+
+- variable: loglevel
+  type: enum
+  options:
+    - WARN
+    - INFO
+    - DEBUG
+  description: Defines
+
+- variable: geoip.enabled
+  type: boolean
+  group: Event Processing
+  default: false
+  description: "Automatically update a GeoIP database that Sentry can use to assign events to countries."
