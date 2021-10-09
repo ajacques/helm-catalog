@@ -45,7 +45,7 @@ spec:
             weight: 100
       containers:
       - image: getsentry/snuba:{{ .Values.snuba.version }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: snuba
         terminationMessagePolicy: FallbackToLogsOnError
         env:

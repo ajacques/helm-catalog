@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - image: yandex/clickhouse-server:20.3.9.70
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: clickhouse
         terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:

@@ -33,7 +33,7 @@ spec:
         - -m
         - "128"
         image: memcached:1.6.10-alpine
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: memcached
         resources:
           limits:

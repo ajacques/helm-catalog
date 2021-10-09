@@ -32,7 +32,7 @@ spec:
                 name: snuba-config
                 optional: false
             image: getsentry/snuba:{{ .Values.snuba.version }}
-            imagePullPolicy: Always
+            imagePullPolicy: IfNotPresent
             name: cleanup
             securityContext:
               capabilities:

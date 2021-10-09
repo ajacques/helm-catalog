@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - image: redis:6.2.5
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: redis
         volumeMounts:
         - mountPath: /data

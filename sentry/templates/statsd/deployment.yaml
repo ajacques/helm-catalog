@@ -22,7 +22,7 @@ spec:
         - --statsd.listen-udp=:8125
         - --web.listen-address=:9102
         image: prom/statsd-exporter:v0.18.0
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: statsd
         securityContext:
           capabilities:

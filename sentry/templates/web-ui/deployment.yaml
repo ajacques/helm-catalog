@@ -53,7 +53,7 @@ spec:
             name: sentry
             optional: false
         image: getsentry/sentry:{{ .Values.sentry.version }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: web
         volumeMounts:
         - mountPath: /var/lib/sentry/files

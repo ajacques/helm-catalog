@@ -36,7 +36,7 @@ spec:
             name: sentry
             optional: false
         image: getsentry/sentry:{{ .Values.sentry.version }}
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: cron
         resources:
           limits:
