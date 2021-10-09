@@ -15,8 +15,9 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: relay
-          servicePort: 3000
+          name: relay
+          port:
+            number: 3000
         path: /api/store
         pathType: Exact
       - backend:
