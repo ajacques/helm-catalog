@@ -278,3 +278,6 @@ data:
 kind: ConfigMap
 metadata:
   name: sentryconfig
+  annotations:
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: '0'
