@@ -19,7 +19,9 @@ spec:
     - podSelector: {}
     ports:
     - protocol: TCP
-      port: 8123 # Clickhouse
+      port: 8123 # Clickhouse HTTP
+    - protocol: TCP
+      port: 9000 # Clickhouse TCP Native
   - from:
     - namespaceSelector: {}
     ports:
