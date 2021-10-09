@@ -18,7 +18,7 @@ spec:
   - from:
     - podSelector: {}
     ports:
-    - protocol: UDP
+    - protocol: TCP
       port: 8123 # Clickhouse
   - from:
     - namespaceSelector: {}
