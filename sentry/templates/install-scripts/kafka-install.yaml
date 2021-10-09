@@ -23,6 +23,10 @@ spec:
         image: confluentinc/cp-kafka:5.5.0
         imagePullPolicy: IfNotPresent
         name: kafka-setup
+        envFrom:
+          - configMapRef:
+              name: snuba-config
+              optional: false
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
