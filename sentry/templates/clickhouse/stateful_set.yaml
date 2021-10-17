@@ -21,7 +21,7 @@ spec:
     metadata:
       {{- if .Values.prometheus.enabled }}
       annotations:
-        prometheus.io/port: '9102'
+        prometheus.io/port: '8125'
         prometheus.io/scrape: 'true'
       {{- end }}
       labels:

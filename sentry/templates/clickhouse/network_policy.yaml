@@ -20,6 +20,10 @@ spec:
     ports:
     - protocol: TCP
       port: 8123 # Clickhouse HTTP
+    {{- if .Values.prometheus.enabled }}
+    - protocol: TCP
+      port: 8125 # Prometheus Exporter
+    {{- end }}
     - protocol: TCP
       port: 9000 # Clickhouse TCP Native
   - from:
