@@ -19,8 +19,9 @@ spec:
       chart: {{ .Chart.Name }}
   template:
     metadata:
-      {{- if .Values.prometheus.enabled }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/clickhouse/config-map.yaml") . | sha256sum }}
+      {{- if .Values.prometheus.enabled }}
         prometheus.io/port: '8125'
         prometheus.io/scrape: 'true'
       {{- end }}
