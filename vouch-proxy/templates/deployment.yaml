@@ -24,7 +24,7 @@ spec:
         chart: {{ .Chart.Name }}
     spec:
       containers:
-      - image: voucher/vouch-proxy:0.6.4
+      - image: voucher/vouch-proxy:0.27.1
         imagePullPolicy: Always
         name: vouchproxy
         terminationMessagePolicy: FallbackToLogsOnError
