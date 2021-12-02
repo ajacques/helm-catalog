@@ -8,5 +8,5 @@ kind: ConfigMap
 metadata:
   name: snuba-config
   annotations:
-    helm.sh/hook: pre-install
+    helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-weight: '0'
