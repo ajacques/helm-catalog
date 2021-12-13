@@ -24,18 +24,6 @@ spec:
         component: web
         chart: {{ .Chart.Name }}
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: component
-                  operator: In
-                  values:
-                  - web
-              topologyKey: kubernetes.io/hostname
-            weight: 100
       containers:
       - args:
         - run
@@ -79,6 +67,14 @@ spec:
           procMount: Default
           readOnlyRootFilesystem: false
           runAsNonRoot: false
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              component: web
+              chart: sentry
       volumes:
       - name: files
         {{- if eq .Values.persistence.type.filestore "BindMount" }}
