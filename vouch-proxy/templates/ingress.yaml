@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: vouch
@@ -11,8 +11,10 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: vouchproxy
-          servicePort: 9090
+          service:
+            name: vouchproxy
+            port:
+              number: 9090
   {{- if .Values.ingress.tls_secret_name }}
   tls:
   - hosts:

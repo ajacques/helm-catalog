@@ -23,8 +23,11 @@ spec:
     - ports:
       - port: 53
         protocol: UDP
-      - port: 53
-        protocol: TCP
+      to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
     # Permit outbound traffic for OAuth
     - ports:
         - port: 443
