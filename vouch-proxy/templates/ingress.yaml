@@ -16,6 +16,7 @@ spec:
             port:
               number: 9090
         pathType: Prefix
+        path: /
   {{- if .Values.ingress.tls_secret_name }}
   tls:
   - hosts:
