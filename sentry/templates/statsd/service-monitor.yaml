@@ -1,0 +1,17 @@
+{{- if eq .Values.prometheus.type "OperatorCRD" }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: statsd-service-monitor
+spec:
+  endpoints:
+    - targetPort: 9102
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app: {{ template "sentry.name" . }}
+      chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+      release: {{ .Release.Name }}
+{{- end }}
