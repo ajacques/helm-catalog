@@ -57,4 +57,4 @@ spec:
               name: sentryconfig
               optional: false
             name: configyml
-  schedule: "*/5 * * * *"
+  schedule: "*/30 * * * *"
