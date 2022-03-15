@@ -54,3 +54,18 @@ spec:
           procMount: Default
           readOnlyRootFilesystem: false
           runAsNonRoot: false
+        volumeMounts:
+          - mountPath: /etc/sentry/config.yml
+            name: configyml
+            readOnly: true
+            subPath: config.yml
+          - mountPath: /etc/sentry/sentry.conf.py
+            name: configyml
+            readOnly: true
+            subPath: sentry.conf.py
+      volumes:
+        - configMap:
+            defaultMode: 292
+            name: sentryconfig
+            optional: false
+          name: configyml
