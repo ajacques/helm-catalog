@@ -22,7 +22,7 @@ spec:
       - args:
         - consumer
         - --storage=outcomes_raw
-        - --auto-offset-reset=earliest
+        - --auto-offset-reset=latest
         - --max-batch-time-ms=750
         envFrom:
         - secretRef:

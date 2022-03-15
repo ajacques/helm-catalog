@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: snuba-transactions-consumer
+  name: snuba-sessions-consumer
 spec:
   selector:
     matchLabels:
-      component: snuba-transactions-consumer
+      component: snuba-sessions-consumer
       chart: {{ .Chart.Name }}
   template:
     metadata:
@@ -15,14 +15,13 @@ spec:
         checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: snuba-transactions-consumer
+        component: snuba-sessions-consumer
         chart: {{ .Chart.Name }}
     spec:
       containers:
       - args:
         - consumer
-        - --storage=transactions
-        - --consumer-group=transactions_group
+        - --storage=sessions_raw
         - --auto-offset-reset=latest
         - --max-batch-time-ms=750
         envFrom:
@@ -37,7 +36,7 @@ spec:
             optional: false
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
-        name: snuba-transactions-consumer
+        name: snuba-sessions-consumer
         securityContext:
           capabilities:
             add:

@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-subscription-consumer-events
+spec:
+  selector:
+    matchLabels:
+      component: snuba-subscription-consumer-events
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-subscription-consumer-events
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+        - args:
+            - subscriptions
+            - --auto-offset-reset=latest
+            - --consumer-group=snuba-events-subscriptions-consumers
+            - --topic=events
+            - --result-topic=events-subscription-results
+            - --dataset=events
+            - --commit-log-topic=snuba-commit-log
+            - --commit-log-group=snuba-consumers
+            - --delay-seconds=60
+            - --schedule-ttl=60
+          envFrom:
+            - secretRef:
+                name: sentry
+                optional: false
+            - configMapRef:
+                name: sentry
+                optional: false
+            - configMapRef:
+                name: snuba-config
+                optional: false
+          image: getsentry/snuba:{{ .Values.snuba.version }}
+          imagePullPolicy: IfNotPresent
+          name: snuba-subscription-consumer-events
+          securityContext:
+            capabilities:
+              add:
+                - CHOWN
+                - SETGID
+                - SETUID
+              drop:
+                - ALL
+          volumeMounts:
+            - mountPath: /etc/sentry/config.yml
+              name: configyml
+              readOnly: true
+              subPath: config.yml
+            - mountPath: /etc/sentry/sentry.conf.py
+              name: configyml
+              readOnly: true
+              subPath: sentry.conf.py
+      volumes:
+        - configMap:
+            defaultMode: 292
+            name: sentryconfig
+            optional: false
+          name: configyml

@@ -29,10 +29,8 @@ spec:
       - args:
         - run
         - query-subscription-consumer
-        - --commit-batch-size
-        - "1"
-        - --topic
-        - transactions-subscription-results
+        - --commit-batch-size=1
+        - --topic=transactions-subscription-results
         envFrom:
         - secretRef:
             name: sentry
