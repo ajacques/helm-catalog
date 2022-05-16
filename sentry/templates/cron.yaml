@@ -55,6 +55,8 @@ spec:
           readOnlyRootFilesystem: false
           runAsNonRoot: false
         volumeMounts:
+          - mountPath: /var/lib/sentry/files
+            name: files
           - mountPath: /etc/sentry/config.yml
             name: configyml
             readOnly: true
@@ -64,6 +66,8 @@ spec:
             readOnly: true
             subPath: sentry.conf.py
       volumes:
+        - name: files
+          emptyDir: {}
         - configMap:
             defaultMode: 292
             name: sentryconfig
