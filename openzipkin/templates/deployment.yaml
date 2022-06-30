@@ -7,7 +7,6 @@ spec:
     matchLabels:
       app: backend
       chart: {{ .Chart.Name }}
-    type: RollingUpdate
   template:
     metadata:
       labels:
