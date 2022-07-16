@@ -20,16 +20,16 @@ spec:
     spec:
       containers:
         - args:
-            - subscriptions
-            - --auto-offset-reset=latest
-            - --consumer-group=snuba-events-subscriptions-consumers
-            - --topic=events
-            - --result-topic=events-subscription-results
+            - subscriptions-scheduler-executor
             - --dataset=events
-            - --commit-log-topic=snuba-commit-log
-            - --commit-log-group=snuba-consumers
+            - --entity=events
+            - --auto-offset-reset=latest
+            - --no-strict-offset-reset
+            - --consumer-group=snuba-events-subscriptions-consumers
+            - --followed-consumer-group=snuba-consumers
             - --delay-seconds=60
             - --schedule-ttl=60
+            - --stale-threshold-seconds=900
           envFrom:
             - secretRef:
                 name: sentry
