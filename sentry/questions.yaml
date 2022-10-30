@@ -151,20 +151,20 @@ questions:
   required: true
   group: Versions
   label: Sentry Version
-  default: 22.7.0
+  default: 22.10.0
 
 - variable: snuba.version
   type: string
   required: true
   group: Versions
   label: Snuba Version
-  default: 22.7.0
+  default: 22.10.0
 
 - variable: relay.version
   type: string
   required:
   group: Versions
-  default: 22.7.0
+  default: 22.10.0
 
 - variable: ingress.hostname
   type: hostname
@@ -216,6 +216,13 @@ questions:
   default: false
   group: Observability
   label: Enable Prometheus Scraping
+  subquestions:
+  - variable: prometheus.use_crds
+    type: boolean
+    default: false
+    group: Observability
+    label: Use Prometheus Operator CRDs
+
 
 - variable: kafka.hostname
   type: string
