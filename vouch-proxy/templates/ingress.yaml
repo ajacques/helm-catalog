@@ -10,6 +10,9 @@ metadata:
     app: vouchproxy
     chart: {{ .Chart.Name }}
 spec:
+{{- if .Values.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
+{{- end }}
   rules:
   - host: {{ .Values.ingress.hostname }}
     http:
