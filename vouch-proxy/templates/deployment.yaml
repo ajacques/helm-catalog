@@ -23,9 +23,10 @@ spec:
         app: vouchproxy
         chart: {{ .Chart.Name }}
     spec:
+      automountServiceAccountToken: false
       containers:
       - image: quay.io/vouch/vouch-proxy:0.37.3
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         name: vouchproxy
         terminationMessagePolicy: FallbackToLogsOnError
         securityContext:
@@ -40,6 +41,14 @@ spec:
           subPath: config.yml
         - mountPath: /data
           name: data
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: vouchproxy
+              chart: vouch-proxy
       volumes:
       - name: config
         configMap:
