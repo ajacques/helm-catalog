@@ -21,7 +21,7 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/clickhouse/config-map.yaml") . | sha256sum }}
-      {{- if .Values.prometheus.enabled }}
+      {{- if and .Values.prometheus.enabled (not .Values.prometheus.use_crds) }}
         prometheus.io/port: '8125'
         prometheus.io/scrape: 'true'
       {{- end }}

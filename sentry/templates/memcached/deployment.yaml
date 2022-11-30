@@ -22,7 +22,7 @@ spec:
       annotations:
         net.technowizardry.upgrade/version-match: '{version}-alpine'
         match-regex.version-checker.io/memcached: '^\d+\.\d+\.\d+-alpine'
-{{- if .Values.prometheus.enabled }}
+{{- if and .Values.prometheus.enabled (not .Values.prometheus.use_crds) }}
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9150'
 {{- end }}

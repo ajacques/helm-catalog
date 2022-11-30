@@ -13,9 +13,11 @@ spec:
       chart: {{ .Chart.Name }}
   template:
     metadata:
+      {{- if and .Values.prometheus.enabled (not .Values.prometheus.use_crds) }}
       annotations:
         prometheus.io/port: '9102'
         prometheus.io/scrape: 'true'
+      {{- end }}
       labels:
         component: statsd
         chart: {{ .Chart.Name }}

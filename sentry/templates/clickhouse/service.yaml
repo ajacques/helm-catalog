@@ -10,6 +10,7 @@ metadata:
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+    component: clickhouse
 spec:
   clusterIP: None
   selector:
@@ -17,3 +18,8 @@ spec:
     chart: {{ .Chart.Name }}
   sessionAffinity: None
   type: ClusterIP
+  ports:
+  - port: 8125
+    targetPort: 8125
+    protocol: TCP
+    name: metrics

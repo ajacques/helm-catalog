@@ -23,7 +23,7 @@ spec:
       labels:
         component: redis
         chart: {{ .Chart.Name }}
-{{- if .Values.prometheus.enabled }}
+{{- if and .Values.prometheus.enabled (not .Values.prometheus.use_crds) }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9121"

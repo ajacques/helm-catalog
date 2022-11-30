@@ -1,0 +1,17 @@
+{{- if and .Values.prometheus.enabled .Values.prometheus.use_crds }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: redis-service-monitor
+spec:
+  endpoints:
+    - port: metrics
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app: {{ template "sentry.name" . }}
+      release: {{ .Release.Name }}
+      component: redis
+{{- end }}

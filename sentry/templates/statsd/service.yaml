@@ -11,6 +11,7 @@ metadata:
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+    component: statsd
 spec:
   clusterIP: None
   selector:
@@ -18,4 +19,9 @@ spec:
     chart: {{ .Chart.Name }}
   sessionAffinity: None
   type: ClusterIP
+  ports:
+  - port: 9102
+    targetPort: 9102
+    protocol: TCP
+    name: metrics
 {{- end }}
