@@ -30,7 +30,7 @@ spec:
 {{- end }}
     spec:
       containers:
-      - image: redis:6.2.5
+      - image: redis:7.0.5
         imagePullPolicy: IfNotPresent
         name: redis
         volumeMounts:
@@ -43,7 +43,7 @@ spec:
           value: '127.0.0.1'
         - name: REDIS_EXPORTER_REDIS_ONLY_METRICS
           value: 'true'
-        image: oliver006/redis_exporter:v1.27.0
+        image: oliver006/redis_exporter:v1.45.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9121
