@@ -23,7 +23,6 @@ spec:
         - replacer
         - --storage=errors
         - --auto-offset-reset=latest
-        - --max-batch-size=3
         envFrom:
         - secretRef:
             name: sentry
