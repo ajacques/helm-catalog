@@ -44,7 +44,7 @@ spec:
         name: cron
         resources:
           limits:
-            memory: 64Mi
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -58,6 +58,7 @@ spec:
           procMount: Default
           readOnlyRootFilesystem: false
           runAsNonRoot: false
+        stdin: true
         volumeMounts:
           - mountPath: /var/lib/sentry/files
             name: files
