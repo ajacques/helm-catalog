@@ -237,6 +237,7 @@ data:
                 "organizations:sso-rippling",
                 "organizations:sso-saml2",
                 "organizations:advanced-search",
+                "organizations:session-replay",
                 "organizations:suggested-commits",
                 "projects:custom-inbound-filters",
                 "projects:data-forwarding",

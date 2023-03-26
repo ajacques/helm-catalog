@@ -29,8 +29,6 @@ spec:
       - args:
         - run
         - post-process-forwarder
-        - --commit-batch-size
-        - '1'
         - --entity=errors
         envFrom:
         - secretRef:

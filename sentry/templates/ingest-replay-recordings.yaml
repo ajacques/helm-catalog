@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: post-process-forwarder-transactions
+  name: ingest-replay-recordings
   labels:
     app: {{ template "sentry.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -12,7 +12,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      component: post-process-forwarder-transactions
+      component: ingest-replay-recordings
       release: {{ template "sentry.fullname" . }}
   template:
     metadata:
@@ -21,17 +21,14 @@ spec:
         checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: post-process-forwarder-transactions
+        component: ingest-replay-recordings
         release: {{ template "sentry.fullname" . }}
     spec:
       affinity: {}
       containers:
       - args:
         - run
-        - post-process-forwarder
-        - --entity=transactions
-        - --commit-log-topic=snuba-transactions-commit-log
-        - --synchronize-commit-group=transactions_group
+        - ingest-replay-recordings
         envFrom:
         - secretRef:
             name: sentry
@@ -44,7 +41,7 @@ spec:
             optional: false
         image: getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
-        name: post-process-forwarder
+        name: ingest-consumer
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files
