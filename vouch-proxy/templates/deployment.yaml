@@ -24,16 +24,21 @@ spec:
         chart: {{ .Chart.Name }}
     spec:
       automountServiceAccountToken: false
+      enableServiceLinks: false
       containers:
       - image: quay.io/vouch/vouch-proxy:0.37.3
         imagePullPolicy: IfNotPresent
         name: vouchproxy
         terminationMessagePolicy: FallbackToLogsOnError
         securityContext:
+          allowPrivilegeEscalation: false
           capabilities:
             drop:
-            - ALL
+              - ALL
+          privileged: false
           readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 999
         volumeMounts:
         - mountPath: /config/config.yml
           name: config
