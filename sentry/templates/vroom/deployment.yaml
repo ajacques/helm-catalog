@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vroom
+spec:
+  selector:
+    matchLabels:
+      component: vroom
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: vroom
+        chart: {{ .Chart.Name }}
+    spec:
+      affinity:
+        # Affinity not to run multiple instances on the same pod
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: component
+                  operator: In
+                  values:
+                  - vroom
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      containers:
+      - image: getsentry/vroom:{{ .Values.vroom.version }}
+        imagePullPolicy: IfNotPresent
+        name: vroom
+        terminationMessagePolicy: FallbackToLogsOnError
+        env:
+        - name: SENTRY_KAFKA_BROKERS_PROFILING
+          value: {{ .Values.kafka.hostname }}:9092
+        - name: SENTRY_KAFKA_BROKERS_OCCURRENCES
+          value: {{ .Values.kafka.hostname }}:9092
+        - name: SENTRY_BUCKET_PROFILES
+          value: file://localhost//var/lib/sentry-profiles
+        - name: SENTRY_SNUBA_HOST
+          value: http://snuba.{{ .Release.Namespace }}.svc.cluster.local.:1218
+        envFrom:
+          - configMapRef:
+              name: snuba-config
+              optional: false
+        securityContext:
+          capabilities:
+            add:
+            - SETUID
+            - SETGID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml

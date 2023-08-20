@@ -35,7 +35,7 @@ spec:
         - memcached
         - -m
         - "128"
-        image: memcached:1.6.17-alpine
+        image: memcached:1.6.21-alpine
         imagePullPolicy: IfNotPresent
         name: memcached
         resources:
@@ -48,7 +48,8 @@ spec:
             - ALL
           privileged: false
           readOnlyRootFilesystem: false
-          runAsNonRoot: false
+          runAsNonRoot: true
+          runAsUser: 11211
 {{- if .Values.prometheus.enabled }}
       - image: quay.io/prometheus/memcached-exporter:v0.9.0
         imagePullPolicy: IfNotPresent

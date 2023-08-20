@@ -24,6 +24,7 @@ spec:
         - --storage=replays
         - --auto-offset-reset=latest
         - --max-batch-time-ms=750
+        - --no-strict-offset-reset
         envFrom:
         - secretRef:
             name: sentry

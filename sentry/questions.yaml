@@ -151,20 +151,20 @@ questions:
   required: true
   group: Versions
   label: Sentry Version
-  default: 23.4.0
+  default: 23.8.0
 
 - variable: snuba.version
   type: string
   required: true
   group: Versions
   label: Snuba Version
-  default: 23.4.0
+  default: 23.8.0
 
 - variable: relay.version
   type: string
   required:
   group: Versions
-  default: 23.4.0
+  default: 23.8.0
 
 - variable: ingress.hostname
   type: hostname

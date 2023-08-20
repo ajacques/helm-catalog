@@ -28,9 +28,10 @@ spec:
       containers:
       - args:
         - run
-        - post-process-forwarder
-        - --entity=transactions
-        - --commit-log-topic=snuba-transactions-commit-log
+        - consumer
+        - post-process-forwarder-transactions
+        - --consumer-group=post-process-forwarder
+        - --synchronize-commit-log-topic=snuba-transactions-commit-log
         - --synchronize-commit-group=transactions_group
         envFrom:
         - secretRef:

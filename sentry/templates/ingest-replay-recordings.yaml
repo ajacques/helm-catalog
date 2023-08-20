@@ -28,7 +28,9 @@ spec:
       containers:
       - args:
         - run
+        - consumer
         - ingest-replay-recordings
+        - --consumer-group=ingest-replay-recordings
         envFrom:
         - secretRef:
             name: sentry

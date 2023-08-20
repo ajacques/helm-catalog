@@ -28,8 +28,9 @@ spec:
       containers:
       - args:
         - run
-        - query-subscription-consumer
-        - --topic=events-subscription-results
+        - consumer
+        - events-subscription-results
+        - --consumer-group=query-subscription-consumer
         envFrom:
         - secretRef:
             name: sentry

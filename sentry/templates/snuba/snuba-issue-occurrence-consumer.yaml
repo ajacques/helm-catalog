@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: snuba-replacer
+  name: snuba-issue-occurence-consumer
 spec:
   selector:
     matchLabels:
-      component: snuba-replacer
+      component: snuba-issue-occurence-consumer
       chart: {{ .Chart.Name }}
   template:
     metadata:
@@ -15,14 +15,16 @@ spec:
         checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: snuba-replacer
+        component: snuba-issue-occurence-consumer
         chart: {{ .Chart.Name }}
     spec:
       containers:
       - args:
-        - replacer
-        - --storage=errors
+        - consumer
+        - --storage=search_issues
+        - --consumer-group=generic_events_group
         - --auto-offset-reset=latest
+        - --max-batch-time-ms=750
         - --no-strict-offset-reset
         envFrom:
         - secretRef:
@@ -36,7 +38,7 @@ spec:
             optional: false
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
-        name: snuba-replacer
+        name: snuba-sessions-consumer
         securityContext:
           capabilities:
             add:

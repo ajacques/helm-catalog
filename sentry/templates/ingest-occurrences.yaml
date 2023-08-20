@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: subscription-consumer-transactions
+  name: ingest-occurences
   labels:
     app: {{ template "sentry.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -12,7 +12,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      component: subscription-consumer-transactions
+      component: ingest-occurences
       release: {{ template "sentry.fullname" . }}
   template:
     metadata:
@@ -21,7 +21,7 @@ spec:
         checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: subscription-consumer-transactions
+        component: ingest-occurences
         release: {{ template "sentry.fullname" . }}
     spec:
       affinity: {}
@@ -29,8 +29,8 @@ spec:
       - args:
         - run
         - consumer
-        - transactions-subscription-results
-        - --consumer-group=query-subscription-consumer
+        - ingest-occurrences
+        - --consumer-group=ingest-occurrences
         envFrom:
         - secretRef:
             name: sentry
@@ -43,7 +43,7 @@ spec:
             optional: false
         image: getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
-        name: subscription-consumer-transactions
+        name: ingest-consumer
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files

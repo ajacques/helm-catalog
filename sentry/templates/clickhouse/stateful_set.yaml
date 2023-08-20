@@ -29,6 +29,9 @@ spec:
         component: clickhouse
         chart: {{ .Chart.Name }}
     spec:
+    {{- if .Values.clickhouse.affinity }}
+      affinity: {{ toYaml .Values.clickhouse.affinity | nindent 8 }}
+    {{- end }}
       containers:
       - image: yandex/clickhouse-server:20.3.9.70
         imagePullPolicy: IfNotPresent

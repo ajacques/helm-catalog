@@ -22,8 +22,9 @@ spec:
       - args:
         - consumer
         - --storage=outcomes_raw
-        - --auto-offset-reset=latest
+        - --auto-offset-reset=earliest
         - --max-batch-time-ms=750
+        - --no-strict-offset-reset
         envFrom:
         - secretRef:
             name: sentry

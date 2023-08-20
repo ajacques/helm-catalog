@@ -28,8 +28,11 @@ spec:
       containers:
       - args:
         - run
-        - post-process-forwarder
-        - --entity=errors
+        - consumer
+        - post-process-forwarder-errors
+        - --consumer-group=post-process-forwarder
+        - --synchronize-commit-log-topic=snuba-commit-log
+        - --synchronize-commit-group=snuba-consumers
         envFrom:
         - secretRef:
             name: sentry

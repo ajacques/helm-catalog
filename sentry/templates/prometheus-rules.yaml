@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: sentry-rules
+spec:
+  groups:
+    - name: kafka.rules
+      rules:
+        - alert: KafkaConsumersLagging
+          annotations:
+            description: >
+              The Sentry Kafka Consumer {{ "{{ $labels.consumergroup }}" }} on topic {{ "{{ $labels.topic }}" }} is falling behind by {{ "{{ printf \"%%.d\" $value }}" }}.
+          expr: >-
+            max(kafka_consumergroup_lag{topic=~"ingest-.*|events|outcomes|transactions"}) by (consumergroup, topic) > 500
+          for: 10m
+          labels:
+            severity: warning
