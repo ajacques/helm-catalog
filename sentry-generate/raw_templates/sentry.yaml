@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: post-process-forwarder-transactions
+  name: _NAME_
   labels:
     app: {{ template "sentry.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -12,7 +12,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      component: post-process-forwarder-transactions
+      component: _NAME_
       release: {{ template "sentry.fullname" . }}
   template:
     metadata:
@@ -21,18 +21,12 @@ spec:
         checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: post-process-forwarder-transactions
+        component: _NAME_
         release: {{ template "sentry.fullname" . }}
     spec:
       affinity: {}
       containers:
-      - args:
-        - run
-        - consumer
-        - post-process-issue-platform
-        - --consumer-group=post-process-forwarder
-        - --synchronize-commit-log-topic=snuba-generic-events-commit-log
-        - --synchronize-commit-group=generic_events_group
+      - args: _ARGS_
         envFrom:
         - secretRef:
             name: sentry
@@ -45,7 +39,7 @@ spec:
             optional: false
         image: getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
-        name: post-process-forwarder
+        name: _NAME_
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files

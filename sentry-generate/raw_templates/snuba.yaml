@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: snuba-replacer
+  name: _NAME_
 spec:
   selector:
     matchLabels:
-      component: snuba-replacer
+      component: _NAME_
       chart: {{ .Chart.Name }}
   template:
     metadata:
@@ -15,15 +15,11 @@ spec:
         checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: snuba-replacer
+        component: _NAME_
         chart: {{ .Chart.Name }}
     spec:
       containers:
-      - args:
-        - replacer
-        - --storage=errors
-        - --auto-offset-reset=latest
-        - --no-strict-offset-reset
+      - args: _ARGS_
         envFrom:
         - secretRef:
             name: sentry
@@ -36,7 +32,7 @@ spec:
             optional: false
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
-        name: snuba-replacer
+        name: _NAME_
         securityContext:
           capabilities:
             add:

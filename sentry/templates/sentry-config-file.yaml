@@ -2,6 +2,13 @@ apiVersion: v1
 data:
   # /etc/sentry/config.yml
   config.yml: |
+    system.internal-url-prefix: 'http://web:9000'
+    symbolicator.enabled: true
+    symbolicator.options:
+      url: http://symbolicator:3021
+
+    transaction-events.force-disable-internal-project: true
+
     github-app.id: {{ .Values.github.app.id }}
     github-app.name: '{{ .Values.github.app.name }}'
     github-app.webhook-secret: '{{ .Values.github.webhook_secret }}'
@@ -32,6 +39,13 @@ data:
     from sentry.conf.server import *  # NOQA
     from sentry.utils.types import Bool
 
+    BYTE_MULTIPLIER = 1024
+    UNITS = ("K", "M", "G")
+    def unit_text_to_bytes(text):
+        unit = text[-1].upper()
+        power = UNITS.index(unit) + 1
+        return float(text[:-1])*(BYTE_MULTIPLIER**power)
+
     DATABASES = {
         "default": {
             "ENGINE": "sentry.db.postgres",
@@ -59,7 +73,7 @@ data:
     SENTRY_SINGLE_ORGANIZATION = True
 
     SENTRY_OPTIONS["system.event-retention-days"] = int(
-        env('SENTRY_EVENT_RETENTION_DAYS', '90')
+        env("SENTRY_EVENT_RETENTION_DAYS", "90")
     )
 
     #########
@@ -71,7 +85,7 @@ data:
 
     SENTRY_OPTIONS["redis.clusters"] = {
         "default": {
-            "hosts": {0: {"host": "redis.{{ .Release.Namespace }}.svc.cluster.local", "password": "", "port": "6379", "db": "0"}}
+            "hosts": {0: {"host": "redis.{{ .Release.Namespace }}.svc.cluster.local.", "password": "", "port": "6379", "db": "0"}}
         }
     }
 
@@ -99,7 +113,7 @@ data:
             "LOCATION": ["memcached:11211"],
             "TIMEOUT": 3600,
             "OPTIONS": {
-                "server_max_value_length": 1024 * 1024,
+                "server_max_value_length": unit_text_to_bytes(env("SENTRY_MAX_EXTERNAL_SOURCEMAP_SIZE", "1M")),
             }
         }
     }
@@ -172,10 +186,16 @@ data:
 
     SENTRY_DIGESTS = "sentry.digests.backends.redis.RedisBackend"
 
+    ###################
+    # Metrics Backend #
+    ###################
+
+    SENTRY_RELEASE_HEALTH = "sentry.release_health.metrics.MetricsReleaseHealthBackend"
+    SENTRY_RELEASE_MONITOR = "sentry.release_health.release_monitor.metrics.MetricReleaseMonitorBackend"
+
     ###############
     # Mail Server #
     ###############
-
 
     email = env("SENTRY_EMAIL_HOST")
     if email:
@@ -198,8 +218,33 @@ data:
     SENTRY_WEB_HOST = "0.0.0.0"
     SENTRY_WEB_PORT = 9000
     SENTRY_WEB_OPTIONS = {
+        "http": "%s:%s" % (SENTRY_WEB_HOST, SENTRY_WEB_PORT),
+        "protocol": "uwsgi",
+        # This is needed in order to prevent https://github.com/getsentry/sentry/blob/c6f9660e37fcd9c1bbda8ff4af1dcfd0442f5155/src/sentry/services/http.py#L70
+        "uwsgi-socket": None,
+        "so-keepalive": True,
+        # Keep this between 15s-75s as that's what Relay supports
+        "http-keepalive": 15,
+        "http-chunked-input": True,
         # the number of web workers
-        'workers': {{ .Values.sentry.ui.workers }}
+        "workers": {{ .Values.sentry.ui.workers }},
+        "threads": 4,
+        "memory-report": False,
+        # Some stuff so uwsgi will cycle workers sensibly
+        "max-requests": 100000,
+        "max-requests-delta": 500,
+        "max-worker-lifetime": 86400,
+        # Duplicate options from sentry default just so we don't get
+        # bit by sentry changing a default value that we depend on.
+        "thunder-lock": True,
+        "log-x-forwarded-for": False,
+        "buffer-size": 32768,
+        "limit-post": 209715200,
+        "disable-logging": True,
+        "reload-on-rss": 600,
+        "ignore-sigpipe": True,
+        "ignore-write-errors": True,
+        "disable-write-exception": True,
     }
 
     {{- if .Values.ingress.tls_secret_name }}
@@ -240,10 +285,16 @@ data:
                 "organizations:sso-rippling",
                 "organizations:sso-saml2",
                 "organizations:performance-view",
+                "organizations:performance-view",
                 "organizations:advanced-search",
                 "organizations:session-replay",
                 "organizations:issue-platform",
                 "organizations:profiling",
+                "organizations:dashboards-mep",
+                "organizations:mep-rollout-flag",
+                "organizations:dashboards-rh-widget",
+                "organizations:metrics-extraction",
+                "organizations:transaction-metrics-extraction",
                 "projects:custom-inbound-filters",
                 "projects:data-forwarding",
                 "projects:discard-groups",
@@ -254,20 +305,41 @@ data:
         }
     )
 
-    ######################
-    # GitHub Integration #
-    #####################
+    #######################
+    # MaxMind Integration #
+    #######################
 
-    # GITHUB_APP_ID = 'YOUR_GITHUB_APP_ID'
-    # GITHUB_API_SECRET = 'YOUR_GITHUB_API_SECRET'
-    # GITHUB_EXTENDED_PERMISSIONS = ['repo']
+    GEOIP_PATH_MMDB = '/geoip/GeoLite2-City.mmdb'
 
     #########################
     # Bitbucket Integration #
-    ########################
+    #########################
 
     # BITBUCKET_CONSUMER_KEY = 'YOUR_BITBUCKET_CONSUMER_KEY'
     # BITBUCKET_CONSUMER_SECRET = 'YOUR_BITBUCKET_CONSUMER_SECRET'
+
+    ##############################################
+    # Suggested Fix Feature / OpenAI Integration #
+    ##############################################
+
+    # See https://docs.sentry.io/product/issues/issue-details/ai-suggested-solution/
+    # for more information about the feature. Make sure the OpenAI's privacy policy is
+    # aligned with your company.
+
+    # Set the feature to be True if you'd like to enable Suggested Fix. You'll also need to
+    # add your OPENAI_API_KEY to the docker-compose.yml file.
+    SENTRY_FEATURES["organizations:open-ai-suggestion"] = False
+
+    ##############################################
+    # Content Security Policy settings
+    ##############################################
+
+    # CSP_REPORT_URI = "https://{your-sentry-installation}/api/{csp-project}/security/?sentry_key={sentry-key}"
+    CSP_REPORT_ONLY = True
+
+    # optional extra permissions
+    # https://django-csp.readthedocs.io/en/latest/configuration.html
+    # CSP_SCRIPT_SRC += ["example.com"]
 
     SENTRY_OPTIONS['system.secret-key'] = env('SENTRY_SECRET_KEY')
 
@@ -276,8 +348,8 @@ data:
     {{- end }}
 
     {{- if .Values.prometheus.enabled }}
-    SENTRY_METRICS_BACKEND = 'sentry.metrics.statsd.StatsdMetricsBackend'
-    SENTRY_METRICS_OPTIONS = {
+    SENTRY_METRICS_BACKEND2 = 'sentry.metrics.statsd.StatsdMetricsBackend'
+    SENTRY_METRICS_OPTIONS2 = {
         'host': 'statsd.{{ .Release.Namespace }}.svc.cluster.local.'
     }
     {{- end }}

@@ -1,4 +1,6 @@
+# helm --kube-context=local -n sentry upgrade sentry ./sentry -f sentry/answers.yaml
 apiVersion: v2
 description: Sentry is an error management tool
 name: sentry
-version: 0.5.93
+version: 0.5.94
+appVersion: 23.12.1

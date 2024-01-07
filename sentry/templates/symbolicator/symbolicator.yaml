@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: symbolicator
+spec:
+  selector:
+    matchLabels:
+      component: symbolicator
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: symbolicator
+        chart: {{ .Chart.Name }}
+    spec:
+      affinity:
+        # Affinity not to run multiple instances on the same pod
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: component
+                  operator: In
+                  values:
+                  - symbolicator
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      containers:
+      - image: getsentry/symbolicator:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: symbolicator
+        command:
+          - /bin/symbolicator
+          - run
+        terminationMessagePolicy: FallbackToLogsOnError
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /data
+          name: symbolicator
+          readOnly: false
+      volumes:
+      - name: symbolicator
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/symbolicator
+          type: ""
+        {{- end }}
