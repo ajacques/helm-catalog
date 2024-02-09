@@ -110,7 +110,7 @@ data:
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
-            "LOCATION": ["memcached:11211"],
+            "LOCATION": ["memcached.{{ .Release.Namespace }}.svc.cluster.local.:11211"],
             "TIMEOUT": 3600,
             "OPTIONS": {"ignore_exc": True}
         }
@@ -351,6 +351,8 @@ data:
         'host': 'statsd.{{ .Release.Namespace }}.svc.cluster.local.'
     }
     {{- end }}
+
+    SENTRY_INTERNAL_IPS = ('10.42.0.0/16',)
 kind: ConfigMap
 metadata:
   name: sentryconfig

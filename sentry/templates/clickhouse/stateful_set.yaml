@@ -33,7 +33,7 @@ spec:
       affinity: {{ toYaml .Values.clickhouse.affinity | nindent 8 }}
     {{- end }}
       containers:
-      - image: yandex/clickhouse-server:20.3.9.70
+      - image: altinity/clickhouse-server:21.8.13.1.altinitystable
         imagePullPolicy: IfNotPresent
         name: clickhouse
         terminationMessagePolicy: FallbackToLogsOnError
