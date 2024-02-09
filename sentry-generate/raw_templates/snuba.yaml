@@ -33,6 +33,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: _NAME_
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:

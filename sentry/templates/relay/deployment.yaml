@@ -27,6 +27,9 @@ spec:
             - SETGID
             drop:
             - ALL
+        resources:
+          requests:
+            memory: 80Mi
         volumeMounts:
         - mountPath: /work/.relay/config.yml
           name: configyml

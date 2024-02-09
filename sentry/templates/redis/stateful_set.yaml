@@ -49,6 +49,9 @@ spec:
         - containerPort: 9121
           name: exporter-port
           protocol: TCP
+        resources:
+          requests:
+            memory: 256Mi
         livenessProbe:
           failureThreshold: 3
           httpGet:

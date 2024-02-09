@@ -41,6 +41,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -107,6 +110,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-outcomes-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -175,6 +181,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-transactions-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -241,6 +250,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-replays-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -309,6 +321,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-issue-occurrence-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -377,6 +392,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-metrics-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -445,6 +463,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-distributions-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -513,6 +534,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-sets-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -581,6 +605,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-counters-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -645,6 +672,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-replacer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -715,6 +745,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-subscription-consumer-events
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -785,6 +818,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-subscription-consumer-transactions
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -857,6 +893,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-subscription-consumer-metrics
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -923,6 +962,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-profiling-profiles-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -989,6 +1031,9 @@ spec:
         image: getsentry/snuba:{{ .Values.snuba.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-profiling-functions-consumer
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
@@ -1071,6 +1116,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1155,6 +1203,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1239,6 +1290,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1323,6 +1377,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1407,6 +1464,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1491,6 +1551,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1575,6 +1638,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1659,6 +1725,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1744,6 +1813,97 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingest-monitors
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  selector:
+    matchLabels:
+      component: ingest-monitors
+      release: {{ template "sentry.fullname" . }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: ingest-monitors
+        release: {{ template "sentry.fullname" . }}
+    spec:
+      affinity: {}
+      containers:
+      - args: 
+        - run
+        - consumer
+        - --no-strict-offset-reset
+        - ingest-monitors
+        - --consumer-group
+        - ingest-monitors
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: ingest-monitors
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1830,6 +1990,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -1917,6 +2080,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -2004,6 +2170,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -2088,6 +2257,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -2172,6 +2344,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -2256,6 +2431,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -2340,6 +2518,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

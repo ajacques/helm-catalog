@@ -51,6 +51,9 @@ spec:
           name: configyml
           readOnly: true
           subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

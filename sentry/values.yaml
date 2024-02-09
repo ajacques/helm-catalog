@@ -1,6 +1,7 @@
-sentry.version: 97706b5443557e07368b5b71dbeafbeef5d20c09
+sentry.version: 24.1.2
 ingress.cache.enabled: false
-snuba.version: be8965e6576bca9346f388a499f760bc9bd2f5ff
+snuba.version: 24.1.2
+relay.version: 24.1.2
 
 clickhouse:
   affinity: {}

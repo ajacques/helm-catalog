@@ -29,6 +29,9 @@ spec:
         image: prom/statsd-exporter:v0.18.0
         imagePullPolicy: IfNotPresent
         name: statsd
+        resources:
+          requests:
+            memory: 16Mi
         securityContext:
           capabilities:
             drop:

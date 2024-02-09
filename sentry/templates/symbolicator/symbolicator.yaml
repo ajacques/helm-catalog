@@ -37,6 +37,9 @@ spec:
           - /bin/symbolicator
           - run
         terminationMessagePolicy: FallbackToLogsOnError
+        resources:
+          requests:
+            memory: 16Mi
         securityContext:
           capabilities:
             drop:
