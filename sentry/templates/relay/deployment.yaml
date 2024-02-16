@@ -20,6 +20,9 @@ spec:
         imagePullPolicy: IfNotPresent
         name: relay
         terminationMessagePolicy: FallbackToLogsOnError
+        resources:
+          requests:
+            memory: 256Mi
         securityContext:
           capabilities:
             add:

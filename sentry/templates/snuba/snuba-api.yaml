@@ -71,6 +71,9 @@ spec:
           - configMapRef:
               name: snuba-config
               optional: false
+        resources:
+          requests:
+            memory: 128Mi
         securityContext:
           capabilities:
             add:
