@@ -352,7 +352,7 @@ data:
     }
     {{- end }}
 
-    SENTRY_INTERNAL_IPS = ('10.42.0.0/16',)
+    INTERNAL_SYSTEM_IPS = ('10.42.0.0/16',)
 kind: ConfigMap
 metadata:
   name: sentryconfig
