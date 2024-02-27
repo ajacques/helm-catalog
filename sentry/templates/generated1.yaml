@@ -4,6 +4,7 @@ kind: Deployment
 metadata:
   name: snuba-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-consumer
@@ -38,7 +39,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-consumer
         resources:
@@ -73,6 +74,7 @@ kind: Deployment
 metadata:
   name: snuba-outcomes-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-outcomes-consumer
@@ -107,7 +109,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-outcomes-consumer
         resources:
@@ -142,6 +144,7 @@ kind: Deployment
 metadata:
   name: snuba-transactions-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-transactions-consumer
@@ -178,7 +181,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-transactions-consumer
         resources:
@@ -213,6 +216,7 @@ kind: Deployment
 metadata:
   name: snuba-replays-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-replays-consumer
@@ -247,7 +251,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-replays-consumer
         resources:
@@ -282,6 +286,7 @@ kind: Deployment
 metadata:
   name: snuba-issue-occurrence-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-issue-occurrence-consumer
@@ -318,7 +323,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-issue-occurrence-consumer
         resources:
@@ -353,6 +358,7 @@ kind: Deployment
 metadata:
   name: snuba-metrics-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-metrics-consumer
@@ -389,7 +395,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-metrics-consumer
         resources:
@@ -424,6 +430,7 @@ kind: Deployment
 metadata:
   name: snuba-generic-metrics-distributions-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-generic-metrics-distributions-consumer
@@ -460,7 +467,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-distributions-consumer
         resources:
@@ -495,6 +502,7 @@ kind: Deployment
 metadata:
   name: snuba-generic-metrics-sets-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-generic-metrics-sets-consumer
@@ -531,7 +539,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-sets-consumer
         resources:
@@ -566,6 +574,7 @@ kind: Deployment
 metadata:
   name: snuba-generic-metrics-counters-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-generic-metrics-counters-consumer
@@ -602,7 +611,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-counters-consumer
         resources:
@@ -637,6 +646,7 @@ kind: Deployment
 metadata:
   name: snuba-replacer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-replacer
@@ -669,7 +679,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-replacer
         resources:
@@ -704,6 +714,7 @@ kind: Deployment
 metadata:
   name: snuba-subscription-consumer-events
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-subscription-consumer-events
@@ -742,7 +753,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-subscription-consumer-events
         resources:
@@ -777,6 +788,7 @@ kind: Deployment
 metadata:
   name: snuba-subscription-consumer-transactions
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-subscription-consumer-transactions
@@ -815,7 +827,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-subscription-consumer-transactions
         resources:
@@ -850,6 +862,7 @@ kind: Deployment
 metadata:
   name: snuba-subscription-consumer-metrics
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-subscription-consumer-metrics
@@ -890,7 +903,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-subscription-consumer-metrics
         resources:
@@ -925,6 +938,7 @@ kind: Deployment
 metadata:
   name: snuba-profiling-profiles-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-profiling-profiles-consumer
@@ -959,7 +973,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-profiling-profiles-consumer
         resources:
@@ -994,6 +1008,7 @@ kind: Deployment
 metadata:
   name: snuba-profiling-functions-consumer
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: snuba-profiling-functions-consumer
@@ -1028,7 +1043,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-profiling-functions-consumer
         resources:
@@ -1069,7 +1084,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: events-consumer
@@ -1156,7 +1171,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: attachments-consumer
@@ -1243,7 +1258,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: transactions-consumer
@@ -1330,7 +1345,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: metrics-consumer
@@ -1417,7 +1432,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: generic-metrics-consumer
@@ -1504,7 +1519,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: billing-metrics-consumer
@@ -1591,7 +1606,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: ingest-replay-recordings
@@ -1678,7 +1693,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: ingest-occurrences
@@ -1765,7 +1780,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: ingest-profiles
@@ -1853,7 +1868,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: ingest-monitors
@@ -1941,7 +1956,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: post-process-forwarder-errors
@@ -2030,7 +2045,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: post-process-forwarder-transactions
@@ -2120,7 +2135,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: post-process-forwarder-issue-platform
@@ -2210,7 +2225,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: subscription-consumer-events
@@ -2297,7 +2312,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: subscription-consumer-transactions
@@ -2384,7 +2399,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: subscription-consumer-metrics
@@ -2471,7 +2486,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: subscription-consumer-generic-metrics

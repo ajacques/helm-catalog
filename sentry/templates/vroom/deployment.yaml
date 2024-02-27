@@ -31,7 +31,7 @@ spec:
               topologyKey: kubernetes.io/hostname
             weight: 100
       containers:
-      - image: getsentry/vroom:{{ .Values.vroom.version }}
+      - image: getsentry/vroom:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: vroom
         terminationMessagePolicy: FallbackToLogsOnError

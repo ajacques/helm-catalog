@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: _NAME_
 spec:
+  replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
       component: _NAME_
@@ -30,7 +31,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.snuba.version }}
+        image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: _NAME_
         resources:
