@@ -2,12 +2,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: snuba-consumer
+  name: snuba-errors-consumer
 spec:
   replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
-      component: snuba-consumer
+      component: snuba-errors-consumer
       chart: {{ .Chart.Name }}
   template:
     metadata:
@@ -17,18 +17,21 @@ spec:
         checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: snuba-consumer
+        component: snuba-errors-consumer
         chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - errors
+        - --consumer-group
+        - snuba-consumers
         - --auto-offset-reset=latest
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -41,7 +44,7 @@ spec:
             optional: false
         image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
-        name: snuba-consumer
+        name: snuba-errors-consumer
         resources:
           requests:
             memory: 128Mi
@@ -92,13 +95,16 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - outcomes_raw
+        - --consumer-group
+        - snuba-consumers
         - --auto-offset-reset=earliest
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -112,6 +118,81 @@ spec:
         image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-outcomes-consumer
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-outcomes-billing-consumer
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-outcomes-billing-consumer
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-outcomes-billing-consumer
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - rust-consumer
+        - --storage
+        - outcomes_raw
+        - --consumer-group
+        - snuba-consumers
+        - --auto-offset-reset=earliest
+        - --max-batch-time-ms
+        - '750'
+        - --no-strict-offset-reset
+        - --no-skip-write
+        - --raw-events-topic
+        - outcomes-billing
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-outcomes-billing-consumer
         resources:
           requests:
             memory: 128Mi
@@ -162,7 +243,7 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - transactions
         - --consumer-group
@@ -171,6 +252,7 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -234,13 +316,16 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - replays
+        - --consumer-group
+        - snuba-consumers
         - --auto-offset-reset=latest
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -304,7 +389,7 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - search_issues
         - --consumer-group
@@ -313,6 +398,7 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -376,7 +462,7 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - metrics_raw
         - --consumer-group
@@ -385,6 +471,7 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -398,6 +485,79 @@ spec:
         image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-metrics-consumer
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-group-attributes-consumer
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-group-attributes-consumer
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-group-attributes-consumer
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - rust-consumer
+        - --storage
+        - group_attributes
+        - --consumer-group
+        - snuba-group-attributes-consumers
+        - --auto-offset-reset=latest
+        - --max-batch-time-ms
+        - '750'
+        - --no-strict-offset-reset
+        - --no-skip-write
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-group-attributes-consumer
         resources:
           requests:
             memory: 128Mi
@@ -448,7 +608,7 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - generic_metrics_distributions_raw
         - --consumer-group
@@ -457,6 +617,7 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -520,7 +681,7 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - generic_metrics_sets_raw
         - --consumer-group
@@ -529,6 +690,7 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -592,7 +754,7 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - generic_metrics_counters_raw
         - --consumer-group
@@ -601,6 +763,7 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -956,13 +1119,16 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - profiles
+        - --consumer-group
+        - snuba-consumers
         - --auto-offset-reset=latest
         - --max-batch-time-ms
         - '1000'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -1026,13 +1192,16 @@ spec:
     spec:
       containers:
       - args: 
-        - consumer
+        - rust-consumer
         - --storage
         - functions_raw
+        - --consumer-group
+        - snuba-consumers
         - --auto-offset-reset=latest
         - --max-batch-time-ms
         - '1000'
         - --no-strict-offset-reset
+        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -1046,6 +1215,79 @@ spec:
         image: getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-profiling-functions-consumer
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-spans-consumer
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-spans-consumer
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-spans-consumer
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - rust-consumer
+        - --storage
+        - spans
+        - --consumer-group
+        - snuba-spans-consumers
+        - --auto-offset-reset=latest
+        - --max-batch-time-ms
+        - '1000'
+        - --no-strict-offset-reset
+        - --no-skip-write
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-spans-consumer
         resources:
           requests:
             memory: 128Mi
