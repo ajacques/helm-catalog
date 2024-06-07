@@ -1,4 +1,4 @@
-sentry.version: 24.2.0
+sentry.version: 24.5.1
 ingress.cache.enabled: false
 
 clickhouse:

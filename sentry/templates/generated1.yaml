@@ -31,7 +31,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -104,7 +103,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -177,7 +175,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         - --raw-events-topic
         - outcomes-billing
         envFrom:
@@ -252,7 +249,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -325,7 +321,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -398,7 +393,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -471,7 +465,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -544,7 +537,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -617,7 +609,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -690,7 +681,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -763,7 +753,6 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -1128,7 +1117,6 @@ spec:
         - --max-batch-time-ms
         - '1000'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -1201,7 +1189,6 @@ spec:
         - --max-batch-time-ms
         - '1000'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -1274,7 +1261,6 @@ spec:
         - --max-batch-time-ms
         - '1000'
         - --no-strict-offset-reset
-        - --no-skip-write
         envFrom:
         - secretRef:
             name: sentry
@@ -2042,7 +2028,6 @@ spec:
       - args: 
         - run
         - consumer
-        - --no-strict-offset-reset
         - ingest-profiles
         - --consumer-group
         - ingest-profiles
@@ -2130,7 +2115,6 @@ spec:
       - args: 
         - run
         - consumer
-        - --no-strict-offset-reset
         - ingest-monitors
         - --consumer-group
         - ingest-monitors
@@ -2147,6 +2131,180 @@ spec:
         image: getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: ingest-monitors
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitors-clock-tick
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: monitors-clock-tick
+      release: {{ template "sentry.fullname" . }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: monitors-clock-tick
+        release: {{ template "sentry.fullname" . }}
+    spec:
+      affinity: {}
+      containers:
+      - args: 
+        - run
+        - consumer
+        - monitors-clock-tick
+        - --consumer-group
+        - monitors-clock-tick
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: monitors-clock-tick
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitors-clock-tasks
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: monitors-clock-tasks
+      release: {{ template "sentry.fullname" . }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: monitors-clock-tasks
+        release: {{ template "sentry.fullname" . }}
+    spec:
+      affinity: {}
+      containers:
+      - args: 
+        - run
+        - consumer
+        - monitors-clock-tasks
+        - --consumer-group
+        - monitors-clock-tasks
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: monitors-clock-tasks
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files
@@ -2218,6 +2376,7 @@ spec:
       - args: 
         - run
         - consumer
+        - --no-strict-offset-reset
         - post-process-forwarder-errors
         - --consumer-group
         - post-process-forwarder
@@ -2307,6 +2466,7 @@ spec:
       - args: 
         - run
         - consumer
+        - --no-strict-offset-reset
         - post-process-forwarder-transactions
         - --consumer-group
         - post-process-forwarder
@@ -2397,6 +2557,7 @@ spec:
       - args: 
         - run
         - consumer
+        - --no-strict-offset-reset
         - post-process-forwarder-issue-platform
         - --consumer-group
         - post-process-forwarder

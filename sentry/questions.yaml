@@ -151,7 +151,7 @@ questions:
   required: true
   group: Versions
   label: Sentry Version
-  default: 24.4.0
+  default: 24.5.1
 
 - variable: ingress.hostname
   type: hostname

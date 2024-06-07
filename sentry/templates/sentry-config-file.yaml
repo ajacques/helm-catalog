@@ -31,6 +31,13 @@ data:
       {{- end }}
     {{- end }}
     {{- end }}
+    {{- if .Values.relay.public_key }}
+    relay:
+      static_auth:
+        7a4905dd-0eeb-497c-aa49-fb9949906388:
+          internal: true
+          public_key: '{{ .Values.relay.public_key }}'
+    {{- end }}
 
   sentry.conf.py: |-
     # This file is just Python, with a touch of Django which means
@@ -340,10 +347,6 @@ data:
     # CSP_SCRIPT_SRC += ["example.com"]
 
     SENTRY_OPTIONS['system.secret-key'] = env('SENTRY_SECRET_KEY')
-
-    {{- if .Values.relay.public_key }}
-    SENTRY_RELAY_WHITELIST_PK = ['{{ .Values.relay.public_key }}']
-    {{- end }}
 
     {{- if .Values.prometheus.enabled }}
     SENTRY_METRICS_BACKEND2 = 'sentry.metrics.statsd.StatsdMetricsBackend'

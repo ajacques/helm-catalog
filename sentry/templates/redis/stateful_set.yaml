@@ -30,7 +30,7 @@ spec:
 {{- end }}
     spec:
       containers:
-      - image: redis:7.0.5
+      - image: redis:7.2-alpine
         imagePullPolicy: IfNotPresent
         name: redis
         volumeMounts:
