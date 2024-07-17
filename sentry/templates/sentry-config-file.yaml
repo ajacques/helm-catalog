@@ -277,10 +277,6 @@ data:
                 "organizations:discover",
                 "organizations:events",
                 "organizations:global-views",
-                "organizations:codecov-integration",
-                "organizations:grouping-tree-ui",
-                "organizations:set-grouping-config",
-                "organizations:grouping-title-ui",
                 "organizations:incidents",
                 "organizations:integrations-issue-basic",
                 "organizations:integrations-issue-sync",
@@ -290,11 +286,11 @@ data:
                 "organizations:sso-rippling",
                 "organizations:sso-saml2",
                 "organizations:performance-view",
-                "organizations:performance-view",
                 "organizations:advanced-search",
                 "organizations:session-replay",
                 "organizations:issue-platform",
                 "organizations:profiling",
+                "organizations:monitors",
                 "organizations:dashboards-mep",
                 "organizations:mep-rollout-flag",
                 "organizations:dashboards-rh-widget",
@@ -307,8 +303,28 @@ data:
                 "projects:rate-limits",
                 "projects:servicehooks",
             )
+            + (
+                "organizations:deprecate-fid-from-performance-score",
+                "organizations:indexed-spans-extraction",
+                "organizations:insights-entry-points",
+                "organizations:insights-initial-modules",
+                "organizations:insights-addon-modules",
+                "organizations:mobile-ttid-ttfd-contribution",
+                "organizations:performance-calculate-score-relay",
+                "organizations:standalone-span-ingestion",
+                "organizations:starfish-browser-resource-module-image-view",
+                "organizations:starfish-browser-resource-module-ui",
+                "organizations:starfish-browser-webvitals",
+                "organizations:starfish-browser-webvitals-pageoverview-v2",
+                "organizations:starfish-browser-webvitals-replace-fid-with-inp",
+                "organizations:starfish-browser-webvitals-use-backend-scores",
+                "organizations:starfish-mobile-appstart",
+                "projects:span-metrics-extraction",
+                "projects:span-metrics-extraction-addons",
+            )  # starfish related flags
         }
     )
+
 
     #######################
     # MaxMind Integration #

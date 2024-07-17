@@ -19,6 +19,8 @@ spec:
       containers:
       - args:
           - upgrade
+          - --noinput
+          - --create-kafka-topics
         envFrom:
           - secretRef:
               name: sentry

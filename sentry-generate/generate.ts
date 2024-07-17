@@ -2,7 +2,7 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 
 type Service = { command?: string, image: string };
-const doc: { services: Service[] } = yaml.load(fs.readFileSync('../../self-hosted/docker-compose.yml', 'utf8')) as any;
+const doc: { services: Service[] } = yaml.load(fs.readFileSync('../../sentry-self-hosted/docker-compose.yml', 'utf8')) as any;
 let output = fs.openSync('../sentry/templates/generated1.yaml', 'w');
 const templates = {
   sentry: fs.readFileSync('raw_templates/sentry.yaml', 'utf8') as any as string,
