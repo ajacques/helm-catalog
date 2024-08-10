@@ -44,10 +44,6 @@ spec:
           value: file://localhost//var/lib/sentry-profiles
         - name: SENTRY_SNUBA_HOST
           value: http://snuba.{{ .Release.Namespace }}.svc.cluster.local.:1218
-        envFrom:
-          - configMapRef:
-              name: snuba-config
-              optional: false
         resources:
           requests:
             memory: 32Mi
@@ -59,17 +55,8 @@ spec:
             drop:
             - ALL
         volumeMounts:
-        - mountPath: /etc/sentry/config.yml
-          name: configyml
-          readOnly: true
-          subPath: config.yml
-        - mountPath: /etc/sentry/sentry.conf.py
-          name: configyml
-          readOnly: true
-          subPath: sentry.conf.py
+        - mountPath: /var/lib/sentry-profiles
+          name: profiles
       volumes:
-      - configMap:
-          defaultMode: 292
-          name: sentryconfig
-          optional: false
-        name: configyml
+      - emptyDir: {}
+        name: profiles
