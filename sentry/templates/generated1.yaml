@@ -1399,7 +1399,6 @@ spec:
         component: events-consumer
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -1486,7 +1485,6 @@ spec:
         component: attachments-consumer
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -1573,7 +1571,6 @@ spec:
         component: post-process-forwarder-errors
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -1663,7 +1660,6 @@ spec:
         component: subscription-consumer-events
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -1750,7 +1746,6 @@ spec:
         component: transactions-consumer
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -1837,7 +1832,6 @@ spec:
         component: metrics-consumer
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -1924,7 +1918,6 @@ spec:
         component: generic-metrics-consumer
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2011,7 +2004,6 @@ spec:
         component: billing-metrics-consumer
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2098,7 +2090,6 @@ spec:
         component: ingest-replay-recordings
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2185,7 +2176,6 @@ spec:
         component: ingest-occurrences
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2272,7 +2262,6 @@ spec:
         component: ingest-profiles
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2359,7 +2348,6 @@ spec:
         component: ingest-monitors
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2380,6 +2368,92 @@ spec:
         image: getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: ingest-monitors
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingest-feedback-events
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: ingest-feedback-events
+      release: {{ template "sentry.fullname" . }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: ingest-feedback-events
+        release: {{ template "sentry.fullname" . }}
+    spec:
+      containers:
+      - args: 
+        - run
+        - consumer
+        - ingest-feedback-events
+        - --consumer-group
+        - ingest-feedback
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: ingest-feedback-events
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files
@@ -2446,7 +2520,6 @@ spec:
         component: monitors-clock-tick
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2533,7 +2606,6 @@ spec:
         component: monitors-clock-tasks
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2620,7 +2692,6 @@ spec:
         component: post-process-forwarder-transactions
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2711,7 +2782,6 @@ spec:
         component: post-process-forwarder-issue-platform
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2802,7 +2872,6 @@ spec:
         component: subscription-consumer-transactions
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2889,7 +2958,6 @@ spec:
         component: subscription-consumer-metrics
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run
@@ -2976,7 +3044,6 @@ spec:
         component: subscription-consumer-generic-metrics
         release: {{ template "sentry.fullname" . }}
     spec:
-      affinity: {}
       containers:
       - args: 
         - run

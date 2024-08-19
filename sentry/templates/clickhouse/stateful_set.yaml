@@ -33,9 +33,12 @@ spec:
       affinity: {{ toYaml .Values.clickhouse.affinity | nindent 8 }}
     {{- end }}
       containers:
-      - image: altinity/clickhouse-server:21.8.13.1.altinitystable
+      - image: altinity/clickhouse-server:23.8.11.29.altinitystable
         imagePullPolicy: IfNotPresent
         name: clickhouse
+        env:
+          - name: MAX_MEMORY_USAGE_RATIO
+            value: '0.3'
         terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /var/lib/clickhouse
