@@ -1388,7 +1388,7 @@ spec:
   selector:
     matchLabels:
       component: events-consumer
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -1397,7 +1397,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: events-consumer
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -1474,7 +1474,7 @@ spec:
   selector:
     matchLabels:
       component: attachments-consumer
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -1483,7 +1483,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: attachments-consumer
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -1560,7 +1560,7 @@ spec:
   selector:
     matchLabels:
       component: post-process-forwarder-errors
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -1569,7 +1569,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: post-process-forwarder-errors
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -1649,7 +1649,7 @@ spec:
   selector:
     matchLabels:
       component: subscription-consumer-events
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -1658,7 +1658,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: subscription-consumer-events
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -1735,7 +1735,7 @@ spec:
   selector:
     matchLabels:
       component: transactions-consumer
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -1744,7 +1744,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: transactions-consumer
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -1821,7 +1821,7 @@ spec:
   selector:
     matchLabels:
       component: metrics-consumer
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -1830,7 +1830,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: metrics-consumer
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -1907,7 +1907,7 @@ spec:
   selector:
     matchLabels:
       component: generic-metrics-consumer
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -1916,7 +1916,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: generic-metrics-consumer
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -1993,7 +1993,7 @@ spec:
   selector:
     matchLabels:
       component: billing-metrics-consumer
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2002,7 +2002,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: billing-metrics-consumer
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2079,7 +2079,7 @@ spec:
   selector:
     matchLabels:
       component: ingest-replay-recordings
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2088,7 +2088,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: ingest-replay-recordings
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2165,7 +2165,7 @@ spec:
   selector:
     matchLabels:
       component: ingest-occurrences
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2174,7 +2174,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: ingest-occurrences
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2251,7 +2251,7 @@ spec:
   selector:
     matchLabels:
       component: ingest-profiles
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2260,7 +2260,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: ingest-profiles
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2337,7 +2337,7 @@ spec:
   selector:
     matchLabels:
       component: ingest-monitors
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2346,7 +2346,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: ingest-monitors
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2423,7 +2423,7 @@ spec:
   selector:
     matchLabels:
       component: ingest-feedback-events
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2432,7 +2432,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: ingest-feedback-events
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2509,7 +2509,7 @@ spec:
   selector:
     matchLabels:
       component: monitors-clock-tick
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2518,7 +2518,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: monitors-clock-tick
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2595,7 +2595,7 @@ spec:
   selector:
     matchLabels:
       component: monitors-clock-tasks
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2604,7 +2604,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: monitors-clock-tasks
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2681,7 +2681,7 @@ spec:
   selector:
     matchLabels:
       component: post-process-forwarder-transactions
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2690,7 +2690,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: post-process-forwarder-transactions
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2771,7 +2771,7 @@ spec:
   selector:
     matchLabels:
       component: post-process-forwarder-issue-platform
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2780,7 +2780,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: post-process-forwarder-issue-platform
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2861,7 +2861,7 @@ spec:
   selector:
     matchLabels:
       component: subscription-consumer-transactions
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2870,7 +2870,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: subscription-consumer-transactions
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -2947,7 +2947,7 @@ spec:
   selector:
     matchLabels:
       component: subscription-consumer-metrics
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -2956,7 +2956,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: subscription-consumer-metrics
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
@@ -3033,7 +3033,7 @@ spec:
   selector:
     matchLabels:
       component: subscription-consumer-generic-metrics
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
@@ -3042,7 +3042,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
         component: subscription-consumer-generic-metrics
-        release: {{ template "sentry.fullname" . }}
+        chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 

@@ -13,7 +13,7 @@ spec:
   selector:
     matchLabels:
       component: _NAME_
-      release: {{ template "sentry.fullname" . }}
+      chart: {{ .Chart.Name }}
   template:
     metadata:
       annotations:
