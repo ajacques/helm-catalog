@@ -33,17 +33,18 @@ spec:
       - image: redis:7.2-alpine
         imagePullPolicy: IfNotPresent
         name: redis
+        resources:
+          requests:
+            memory: 32Mi
         volumeMounts:
         - mountPath: /data
           name: datavol
 {{- if .Values.prometheus.enabled }}
       - name: prometheus-exporter
         env:
-        - name: REDIS_ADDR
-          value: '127.0.0.1'
         - name: REDIS_EXPORTER_REDIS_ONLY_METRICS
           value: 'true'
-        image: oliver006/redis_exporter:v1.45.0
+        image: oliver006/redis_exporter:v1.62.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9121
@@ -51,7 +52,7 @@ spec:
           protocol: TCP
         resources:
           requests:
-            memory: 256Mi
+            memory: 16Mi
         livenessProbe:
           failureThreshold: 3
           httpGet:

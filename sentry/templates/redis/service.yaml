@@ -22,4 +22,8 @@ spec:
   - port: 6379
     targetPort: 6379
     protocol: TCP
+    name: redis
+  - port: 9121
+    targetPort: 9121
+    protocol: TCP
     name: metrics
