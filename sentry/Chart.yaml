@@ -2,5 +2,5 @@
 apiVersion: v2
 description: Sentry is an error management tool
 name: sentry
-version: 0.5.100
-appVersion: 24.8.0
+version: 0.5.101
+appVersion: 24.9.0

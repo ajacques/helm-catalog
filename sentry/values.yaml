@@ -1,5 +1,11 @@
-sentry.version: 24.5.1
+sentry.version: 24.9.0
 ingress.cache.enabled: false
 
 clickhouse:
   affinity: {}
+  persistence:
+    enabled: false
+    storageClassName: ''
+    resource:
+      requests:
+        storage: 1Gi

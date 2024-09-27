@@ -49,7 +49,10 @@ spec:
           subPath: sentry.xml
       volumes:
       - name: datavol
-        {{- if eq .Values.persistence.type.storage "BindMount" }}
+        {{- if .Values.clickhouse.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Chart.Name }}-clickhouse
+        {{- else if eq .Values.persistence.type.storage "BindMount" }}
         hostPath:
           path: {{ .Values.persistence.bind_mount.base_dir }}/clickhouse
           type: DirectoryOrCreate
