@@ -1,4 +1,4 @@
 apiVersion: v2
 name: vouch-proxy
-version: 0.0.26
-appVersion: 0.40.0
+version: 0.0.27
+appVersion: 0.41.0

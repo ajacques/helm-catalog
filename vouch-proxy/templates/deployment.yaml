@@ -26,7 +26,7 @@ spec:
       automountServiceAccountToken: false
       enableServiceLinks: false
       containers:
-      - image: quay.io/vouch/vouch-proxy:0.40.0
+      - image: quay.io/vouch/vouch-proxy:0.41.0
         imagePullPolicy: IfNotPresent
         name: vouchproxy
         terminationMessagePolicy: FallbackToLogsOnError
@@ -63,13 +63,12 @@ spec:
           defaultMode: 292
           name: vouchconfig
           optional: false
-{{- if eq .Values.persistence.type "BindMount" }}
       - name: data
+{{- if eq .Values.persistence.type "BindMount" }}
         hostPath:
           path: {{ .Values.persistence.hostPath.path }}
           type: ""
 {{- else if eq .Values.persistence.type "PersistentVolumeClaim" }}
-      - name: data
         persistentVolumeClaim:
           claimName: data
   volumeClaimTemplates:
@@ -85,4 +84,6 @@ spec:
           requests:
             storage: {{ .Values.persistence.size | quote }}
         storageClassName: {{ .Values.persistence.storageClass | quote }}
+{{- else }}
+        emptyDir: {}
 {{- end }}
