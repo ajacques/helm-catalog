@@ -7,6 +7,7 @@ let output = fs.openSync('../sentry/templates/generated1.yaml', 'w');
 const templates = {
   sentry: fs.readFileSync('raw_templates/sentry.yaml', 'utf8') as any as string,
   snuba: fs.readFileSync('raw_templates/snuba.yaml', 'utf8') as any as string,
+  taskbroker: fs.readFileSync('raw_templates/taskbroker.yaml', 'utf8') as any as string
 };
 let bytesWritten = 0;
 let fileIndex = 1;
@@ -53,6 +54,8 @@ for (const [name, service] of Object.entries(doc.services)) {
       continue;
     }
     emitService(name, service, 'snuba');
+  } else if (service.image == "$TASKBROKER_IMAGE") {
+    emitService(name, service, 'taskbroker');
   } else {
     console.log(`Encountered unexpected type ${name}: ${service.image}`);
   }

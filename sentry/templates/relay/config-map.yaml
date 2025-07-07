@@ -13,8 +13,14 @@ data:
         - name: bootstrap.servers
           value: {{ .Values.kafka.hostname | quote }}
         - name: message.max.bytes
-          value: 50000000 #50MB or bust
+          value: 50000000 # 50MB
       redis: redis://redis.{{ .Release.Namespace }}.svc.cluster.local.:6379
+    health:
+      max_memory_percent: 1.0
+    spool:
+      envelopes:
+        path: "/tmp/relay-spool-envelopes"
+        max_backpressure_memory_percent: 1.0
 
 kind: ConfigMap
 metadata:

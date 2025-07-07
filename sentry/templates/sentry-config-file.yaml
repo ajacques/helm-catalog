@@ -31,13 +31,6 @@ data:
       {{- end }}
     {{- end }}
     {{- end }}
-    {{- if .Values.relay.public_key }}
-    relay:
-      static_auth:
-        7a4905dd-0eeb-497c-aa49-fb9949906388:
-          internal: true
-          public_key: '{{ .Values.relay.public_key }}'
-    {{- end }}
 
   sentry.conf.py: |-
     # This file is just Python, with a touch of Django which means
@@ -63,10 +56,6 @@ data:
             "PORT": "",
         }
     }
-
-    # You should not change this setting after your database has been created
-    # unless you have altered all schemas first
-    SENTRY_USE_BIG_INTS = True
 
     # If you're expecting any kind of real traffic on Sentry, we highly recommend
     # configuring the CACHES and Redis settings
@@ -191,13 +180,6 @@ data:
 
     SENTRY_DIGESTS = "sentry.digests.backends.redis.RedisBackend"
 
-    ###################
-    # Metrics Backend #
-    ###################
-
-    SENTRY_RELEASE_HEALTH = "sentry.release_health.metrics.MetricsReleaseHealthBackend"
-    SENTRY_RELEASE_MONITOR = "sentry.release_health.release_monitor.metrics.MetricReleaseMonitorBackend"
-
     ###############
     # Mail Server #
     ###############
@@ -275,13 +257,11 @@ data:
             feature: True
             for feature in (
                 "organizations:discover",
-                "organizations:events",
                 "organizations:global-views",
                 "organizations:incidents",
                 "organizations:integrations-issue-basic",
                 "organizations:integrations-issue-sync",
                 "organizations:invite-members",
-                "organizations:metric-alert-builder-aggregate",
                 "organizations:sso-basic",
                 "organizations:sso-rippling",
                 "organizations:sso-saml2",
@@ -296,6 +276,8 @@ data:
                 "organizations:dashboards-rh-widget",
                 "organizations:metrics-extraction",
                 "organizations:transaction-metrics-extraction",
+                "organizations:trace-view-v1",
+                "organizations:dynamic-sampling",
                 "projects:custom-inbound-filters",
                 "projects:data-forwarding",
                 "projects:discard-groups",
@@ -305,20 +287,11 @@ data:
             )
             # Starfish related flags
             + (
-                "organizations:deprecate-fid-from-performance-score",
                 "organizations:indexed-spans-extraction",
                 "organizations:insights-entry-points",
                 "organizations:insights-initial-modules",
                 "organizations:insights-addon-modules",
-                "organizations:mobile-ttid-ttfd-contribution",
-                "organizations:performance-calculate-score-relay",
                 "organizations:standalone-span-ingestion",
-                "organizations:starfish-browser-resource-module-image-view",
-                "organizations:starfish-browser-resource-module-ui",
-                "organizations:starfish-browser-webvitals",
-                "organizations:starfish-browser-webvitals-pageoverview-v2",
-                "organizations:starfish-browser-webvitals-replace-fid-with-inp",
-                "organizations:starfish-browser-webvitals-use-backend-scores",
                 "organizations:starfish-mobile-appstart",
                 "projects:span-metrics-extraction",
                 "projects:span-metrics-extraction-addons",
@@ -328,22 +301,20 @@ data:
                 "organizations:user-feedback-ingest",
                 "organizations:user-feedback-replay-clip",
                 "organizations:user-feedback-ui",
-                "organizations:feedback-visible",
-                "organizations:feedback-ingest",
-                "organizations:feedback-post-process-group",
+            )
+            # Continuous Profiling related flags
+            + (
+                "organizations:continuous-profiling",
+                "organizations:continuous-profiling-stats",
             )
         }
     )
-
-    # Temporary flag to mark User Feedback to be produced to the dedicated feedback topic by relay.
-    # This will be removed at a later time after it's considered stable and fully rolled out.
-    SENTRY_OPTIONS["feedback.ingest-topic.rollout-rate"] = 1.0
 
     #######################
     # MaxMind Integration #
     #######################
 
-    GEOIP_PATH_MMDB = '/geoip/GeoLite2-City.mmdb'
+    GEOIP_PATH_MMDB = "/geoip/GeoLite2-City.mmdb"
 
     #########################
     # Bitbucket Integration #
@@ -351,18 +322,6 @@ data:
 
     # BITBUCKET_CONSUMER_KEY = 'YOUR_BITBUCKET_CONSUMER_KEY'
     # BITBUCKET_CONSUMER_SECRET = 'YOUR_BITBUCKET_CONSUMER_SECRET'
-
-    ##############################################
-    # Suggested Fix Feature / OpenAI Integration #
-    ##############################################
-
-    # See https://docs.sentry.io/product/issues/issue-details/ai-suggested-solution/
-    # for more information about the feature. Make sure the OpenAI's privacy policy is
-    # aligned with your company.
-
-    # Set the feature to be True if you'd like to enable Suggested Fix. You'll also need to
-    # add your OPENAI_API_KEY to the docker-compose.yml file.
-    SENTRY_FEATURES["organizations:open-ai-suggestion"] = False
 
     ##############################################
     # Content Security Policy settings
@@ -375,7 +334,42 @@ data:
     # https://django-csp.readthedocs.io/en/latest/configuration.html
     # CSP_SCRIPT_SRC += ["example.com"]
 
-    SENTRY_OPTIONS['system.secret-key'] = env('SENTRY_SECRET_KEY')
+    #################
+    # JS SDK Loader #
+    #################
+
+    # Configure Sentry JS SDK bundle URL template for Loader Scripts.
+    # Learn more about the Loader Scripts: https://docs.sentry.io/platforms/javascript/install/loader/
+    # If you wish to host your own JS SDK bundles, set `SETUP_JS_SDK_ASSETS` environment variable to `1`
+    # on your `.env` or `.env.custom` file. Then, replace the value below with your own public URL.
+    # For example: "https://sentry.example.com/js-sdk/%s/bundle%s.min.js"
+    #
+    # By default, the previous JS SDK assets version will be pruned during upgrades, if you wish
+    # to keep the old assets, set `SETUP_JS_SDK_KEEP_OLD_ASSETS` environment variable to any value on
+    # your `.env` or `.env.custom` file. The files should only be a few KBs, and this might be useful
+    # if you're using it directly like a CDN instead of using the loader script.
+    JS_SDK_LOADER_DEFAULT_SDK_URL = "https://browser.sentry-cdn.com/%s/bundle%s.min.js"
+
+    #####################
+    # Insights Settings #
+    #####################
+
+    # Since version 24.3.0, Insights features are available on self-hosted. For Requests module,
+    # there are scrubbing logic done on Relay to prevent high cardinality of stored HTTP hosts.
+    # However in self-hosted scenario, the amount of stored HTTP hosts might be consistent,
+    # and you may have allow list of hosts that you want to keep. Uncomment the following line
+    # to allow specific hosts. It might be IP addresses or domain names (without `http://` or `https://`).
+
+    # SENTRY_OPTIONS["relay.span-normalization.allowed_hosts"] = ["example.com", "192.168.10.1"]
+
+    ##############
+    # Monitoring #
+    ##############
+
+    # By default, Sentry uses dummy statsd monitoring backend that is a no-op.
+    # If you have a statsd server, you can utilize that to monitor self-hosted
+    # Sentry for "sentry"-related containers.
+    #
 
     {{- if .Values.prometheus.enabled }}
     SENTRY_METRICS_BACKEND2 = 'sentry.metrics.statsd.StatsdMetricsBackend'
@@ -383,6 +377,17 @@ data:
         'host': 'statsd.{{ .Release.Namespace }}.svc.cluster.local.'
     }
     {{- end }}
+
+    # SENTRY_METRICS_BACKEND = 'sentry.metrics.statsd.StatsdMetricsBackend'
+    # SENTRY_METRICS_OPTIONS: dict[str, Any] = {
+    #     'host': '100.100.123.123', # It is recommended to use IP address instead of domain name
+    #     'port': 8125,
+    # }
+    # SENTRY_METRICS_SAMPLE_RATE = 1.0   # Adjust this to your needs, default is 1.0
+    # SENTRY_METRICS_PREFIX = "sentry."  # Adjust this to your needs, default is "sentry."
+
+    SENTRY_OPTIONS['system.secret-key'] = env('SENTRY_SECRET_KEY')
+
 
     INTERNAL_SYSTEM_IPS = ('10.42.0.0/16',)
 kind: ConfigMap

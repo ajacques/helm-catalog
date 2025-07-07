@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: _NAME_
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: _NAME_
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: _NAME_
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: _ARGS_
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        env:
+          - name: TASKBROKER_KAFKA_CLUSTER
+            value: "{{ .Values.kafka.hostname }}:9092"
+          - name: TASKBROKER_KAFKA_DEADLETTER_CLUSTER
+            value: "{{ .Values.kafka.hostname }}:9092"
+          - name: TASKBROKER_DB_PATH
+            value: "/opt/sqlite/taskbroker-activations.sqlite"
+          - name: SENTRY_REDIS_HOST
+            value: "redis.{{ .Release.Namespace }}.svc.cluster.local."
+        image: getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: _NAME_
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false

@@ -1304,6 +1304,78 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: snuba-profiling-profile-chunks-consumer
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-profiling-profile-chunks-consumer
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-profiling-profile-chunks-consumer
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - rust-consumer
+        - --storage
+        - profile_chunks
+        - --consumer-group
+        - snuba-consumers
+        - --auto-offset-reset=latest
+        - --max-batch-time-ms
+        - '1000'
+        - --no-strict-offset-reset
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-profiling-profile-chunks-consumer
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: snuba-spans-consumer
 spec:
   replicas: {{ .Values.consumer.replicas }}
@@ -3064,6 +3136,235 @@ spec:
         image: getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: subscription-consumer-generic-metrics
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskbroker
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: taskbroker
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: taskbroker
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: []
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        env:
+          - name: TASKBROKER_KAFKA_CLUSTER
+            value: "{{ .Values.kafka.hostname }}:9092"
+          - name: TASKBROKER_KAFKA_DEADLETTER_CLUSTER
+            value: "{{ .Values.kafka.hostname }}:9092"
+          - name: TASKBROKER_DB_PATH
+            value: "/opt/sqlite/taskbroker-activations.sqlite"
+          - name: SENTRY_REDIS_HOST
+            value: "redis.{{ .Release.Namespace }}.svc.cluster.local."
+        image: getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: taskbroker
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskscheduler
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: taskscheduler
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: taskscheduler
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - run
+        - taskworker-scheduler
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: taskscheduler
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskworker
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: taskworker
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: taskworker
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - run
+        - taskworker
+        - --concurrency=4
+        - --rpc-host=taskbroker:50051
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: taskworker
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files
