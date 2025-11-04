@@ -39,7 +39,7 @@ spec:
             value: "/opt/sqlite/taskbroker-activations.sqlite"
           - name: SENTRY_REDIS_HOST
             value: "redis.{{ .Release.Namespace }}.svc.cluster.local."
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: _NAME_
         resources:

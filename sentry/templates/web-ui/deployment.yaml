@@ -40,7 +40,7 @@ spec:
         - configMapRef:
             name: sentry
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: web
         resources:

@@ -16,7 +16,7 @@ spec:
         chart: {{ .Chart.Name }}
     spec:
       containers:
-      - image: getsentry/relay:{{ .Values.sentry.version }}
+      - image: ghcr.io/getsentry/relay:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: relay
         terminationMessagePolicy: FallbackToLogsOnError

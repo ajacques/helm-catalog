@@ -44,7 +44,7 @@ spec:
               topologyKey: kubernetes.io/hostname
             weight: 100
       containers:
-      - image: getsentry/snuba:{{ .Values.sentry.version }}
+      - image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba
         terminationMessagePolicy: FallbackToLogsOnError

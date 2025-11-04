@@ -31,7 +31,7 @@ spec:
           - configMapRef:
               name: snuba-config
               optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-upgrade
         securityContext:

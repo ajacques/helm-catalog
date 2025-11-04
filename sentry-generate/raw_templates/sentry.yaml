@@ -36,7 +36,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: _NAME_
         volumeMounts:

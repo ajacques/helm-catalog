@@ -31,6 +31,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -41,7 +43,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-errors-consumer
         resources:
@@ -103,6 +105,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -113,7 +117,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-outcomes-consumer
         resources:
@@ -177,6 +181,8 @@ spec:
         - --no-strict-offset-reset
         - --raw-events-topic
         - outcomes-billing
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -187,7 +193,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-outcomes-billing-consumer
         resources:
@@ -249,6 +255,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -259,7 +267,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-group-attributes-consumer
         resources:
@@ -327,7 +335,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-replacer
         resources:
@@ -391,6 +399,8 @@ spec:
         - --followed-consumer-group=snuba-consumers
         - --schedule-ttl=60
         - --stale-threshold-seconds=900
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -401,7 +411,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-subscription-consumer-events
         resources:
@@ -463,6 +473,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -473,7 +485,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-transactions-consumer
         resources:
@@ -535,6 +547,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -545,7 +559,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-replays-consumer
         resources:
@@ -607,6 +621,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -617,7 +633,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-issue-occurrence-consumer
         resources:
@@ -679,6 +695,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -689,7 +707,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-metrics-consumer
         resources:
@@ -753,6 +771,8 @@ spec:
         - --followed-consumer-group=transactions_group
         - --schedule-ttl=60
         - --stale-threshold-seconds=900
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -763,7 +783,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-subscription-consumer-transactions
         resources:
@@ -829,6 +849,8 @@ spec:
         - --followed-consumer-group=snuba-metrics-consumers
         - --schedule-ttl=60
         - --stale-threshold-seconds=900
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -839,9 +861,311 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-subscription-consumer-metrics
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-subscription-consumer-generic-metrics-distributions
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-subscription-consumer-generic-metrics-distributions
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-subscription-consumer-generic-metrics-distributions
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - subscriptions-scheduler-executor
+        - --dataset
+        - generic_metrics
+        - --entity=generic_metrics_distributions
+        - 
+        - 
+        - --auto-offset-reset=latest
+        - --no-strict-offset-reset
+        - --consumer-group=snuba-generic-metrics-distributions-subscriptions-schedulers
+        - --followed-consumer-group=snuba-gen-metrics-distributions-consumers
+        - --schedule-ttl=60
+        - --stale-threshold-seconds=900
+        - --health-check-file
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-subscription-consumer-generic-metrics-distributions
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-subscription-consumer-generic-metrics-sets
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-subscription-consumer-generic-metrics-sets
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-subscription-consumer-generic-metrics-sets
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - subscriptions-scheduler-executor
+        - --dataset
+        - generic_metrics
+        - --entity=generic_metrics_sets
+        - --auto-offset-reset=latest
+        - --no-strict-offset-reset
+        - --consumer-group=snuba-generic-metrics-sets-subscriptions-schedulers
+        - --followed-consumer-group=snuba-gen-metrics-sets-consumers
+        - --schedule-ttl=60
+        - --stale-threshold-seconds=900
+        - --health-check-file
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-subscription-consumer-generic-metrics-sets
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-subscription-consumer-generic-metrics-counters
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-subscription-consumer-generic-metrics-counters
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-subscription-consumer-generic-metrics-counters
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - subscriptions-scheduler-executor
+        - --dataset
+        - generic_metrics
+        - --entity=generic_metrics_counters
+        - --auto-offset-reset=latest
+        - --no-strict-offset-reset
+        - --consumer-group=snuba-generic-metrics-counters-subscriptions-schedulers
+        - --followed-consumer-group=snuba-gen-metrics-counters-consumers
+        - --schedule-ttl=60
+        - --stale-threshold-seconds=900
+        - --health-check-file
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-subscription-consumer-generic-metrics-counters
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-subscription-consumer-generic-metrics-gauges
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-subscription-consumer-generic-metrics-gauges
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-subscription-consumer-generic-metrics-gauges
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - subscriptions-scheduler-executor
+        - --dataset
+        - generic_metrics
+        - --entity=generic_metrics_gauges
+        - --auto-offset-reset=latest
+        - --no-strict-offset-reset
+        - --consumer-group=snuba-generic-metrics-gauges-subscriptions-schedulers
+        - --followed-consumer-group=snuba-gen-metrics-gauges-consumers
+        - --schedule-ttl=60
+        - --stale-threshold-seconds=900
+        - --health-check-file
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-subscription-consumer-generic-metrics-gauges
         resources:
           requests:
             memory: 128Mi
@@ -901,6 +1225,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -911,7 +1237,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-distributions-consumer
         resources:
@@ -973,6 +1299,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -983,7 +1311,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-sets-consumer
         resources:
@@ -1045,6 +1373,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1055,7 +1385,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-counters-consumer
         resources:
@@ -1117,6 +1447,8 @@ spec:
         - --max-batch-time-ms
         - '750'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1127,7 +1459,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-generic-metrics-gauges-consumer
         resources:
@@ -1189,6 +1521,8 @@ spec:
         - --max-batch-time-ms
         - '1000'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1199,7 +1533,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-profiling-profiles-consumer
         resources:
@@ -1261,6 +1595,8 @@ spec:
         - --max-batch-time-ms
         - '1000'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1271,7 +1607,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-profiling-functions-consumer
         resources:
@@ -1333,6 +1669,8 @@ spec:
         - --max-batch-time-ms
         - '1000'
         - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1343,7 +1681,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: snuba-profiling-profile-chunks-consumer
         resources:
@@ -1376,12 +1714,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: snuba-spans-consumer
+  name: snuba-eap-items-consumer
 spec:
   replicas: {{ .Values.consumer.replicas }}
   selector:
     matchLabels:
-      component: snuba-spans-consumer
+      component: snuba-eap-items-consumer
       chart: {{ .Chart.Name }}
   template:
     metadata:
@@ -1391,20 +1729,23 @@ spec:
         checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: snuba-spans-consumer
+        component: snuba-eap-items-consumer
         chart: {{ .Chart.Name }}
     spec:
       containers:
       - args: 
         - rust-consumer
         - --storage
-        - spans
+        - eap_items
         - --consumer-group
-        - snuba-spans-consumers
+        - eap_items_group
         - --auto-offset-reset=latest
         - --max-batch-time-ms
         - '1000'
         - --no-strict-offset-reset
+        - --use-rust-processor
+        - --health-check-file
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1415,9 +1756,159 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/snuba:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
-        name: snuba-spans-consumer
+        name: snuba-eap-items-consumer
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-subscription-consumer-eap-items
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-subscription-consumer-eap-items
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-subscription-consumer-eap-items
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - subscriptions-scheduler-executor
+        - --dataset
+        - events_analytics_platform
+        - --entity
+        - eap_items
+        - --auto-offset-reset=latest
+        - --no-strict-offset-reset
+        - --consumer-group=snuba-eap-items-subscriptions-consumers
+        - --followed-consumer-group=eap_items_group
+        - --schedule-ttl=60
+        - --stale-threshold-seconds=900
+        - --health-check-file
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-subscription-consumer-eap-items
+        resources:
+          requests:
+            memory: 128Mi
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+        volumeMounts:
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+      volumes:
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snuba-uptime-results-consumer
+spec:
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: snuba-uptime-results-consumer
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/config3: {{ include (print $.Template.BasePath "/snuba/snuba-config.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: snuba-uptime-results-consumer
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - rust-consumer
+        - --storage
+        - uptime_monitor_checks
+        - --consumer-group
+        - snuba-uptime-results
+        - --auto-offset-reset=latest
+        - --max-batch-time-ms
+        - '750'
+        - --no-strict-offset-reset
+        - --health-check-file
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/snuba:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: snuba-uptime-results-consumer
         resources:
           requests:
             memory: 128Mi
@@ -1478,6 +1969,8 @@ spec:
         - ingest-events
         - --consumer-group
         - ingest-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1488,7 +1981,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: events-consumer
         volumeMounts:
@@ -1564,6 +2057,8 @@ spec:
         - ingest-attachments
         - --consumer-group
         - ingest-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1574,7 +2069,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: attachments-consumer
         volumeMounts:
@@ -1653,6 +2148,8 @@ spec:
         - post-process-forwarder
         - --synchronize-commit-log-topic=snuba-commit-log
         - --synchronize-commit-group=snuba-consumers
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1663,7 +2160,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: post-process-forwarder-errors
         volumeMounts:
@@ -1739,6 +2236,8 @@ spec:
         - events-subscription-results
         - --consumer-group
         - query-subscription-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1749,7 +2248,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: subscription-consumer-events
         volumeMounts:
@@ -1825,6 +2324,8 @@ spec:
         - ingest-transactions
         - --consumer-group
         - ingest-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1835,7 +2336,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: transactions-consumer
         volumeMounts:
@@ -1911,6 +2412,8 @@ spec:
         - ingest-metrics
         - --consumer-group
         - metrics-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -1921,7 +2424,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: metrics-consumer
         volumeMounts:
@@ -1997,6 +2500,8 @@ spec:
         - ingest-generic-metrics
         - --consumer-group
         - generic-metrics-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2007,7 +2512,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: generic-metrics-consumer
         volumeMounts:
@@ -2083,6 +2588,8 @@ spec:
         - billing-metrics-consumer
         - --consumer-group
         - billing-metrics-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2093,7 +2600,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: billing-metrics-consumer
         volumeMounts:
@@ -2169,6 +2676,8 @@ spec:
         - ingest-replay-recordings
         - --consumer-group
         - ingest-replay-recordings
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2179,7 +2688,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: ingest-replay-recordings
         volumeMounts:
@@ -2255,6 +2764,8 @@ spec:
         - ingest-occurrences
         - --consumer-group
         - ingest-occurrences
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2265,7 +2776,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: ingest-occurrences
         volumeMounts:
@@ -2341,6 +2852,8 @@ spec:
         - ingest-profiles
         - --consumer-group
         - ingest-profiles
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2351,7 +2864,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: ingest-profiles
         volumeMounts:
@@ -2427,6 +2940,8 @@ spec:
         - ingest-monitors
         - --consumer-group
         - ingest-monitors
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2437,7 +2952,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: ingest-monitors
         volumeMounts:
@@ -2513,6 +3028,8 @@ spec:
         - ingest-feedback-events
         - --consumer-group
         - ingest-feedback
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2523,9 +3040,187 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: ingest-feedback-events
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: process-spans
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: process-spans
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: process-spans
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - run
+        - consumer
+        - --no-strict-offset-reset
+        - process-spans
+        - --consumer-group
+        - process-spans
+        - --healthcheck-file-path
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: process-spans
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: process-segments
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: process-segments
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: process-segments
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - run
+        - consumer
+        - --no-strict-offset-reset
+        - process-segments
+        - --consumer-group
+        - process-segments
+        - --healthcheck-file-path
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: process-segments
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files
@@ -2599,6 +3294,8 @@ spec:
         - monitors-clock-tick
         - --consumer-group
         - monitors-clock-tick
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2609,7 +3306,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: monitors-clock-tick
         volumeMounts:
@@ -2685,6 +3382,8 @@ spec:
         - monitors-clock-tasks
         - --consumer-group
         - monitors-clock-tasks
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2695,9 +3394,97 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: monitors-clock-tasks
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uptime-results
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: uptime-results
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: uptime-results
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - run
+        - consumer
+        - uptime-results
+        - --consumer-group
+        - uptime-results
+        - --healthcheck-file-path
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: uptime-results
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files
@@ -2775,6 +3562,8 @@ spec:
         - --synchronize-commit-log-topic=snuba-transactions-commit-log
         - --synchronize-commit-group
         - transactions_group
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2785,7 +3574,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: post-process-forwarder-transactions
         volumeMounts:
@@ -2865,6 +3654,8 @@ spec:
         - --synchronize-commit-log-topic=snuba-generic-events-commit-log
         - --synchronize-commit-group
         - generic_events_group
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2875,7 +3666,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: post-process-forwarder-issue-platform
         volumeMounts:
@@ -2951,6 +3742,8 @@ spec:
         - transactions-subscription-results
         - --consumer-group
         - query-subscription-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -2961,9 +3754,97 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: subscription-consumer-transactions
+        volumeMounts:
+        - mountPath: /var/lib/sentry/files
+          name: files
+        - mountPath: /etc/sentry/config.yml
+          name: configyml
+          readOnly: true
+          subPath: config.yml
+        - mountPath: /etc/sentry/sentry.conf.py
+          name: configyml
+          readOnly: true
+          subPath: sentry.conf.py
+        resources:
+          requests:
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - ALL
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+      - name: files
+        {{- if eq .Values.persistence.type.filestore "BindMount" }}
+        hostPath:
+          path: {{ .Values.persistence.bind_mount.base_dir }}/filestore
+          type: ""
+        {{- end }}
+      - configMap:
+          defaultMode: 292
+          name: sentryconfig
+          optional: false
+        name: configyml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscription-consumer-eap-items
+  labels:
+    app: {{ template "sentry.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: {{ .Values.consumer.replicas }}
+  selector:
+    matchLabels:
+      component: subscription-consumer-eap-items
+      chart: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/config2: {{ include (print $.Template.BasePath "/sentry-config-file.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: subscription-consumer-eap-items
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+      - args: 
+        - run
+        - consumer
+        - subscription-results-eap-items
+        - --consumer-group
+        - subscription-results-eap-items
+        - --healthcheck-file-path
+        - /tmp/health.txt
+        envFrom:
+        - secretRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: sentry
+            optional: false
+        - configMapRef:
+            name: snuba-config
+            optional: false
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
+        imagePullPolicy: IfNotPresent
+        name: subscription-consumer-eap-items
         volumeMounts:
         - mountPath: /var/lib/sentry/files
           name: files
@@ -3037,6 +3918,8 @@ spec:
         - metrics-subscription-results
         - --consumer-group
         - query-subscription-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -3047,7 +3930,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: subscription-consumer-metrics
         volumeMounts:
@@ -3123,6 +4006,8 @@ spec:
         - generic-metrics-subscription-results
         - --consumer-group
         - query-subscription-consumer
+        - --healthcheck-file-path
+        - /tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -3133,7 +4018,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: subscription-consumer-generic-metrics
         volumeMounts:
@@ -3217,7 +4102,7 @@ spec:
             value: "/opt/sqlite/taskbroker-activations.sqlite"
           - name: SENTRY_REDIS_HOST
             value: "redis.{{ .Release.Namespace }}.svc.cluster.local."
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: taskbroker
         resources:
@@ -3277,7 +4162,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: taskscheduler
         volumeMounts:
@@ -3352,6 +4237,7 @@ spec:
         - taskworker
         - --concurrency=4
         - --rpc-host=taskbroker:50051
+        - --health-check-file-path=/tmp/health.txt
         envFrom:
         - secretRef:
             name: sentry
@@ -3362,7 +4248,7 @@ spec:
         - configMapRef:
             name: snuba-config
             optional: false
-        image: getsentry/sentry:{{ .Values.sentry.version }}
+        image: ghcr.io/getsentry/sentry:{{ .Values.sentry.version }}
         imagePullPolicy: IfNotPresent
         name: taskworker
         volumeMounts:
